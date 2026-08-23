@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions about the specification
+    url: https://github.com/mibrohimsulaeman-a11y/scopecareer/discussions
+    about: Ask how to adopt or build on contracts/v1 (enable via repository settings if needed).

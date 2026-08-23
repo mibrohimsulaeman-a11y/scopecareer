@@ -83,6 +83,16 @@ sessions with executive ICP participants. As of this release, **zero sessions ha
 conducted**. A green validator or smoke test proves internal integrity, not product-market
 evidence. See `docs/validation/README.md`.
 
+## Participating in product validation
+
+We are recruiting **6–8 executive participants** (Director / VP / C-level — technology,
+digital, transformation, operations; India / APAC / international) for moderated research
+sessions testing whether this interaction model actually works for senior professionals.
+
+If that is you: [open a participant signup issue](https://github.com/mibrohimsulaeman-a11y/scopecareer/issues/new?template=participant-signup.yml)
+— it takes ~3 minutes. Sessions are 25–35 minutes, use only fictional fixtures, and never
+apply to jobs or contact anyone. Do not post personal/confidential details in the issue.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md): the ground rules for semantic changes, the

@@ -1,0 +1,122 @@
+name: Participant signup — Product Validation-1
+description: Volunteer for a moderated 25–35 minute research session testing an executive career intelligence concept.
+title: "[PV-1 Signup] "
+labels: ["pv1-participant"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for volunteering! We are running **Product Validation-1**: 6–8 moderated
+        sessions with Director / VP / C-level technology, digital, transformation, and
+        operations leaders (India / APAC / international).
+
+        What you should know before answering:
+        - This is a **research prototype**, not a live job-search service.
+        - All candidate/company/opportunity examples are **fictional fixtures**.
+        - Actions never apply to jobs, contact employers, or send anything externally.
+        - Sessions are screen-shared, **25–35 minutes**, scheduled at your convenience.
+        - ⚠️ GitHub issues are public — answer the questions here, but **do not post your
+          name, employer, compensation, or any confidential details**. If selected, we
+          continue scheduling privately.
+
+  - type: dropdown
+    id: seniority
+    attributes:
+      label: Current or most recent seniority
+      options:
+        - "Director"
+        - "VP / Head of Function"
+        - "C-level"
+        - "Senior Manager"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: function
+    attributes:
+      label: Function that best describes your work
+      options:
+        - "Technology / Engineering"
+        - "Digital"
+        - "Transformation"
+        - "Operations"
+        - "Product"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: recent_transition
+    attributes:
+      label: In the last 3 years, have you considered or completed a senior-level transition?
+      options:
+        - "Yes, completed"
+        - "Yes, actively considered / searched"
+        - "No"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: channels
+    attributes:
+      label: Channels that have surfaced serious career opportunities for you in the last 3 years
+      options:
+        - label: Public job posting
+        - label: Internal recruiter
+        - label: External recruiter
+        - label: Retained executive-search consultant
+        - label: Referral / former colleague
+        - label: Direct company relationship
+        - label: Board/adviser/investor network
+
+  - type: dropdown
+    id: confidential_opportunity
+    attributes:
+      label: Have you discussed a role without a public job description or application URL?
+      options:
+        - "Yes"
+        - "No"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: international_search
+    attributes:
+      label: Have you considered roles outside your current country in the last 3 years?
+      options:
+        - "Yes"
+        - "No"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: search_state
+    attributes:
+      label: Which statement best describes your current career-search state?
+      options:
+        - "Not actively searching, but open to the right opportunity"
+        - "Quietly exploring"
+        - "Actively searching"
+        - "In an active selection process"
+        - "Recently completed a transition"
+    validations:
+      required: true
+
+  - type: input
+    id: region_timezone
+    attributes:
+      label: Region / timezone (for scheduling only)
+      placeholder: "e.g., Jakarta UTC+7"
+
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Consent
+      options:
+        - label: I understand this is a research prototype with fictional data and no job applications or external messages are involved.
+          required: true
+        - label: I am willing to participate in a 25–35 minute screen-shared session.
+          required: true
+        - label: I agree to be contacted privately about scheduling if selected (recording, if any, requires separate consent).
+          required: true
