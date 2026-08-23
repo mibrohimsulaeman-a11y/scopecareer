@@ -76,6 +76,11 @@ sessions with executive ICP participants. As of this release, **zero sessions ha
 conducted**. A green validator or smoke test proves internal integrity, not product-market
 evidence. See `docs/validation/README.md`.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md): the ground rules for semantic changes, the
+validators every change must pass, and good entry points for first contributions.
+
 ## License
 
 [Apache-2.0](LICENSE). You may build commercial or open platforms on top of these
