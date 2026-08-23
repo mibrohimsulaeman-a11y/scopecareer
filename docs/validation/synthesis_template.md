@@ -6,6 +6,34 @@ Status: Use only after real ICP sessions exist
 
 Do not fill this document from moderator intuition or prototype smoke tests. Every conclusion must cite participant IDs and observed/quoted evidence.
 
+## Pre-registered decision rules
+
+Defined 2026-08-24, before the first session was conducted. Applied unchanged at synthesis time; deviations require an explicit note explaining why.
+
+Task → hypothesis mapping (per `test_protocol.md`):
+
+| Session task | Hypothesis |
+|---|---|
+| `attention` | PV-H01 |
+| `opportunity_compare` | PV-H06 |
+| `opportunity_dossier` | PV-H03 |
+| `explore_pursue` | PV-H02 |
+| `pursuit_workspace` | PV-H07 |
+| `access_plan` | PV-H04 |
+| `evidence_binding` | PV-H05 |
+| `stage_aware_workspace` | PV-H08 |
+
+Per-session task pass: `completed=true` **and** no critical failure signal recorded in `confusions`, where critical failure signals are exactly those named in `test_protocol.md` (external-effect interpretation of Investigate/Pursue actions, untraceable material claim, verification misreading of evidence binding, workspace-as-application reading).
+
+Cross-session outcome (n = completed sessions):
+
+- **SUPPORTED** — passed in ≥ ⌈2n/3⌉ sessions and contradicted in ≤ 1.
+- **CONTRADICTED** — failed in ≥ ⌈n/3⌉ sessions.
+- **MIXED** — neither threshold met.
+- **INSUFFICIENT EVIDENCE** — n < 6, or > 2 sessions recorded `not_tested` for that hypothesis.
+
+Checkpoint after P01–P03 (redesign gate): if any critical failure signal occurs in ≥ 2 of the first 3 sessions, pause recruitment, revise the prototype, and restart the counterbalance allocation from scratch. This is process success, not product failure.
+
 ## Sample
 
 - Sessions completed:
