@@ -1,5 +1,7 @@
 # ScopeCareer — Open Specification for Personal Executive Career Intelligence Systems
 
+[![validate](https://github.com/mibrohimsulaeman-a11y/scopecareer/actions/workflows/validate.yml/badge.svg)](https://github.com/mibrohimsulaeman-a11y/scopecareer/actions/workflows/validate.yml)
+
 An open, machine-readable blueprint for building **personal executive career intelligence
 platforms**: how senior professionals (Director / VP / C-level) decide which opportunities
 deserve attention, whether a role is a strong career move rather than merely a skills
@@ -50,6 +52,11 @@ python3 docs/validation/validate_sessions.py      # research evidence pipeline
 ```
 
 ## Try the reference prototype
+
+**Live demo:** https://mibrohimsulaeman-a11y.github.io/scopecareer/ (deployed
+automatically from `docs/validation/prototype-v3/` on every push to `main`)
+
+Run locally:
 
 ```bash
 python3 -m http.server 8765 --directory docs/validation/prototype-v3

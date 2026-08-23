@@ -1,0 +1,25 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validators:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install validator dependencies
+        run: pip install jsonschema
+      - name: Semantic contracts
+        run: python3 contracts/v1/validate_contracts.py
+      - name: Program layer
+        run: python3 implementation/validate_program.py
+      - name: Client duplication/UI-authority scan (INV-05, INV-08)
+        run: python3 implementation/validate_program.py --scan-clients
+      - name: PV-1 session evidence pipeline
+        run: python3 docs/validation/validate_sessions.py
