@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ScopeCareer — Open Specification for Personal Executive Career Intelligence</title>
+<meta name="description" content="Open, machine-readable blueprint for building executive career intelligence platforms: frozen semantic contracts, governance framework, reference prototype." />
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: Georgia, 'Times New Roman', serif;
+    background: #f7f6f3; color: #1c1c1a; line-height: 1.55;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #17181a; color: #e8e6e1; }
+    .card { border-color: #33363b !important; background: #1e2023 !important; }
+    .muted { color: #9a978f !important; }
+    a { color: #8ab4ff !important; }
+  }
+  main { max-width: 46rem; margin: 0 auto; padding: 3.5rem 1.25rem 4rem; }
+  h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.2; margin: 0 0 .4rem; font-weight: 600; letter-spacing: -0.01em; }
+  .kicker { text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; margin-bottom: 1.1rem; }
+  .muted { color: #6d6a62; }
+  p.lede { font-size: 1.06rem; margin: 0 0 1.6rem; max-width: 42rem; }
+  .status {
+    display: inline-block; font-family: ui-monospace, Menlo, monospace; font-size: .78rem;
+    border: 1px solid currentColor; border-radius: 999px; padding: .18rem .7rem; margin-bottom: 2rem;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin: 0 0 2.5rem; }
+  .card {
+    display: block; text-decoration: none; color: inherit;
+    border: 1px solid #ddd9cf; border-radius: .6rem; background: #fffdf8;
+    padding: 1.05rem 1.15rem;
+  }
+  .card:hover { outline: 2px solid currentColor; outline-offset: 1px; }
+  .card h2 { font-size: .98rem; margin: 0 0 .3rem; font-weight: 600; }
+  .card p { margin: 0; font-size: .86rem; }
+  section { margin-top: 2.2rem; }
+  h3 { font-size: .82rem; text-transform: uppercase; letter-spacing: .12em; margin: 0 0 .5rem; }
+  ul { margin: 0; padding-left: 1.2rem; }
+  li { margin-bottom: .35rem; font-size: .93rem; }
+  footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid #ddd9cf; font-size: .8rem; }
+  @media (prefers-color-scheme: dark) { footer { border-color: #33363b; } }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker muted">Open specification · Apache-2.0 · v0.1.0</p>
+  <h1>ScopeCareer</h1>
+  <p class="lede">
+    An open, machine-readable blueprint for building <strong>personal executive career
+    intelligence systems</strong>: how senior professionals decide which opportunities
+    deserve pursuit, how access routes beat reflexive applications, and how career
+    evidence supports positioning — with provenance, privacy, and trust handled as
+    first-class concerns.
+  </p>
+  <span class="status">Specification &amp; reference prototype — not yet validated with real users</span>
+
+  <nav class="grid" aria-label="Entry points">
+    <a class="card" href="./prototype/">
+      <h2>Try the interactive prototype →</h2>
+      <p>The V3 behavioral reference: Briefing → Opportunity Detail → Explore → Pursue → stage-aware workspace. Fictional fixtures only; nothing is ever sent externally.</p>
+    </a>
+    <a class="card" href="https://github.com/mibrohimsulaeman-a11y/scopecareer">
+      <h2>Read the specification →</h2>
+      <p>Frozen semantic contracts (74 entities, 91 actions, orthogonal state machines), threat model, delivery gates P0–P17, and machine validators.</p>
+    </a>
+    <a class="card" href="https://github.com/mibrohimsulaeman-a11y/scopecareer/issues/new?template=participant-signup.yml">
+      <h2>Participate in product validation →</h2>
+      <p>Director/VP/C-level leaders: join a moderated 25–35 minute research session and shape what gets built. Three-minute signup form.</p>
+    </a>
+    <a class="card" href="https://github.com/mibrohimsulaeman-a11y/scopecareer/blob/main/CONTRIBUTING.md">
+      <h2>Build on it →</h2>
+      <p>Adopt contracts/v1 under Apache-2.0 — commercial or open. Ground rules for keeping semantics in one place.</p>
+    </a>
+  </nav>
+
+  <section aria-label="Core ideas">
+    <h3>Core ideas</h3>
+    <ul>
+      <li><code>Capability → Object → State → Action → Policy → Evidence</code> — one canonical chain across web, PWA, extension, MCP, and AI.</li>
+      <li>No generic opportunity status: disposition, search state, selection state, and priority stay orthogonal.</li>
+      <li>Epistemic honesty: provenance and evidence status are never silently upgraded; assessments are versioned snapshots.</li>
+      <li>The UI is a projection; authorization lives server-side; AI holds zero commit authority over state or external effects.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Licensed <a href="https://github.com/mibrohimsulaeman-a11y/scopecareer/blob/main/LICENSE">Apache-2.0</a>.
+    Validators and CI run on every push; the prototype deploys automatically from
+    <code>docs/validation/prototype-v3/</code>.
+  </footer>
+</main>
+</body>
+</html>

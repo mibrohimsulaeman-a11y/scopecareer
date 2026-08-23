@@ -53,8 +53,9 @@ python3 docs/validation/validate_sessions.py      # research evidence pipeline
 
 ## Try the reference prototype
 
-**Live demo:** https://mibrohimsulaeman-a11y.github.io/scopecareer/ (deployed
-automatically from `docs/validation/prototype-v3/` on every push to `main`)
+**Live demo & landing page:** https://mibrohimsulaeman-a11y.github.io/scopecareer/
+(interactive prototype at [`/prototype/`](https://mibrohimsulaeman-a11y.github.io/scopecareer/prototype/),
+deployed automatically on every push to `main`)
 
 Run locally:
 
