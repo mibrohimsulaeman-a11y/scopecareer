@@ -1,7 +1,13 @@
 # ScopeCareer — Delivery Decomposition Backlog
 
 Status: Semantic/UX prototype gate passed; Product Validation-1 human sessions pending
-Last updated: 2026-08-22
+Last updated: 2026-08-23
+
+> **Forward-planning authority moved.** This document is preserved as the historical
+> record of how the specification reached implementation readiness. Forward planning,
+> phases, gates, and the delivery DAG are now owned by `21-IMPLEMENTATION-MASTER-PROGRAM.md`
+> and `../implementation/` (validated by `python3 implementation/validate_program.py`).
+> Do not extend this file with new planning; record changes in the master program instead.
 
 ## Goal
 
@@ -412,7 +418,7 @@ No single generic LLM quality score.
 
 # PRODUCT VALIDATION-1 — V3 AUTOMATED GATE PASSED / HUMAN ICP SESSIONS NEXT
 
-The active disposable prototype is `../validation/prototype-v3/` and now covers the full progressive candidate flow requested for validation:
+The active disposable prototype is `../docs/validation/prototype-v3/` and now covers the full progressive candidate flow requested for validation:
 
 1. Briefing temporal event/action ledger;
 2. Opportunity Decision Dossier with provenance/open questions/access;
@@ -429,11 +435,11 @@ The active disposable prototype is `../validation/prototype-v3/` and now covers 
 
 Current automated evidence:
 
-- `validation/redesign_v3_status.json` — ordered 1→12 campaign status;
-- `validation/prototype_registry.json` — PV-H01 through PV-H08;
-- `validation/prototype_smoke_v3_report.json` — **20/20 checks passed, zero runtime errors**;
+- `docs/validation/redesign_v3_status.json` — ordered 1→12 campaign status;
+- `docs/validation/prototype_registry.json` — PV-H01 through PV-H08;
+- `docs/validation/prototype_smoke_v3_report.json` — **20/20 checks passed, zero runtime errors**;
 - `contracts/v1/validate_contracts.py` — contract gate passes with 33 conformance cases;
-- `validation/test_protocol.md` — V3 moderated protocol ready;
+- `docs/validation/test_protocol.md` — V3 moderated protocol ready;
 - participant screener, recruitment copy, execution checklist, session JSON Schema, validator, and synthesis template are ready.
 
 Category/value questions now include:

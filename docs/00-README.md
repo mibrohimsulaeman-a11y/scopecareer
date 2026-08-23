@@ -1,7 +1,7 @@
 # ScopeCareer — Executive Career Intelligence Platform
 
-Status: Product workspace initialized
-Last updated: 2026-08-21
+Status: Prototype gate passed — Product Validation-1 human sessions pending
+Last updated: 2026-08-23
 
 ## Purpose
 
@@ -48,20 +48,33 @@ The product is intentionally broader than an AI job-search assistant. Its core c
 | `18-UI-IMPLEMENTATION-PLAN.md` | Complete candidate-facing UI build-out on contracts (UI-only, fixture-driven) | Working plan |
 | `19-UI-EXECUTION-ORCHESTRATION.md` | Parallel work-package decomposition, ownership boundaries, frozen interfaces | Executed |
 | `20-UI-CONFORMANCE-MAP.md` | Invariant → automated check mapping for the full UI suite | Complete (121 checks) |
+| `21-IMPLEMENTATION-MASTER-PROGRAM.md` | Execution authority P0–P17: phases, gates, DAG to production GA | Execution authority |
+| `22-ENGINEERING-INVARIANTS-AND-QUALITY-GATES.md` | Non-negotiable invariants INV-01..17, uniform DoD, flag governance | Binding constitution |
+| `23-PRODUCTION-ARCHITECTURE-DECISION-FRAMEWORK.md` | Decision drivers, candidate microservice decomposition, tech longlist, ADRs | Candidate (ratify at GATE-P3) |
+| `24-SECURITY-PRIVACY-THREAT-MODEL.md` | Data classification, AI/MCP pipeline, threat catalog, SSDF alignment | Living security lane |
+| `25-UX-DESIGN-SYSTEM-AND-STATE-BOUNDARIES.md` | UI state boundaries, ViewModel contract, production design system inventory | Working standard |
+| `26-TEST-CONFORMANCE-AND-EVALUATION-STRATEGY.md` | Verification taxonomy, property/state-machine requirement, AI Definition of Correctness | Working strategy |
+| `27-PERFORMANCE-RELIABILITY-AND-SLO.md` | Budget categories, ratchet policy, SLO skeleton (baselines at GATE-P3) | Working standard |
+| `28-DELIVERY-DAG-AND-WORK-PACKAGES.md` | Multi-agent execution protocol, briefs, receipts, integration checklist | Binding from P4 |
+| `29-RELEASE-OPERATIONS-AND-GA-GATES.md` | Environment ladder, mandatory release artifacts, beta/GA gates | Binding from P5 |
 
 ## Authority hierarchy
 
-The machine-readable contract layer now exists at `../contracts/v1/`.
+The machine-readable contract layer now exists at `../contracts/v1/`, and the
+machine-readable implementation program layer at `../implementation/`
+(work packages, dependency DAG, quality gates, ADRs, budgets, controls, release gates —
+validated by `python3 implementation/validate_program.py`).
 
 When artifacts conflict, use this order:
 
 1. Explicit decisions recorded in `11-DECISIONS-ASSUMPTIONS-OPEN-QUESTIONS.md`.
-2. Semantic contracts in `../contracts/v1/entities`, `states`, `actions`, and `capabilities`.
-3. Policy contracts in `../contracts/v1/policies` and client/trust-boundary contracts.
-4. MCP / UX / AI contracts derived from canonical semantics.
-5. Canonical product explanation in this README and `01`, `04`, `06`, `07`, `08`.
-6. Working decomposition, backlog, research, and competitive notes.
-Product-validation artifacts live in `../validation/`. They may test or challenge product/view hypotheses, but do not override semantic/trust invariants without an explicit decision-register change.
+2. Machine-readable semantic contracts in `../contracts/v1/entities`, `states`, `actions`, and `capabilities`.
+3. Machine-readable policy contracts in `../contracts/v1/policies` and client/trust-boundary contracts.
+4. The implementation program registries in `../implementation/` (DAG, gates, ADRs) as derived authority.
+5. MCP / UX / AI contracts derived from canonical semantics.
+6. Canonical product explanation in this README and `01`, `04`, `06`, `07`, `08`.
+7. Working decomposition, backlog, research, and competitive notes.
+Product-validation artifacts live in `../docs/validation/`. They may test or challenge product/view hypotheses, but do not override semantic/trust invariants without an explicit decision-register change.
 
 Prose explains the contracts but must not silently redefine exact state, action, permission, evidence, or effect semantics.
 

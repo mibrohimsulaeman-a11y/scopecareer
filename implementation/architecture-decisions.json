@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "updated": "2026-08-23",
+  "authority": "docs/23-PRODUCTION-ARCHITECTURE-DECISION-FRAMEWORK.md",
+  "decisions": [
+    {
+      "id": "ADR-0001",
+      "status": "ratified",
+      "title": "Defer production stack selection until after PV-1 evidence and V1 recut",
+      "context": "ScopeCareer's authority hierarchy forbids locking framework/vendor choices before semantic/policy contracts and the first category-defining product validation are stable. PV-1 has zero completed ICP sessions at time of writing.",
+      "decision": "No production framework, vendor, database, or orchestration choice is ratified before GATE-P3. Candidate technologies may be documented in the longlist (docs/23) but scoring is not run and nothing becomes binding.",
+      "consequences": "P3 starts from an evaluated field; short-term work stays on contracts, validation, and planning artifacts. Temptation to 'just pick Postgres now' must be redirected into the candidate longlist.",
+      "ratify_gate": null,
+      "supersedes": [],
+      "references": ["D-019", "D-026"]
+    },
+    {
+      "id": "ADR-0002",
+      "status": "candidate",
+      "title": "Adopt contract-first microservice decomposition as reference architecture",
+      "context": "Contract domains provide natural service seams: Identity & Tenancy, Career Data Vault, Evidence/Assertion, Opportunity Intelligence, Pursuit Workspace, Access & Relationships, Market Intelligence, AI Orchestration, Ingestion/Capture Gateway, Audit & Observability.",
+      "decision": "Treat contract-first microservices as the leading candidate style with the documented decomposition map, sync-vs-async rules, and anti-pattern guardrails. Ratify, adjust, or replace at GATE-P3 using measured workload, cost, and operability evidence from a small team plus coding agents.",
+      "consequences": "Non-binding until GATE-P3. Guardrails forbid distributed monoliths and shared databases; early services may start as modules and extract along measured seams. Per-service technology choices remain deferred to P3/P4.",
+      "ratify_gate": "GATE-P3",
+      "supersedes": [],
+      "references": ["docs/23", "ADR-0001"]
+    }
+  ]
+}

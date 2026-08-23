@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "updated": "2026-08-23",
+  "authority": "docs/22-ENGINEERING-INVARIANTS-AND-QUALITY-GATES.md",
+  "note": "Documented exceptions for validate_program.py --scan-clients against the frozen REFERENCE UI. Every entry needs full metadata (same governance as feature flags). Unlisted findings are hard errors.",
+  "exceptions": [
+    {
+      "path": "web/js/core/copy.js",
+      "rule": "B",
+      "owner": "program-planning",
+      "created_at": "2026-08-23",
+      "purpose": "Documented copy/projection layer: maps canonical enums to candidate language (see web/README.md architecture seams). Projection, not semantic redefinition.",
+      "removal_condition": "Production client generation pipeline (WP-P4-01) derives copy keys from fetched registries instead of local literals.",
+      "review_date": "GATE-P4"
+    },
+    {
+      "path": "web/js/views/",
+      "rule": "B",
+      "owner": "program-planning",
+      "created_at": "2026-08-23",
+      "purpose": "Reference-UI views select display labels from canonical states delivered by Store/contracts; they never decide legality (INV-05 holds). Includes the hardcoded sensitivity option list in views/wp4 which IS an INV-08 smell kept visible until generation exists.",
+      "removal_condition": "Production screens consume server-composed ViewModels per docs/25; no view-level canonical literals remain.",
+      "review_date": "GATE-P6"
+    },
+    {
+      "path": "web/tests/",
+      "rule": "B",
+      "owner": "program-planning",
+      "created_at": "2026-08-23",
+      "purpose": "Conformance checks must assert exact canonical values; referencing them is the point of the test.",
+      "removal_condition": "Not applicable while web/tests remains the reference conformance suite.",
+      "review_date": "GATE-P6"
+    }
+  ]
+}

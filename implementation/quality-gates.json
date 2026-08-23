@@ -1,0 +1,50 @@
+{
+  "version": "1.0",
+  "updated": "2026-08-23",
+  "authority": "docs/22-ENGINEERING-INVARIANTS-AND-QUALITY-GATES.md",
+  "enforcement_tiers": ["automated_now", "automated_later", "process"],
+  "invariants": [
+    {"id": "INV-01", "concern": "business logic", "statement": "One canonical implementation per business rule; never re-implemented per client or layer.", "enforcement": [{"tier": "automated_later", "mechanism": "architecture boundary checks (P4+)"}, {"tier": "process", "mechanism": "DoD review item"}]},
+    {"id": "INV-02", "concern": "state", "statement": "Every canonical state mutation follows the registered state machine in contracts/v1/states.", "enforcement": [{"tier": "automated_now", "mechanism": "reference UI dispatcher validation + contract validator"}, {"tier": "automated_later", "mechanism": "production property/state-machine suite (P5+)"}]},
+    {"id": "INV-03", "concern": "authorization", "statement": "Every mutation is authorized server-side against principal, purpose, and scope.", "enforcement": [{"tier": "automated_later", "mechanism": "policy/AuthZ test suite (P5+)"}, {"tier": "process", "mechanism": "security review per WP"}]},
+    {"id": "INV-04", "concern": "external effects", "statement": "Draft/prepare/assess never triggers send/share/publish/apply without recorded approval.", "enforcement": [{"tier": "automated_later", "mechanism": "effect-gate conformance cases (P5+)"}, {"tier": "process", "mechanism": "DoD review item"}]},
+    {"id": "INV-05", "concern": "ui authority", "statement": "The UI is never the authority for domain state, authorization results, or policy eligibility.", "enforcement": [{"tier": "automated_now", "mechanism": "validate_program.py --scan-clients"}, {"tier": "process", "mechanism": "review against doc 25 boundary list"}]},
+    {"id": "INV-06", "concern": "ai authority", "statement": "AI has no self-granted commit authority over canonical state or external effects.", "enforcement": [{"tier": "automated_now", "mechanism": "ai_function_registry commit_authority=none checked by contract validator"}, {"tier": "automated_later", "mechanism": "eval hard-failures (P11)"}]},
+    {"id": "INV-07", "concern": "data epistemics", "statement": "Provenance and epistemic status are never dropped, flattened, or silently upgraded.", "enforcement": [{"tier": "automated_later", "mechanism": "schema compat + eval hard-failures"}, {"tier": "process", "mechanism": "privacy/classification review per WP"}]},
+    {"id": "INV-08", "concern": "duplication", "statement": "Enums, schemas, policies, actions are defined once in canonical contracts and derived everywhere else.", "enforcement": [{"tier": "automated_now", "mechanism": "validate_program.py --scan-clients"}, {"tier": "automated_later", "mechanism": "duplicate-semantics scan in integration checklist"}]},
+    {"id": "INV-09", "concern": "dead code", "statement": "No unreachable feature without owner + removal condition; feature flags carry full metadata; abstractions need two concrete use-cases.", "enforcement": [{"tier": "automated_now", "mechanism": "flag metadata schema validated"}, {"tier": "automated_later", "mechanism": "dead-code scan tooling (P4+)"}]},
+    {"id": "INV-10", "concern": "security", "statement": "Deny-by-default and least privilege on every boundary.", "enforcement": [{"tier": "process", "mechanism": "threat-model delta per feature pipeline"}]},
+    {"id": "INV-11", "concern": "privacy", "statement": "Purpose/sensitivity scoping on every data flow; retention/deletion honored.", "enforcement": [{"tier": "process", "mechanism": "classification declared in DoD"}]},
+    {"id": "INV-12", "concern": "performance", "statement": "Regression budgets mandatory once baselines exist (GATE-P3); ratchet thereafter.", "enforcement": [{"tier": "automated_later", "mechanism": "perf ratchet CI (P3 baselines -> P12 enforcement)"}, {"tier": "process", "mechanism": "budget review at P3"}]},
+    {"id": "INV-13", "concern": "accessibility", "statement": "WCAG 2.2 AA target on all candidate-facing surfaces.", "enforcement": [{"tier": "automated_later", "mechanism": "a11y automated suite (P6+)"}, {"tier": "process", "mechanism": "manual pass per UI WP"}]},
+    {"id": "INV-14", "concern": "reliability", "statement": "Failure modes and recovery paths are designed and tested before production exposure.", "enforcement": [{"tier": "automated_later", "mechanism": "failure-injection suite (P12)"}, {"tier": "process", "mechanism": "degraded-behavior DoD item"}]},
+    {"id": "INV-15", "concern": "observability", "statement": "Every material operation is traceable end-to-end.", "enforcement": [{"tier": "automated_later", "mechanism": "tracing conformance checks (P5+)"}]},
+    {"id": "INV-16", "concern": "deployment", "statement": "Every schema/data change ships with tested migration and rollback.", "enforcement": [{"tier": "automated_later", "mechanism": "migration discipline gate (P5+)"}, {"tier": "process", "mechanism": "release checklist"}]},
+    {"id": "INV-17", "concern": "testing integrity", "statement": "No green-by-mock: critical boundaries are verified against real contract behavior.", "enforcement": [{"tier": "process", "mechanism": "test review per WP"}, {"tier": "automated_later", "mechanism": "boundary tests run real implementations (P5+)"}]}
+  ],
+  "dod": {
+    "id": "DOD-STD",
+    "items": [
+      "Contract satisfied: every touched semantic maps to contracts/v1",
+      "Business invariants preserved (INV-01..INV-17 reviewed where relevant)",
+      "No unauthorized new semantics invented locally",
+      "Security reviewed with threat-model delta where applicable",
+      "Privacy classification handled for new fields/flows",
+      "Tests added or updated for new behavior",
+      "Semantic conformance green (contract validator + program validator)",
+      "No duplicated canonical logic introduced",
+      "No new orphan/dead code; no undocumented flags",
+      "Architecture boundaries respected (doc 23 layer map)",
+      "Accessibility checked for UI changes",
+      "Performance regression checked against budgets once they exist",
+      "Observability included for material operations once platform exists",
+      "Failure/degraded behavior handled, not just happy path",
+      "Docs/ADR updated if decisions were made",
+      "Migration/rollback handled when persistence or API shape changed"
+    ]
+  },
+  "feature_flag_schema": {
+    "required_keys": ["name", "owner", "created_at", "purpose", "removal_condition", "review_date"],
+    "rule": "Permanent flags are forbidden; missing metadata fails validation."
+  }
+}

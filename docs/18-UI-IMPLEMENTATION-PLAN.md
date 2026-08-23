@@ -12,7 +12,7 @@ fixture-driven application — every registered view model, journey, state, and 
 It answers one question: *what must exist on screen so that all V1 semantics from
 `contracts/v1/` are representable, coherent, and testable end-to-end?*
 
-This is not a throwaway expansion of `validation/prototype-v3`. It is the
+This is not a throwaway expansion of `docs/validation/prototype-v3`. It is the
 **reference front-end implementation**: the canonical projection of contract semantics into
 interface, which a production stack later re-implements without redesigning semantics.
 
@@ -30,7 +30,7 @@ interface, which a production stack later re-implements without redesigning sema
 | Asset | State |
 |---|---|
 | `contracts/v1/` | VALID: 74 entities, 14 state machines, 91 actions, 26 capabilities, 23 policies, 13 view models, 10 journeys, 33 conformance cases |
-| `validation/prototype-v3/` | Core loop complete: Briefing → Detail → Explore → Pursue → stage-aware Workspace (5 stages); 20/20 smoke checks; cross-surface assertion projection proven |
+| `docs/validation/prototype-v3/` | Core loop complete: Briefing → Detail → Explore → Pursue → stage-aware Workspace (5 stages); 20/20 smoke checks; cross-surface assertion projection proven |
 | Interaction grammar | Pass / Watch / Explore / Pursue + Priority implemented for the core loop |
 
 The prototype proves the category-defining loop. This plan covers everything around it.
@@ -59,7 +59,7 @@ web/
 │   ├── people/             # deterministic personas per journey scenario
 │   └── scenarios/          # one fixture set per canonical journey/stage
 ├── tests/
-│   └── smoke.mjs           # CDP harness (same pattern as validation/browser_harness_v3.py)
+│   └── smoke.mjs           # CDP harness (same pattern as docs/validation/browser_harness_v3.py)
 └── README.md
 ```
 
@@ -252,7 +252,7 @@ Deliverables:
 2. Research instrumentation parity: event log + assertion snapshot exposure equivalent to
    `window.__scopeCareer*` conventions; scenario deep-links (`?scenario=`, `?stage=`) for
    moderated sessions.
-3. Update `validation/` kit: new session scenarios may use `web/` once parity is proven;
+3. Update `docs/validation/` kit: new session scenarios may use `web/` once parity is proven;
    keep prototype-v3 frozen as the validated baseline.
 4. `web/README.md`: run instructions, screen inventory, invariant-check map, known gaps.
 5. Handoff note in `docs/13-DELIVERY-DECOMPOSITION-BACKLOG.md`: which UI contracts are now

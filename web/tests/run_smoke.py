@@ -46,7 +46,7 @@ def browser_session():
 
 def main():
     env=os.environ.copy();env['SCOPECAREER_CDP_TARGET']=str(TARGET)
-    report=ROOT/'validation/web_smoke_report.json'
+    report=ROOT/'docs/validation/web_smoke_report.json'
     env['SCOPECAREER_WEB_REPORT']=str(report)
     with browser_session():
         result=subprocess.run(['node','web/tests/smoke.mjs'],cwd=ROOT,text=True,capture_output=True,env=env)

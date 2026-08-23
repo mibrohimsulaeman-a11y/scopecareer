@@ -62,7 +62,7 @@ These are projections over canonical domains, not new domain objects.
 From `Documents/KnowledgeHub/ScopeCareer`:
 
 ```bash
-python3 -m http.server 8765 --directory validation/prototype-v3
+python3 -m http.server 8765 --directory docs/validation/prototype-v3
 ```
 
 Open:
@@ -104,9 +104,9 @@ These are research instrumentation only, not production telemetry/API contracts.
 ## Run automated gate
 
 ```bash
-python3 validation/browser_harness_v3.py
+python3 docs/validation/browser_harness_v3.py
 python3 contracts/v1/validate_contracts.py
-python3 validation/validate_sessions.py
+python3 docs/validation/validate_sessions.py
 ```
 
 V3 smoke currently verifies **20** behavior/semantic checks, including:
@@ -155,5 +155,5 @@ Those claims require real ICP evidence.
 - actual session records: **0**;
 - use `participant_screener.md` and `recruitment_outreach.md` for recruitment;
 - store one anonymous record per completed session as `sessions/PV1-Pxx.json`;
-- run `python3 validation/validate_sessions.py` before synthesis;
+- run `python3 docs/validation/validate_sessions.py` before synthesis;
 - do not report hypothesis support from screenshots, smoke tests, moderator intuition, or synthetic participants.

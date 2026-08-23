@@ -7,6 +7,7 @@ Last updated: 2026-08-21
 
 - [ ] Use `participant_screener.md`.
 - [ ] Recruit 6–8 participants with the intended seniority/function mix.
+- [ ] Track every person in `participant_pipeline.json` (`docs/validation/validate_sessions.py` validates it); move each participant `sourced → screened → scheduled → completed/excluded`; link `session_file` only at completion.
 - [ ] Assign anonymous participant IDs (`PV1-P01`, `PV1-P02`, ...).
 - [ ] Never store participant name/email in research session JSON.
 - [ ] Keep recruitment/contact details outside research evidence files.
@@ -14,7 +15,7 @@ Last updated: 2026-08-21
 ## Before each session
 
 - [ ] Run `python3 contracts/v1/validate_contracts.py`.
-- [ ] Run `python3 validation/browser_harness_v3.py`.
+- [ ] Run `python3 docs/validation/browser_harness_v3.py`.
 - [ ] Confirm prototype uses fictional fixtures.
 - [ ] Open prototype without `?research=1` for participant-facing view.
 - [ ] Prepare moderator notes separately.
@@ -36,7 +37,7 @@ Last updated: 2026-08-21
 ## After each session
 
 - [ ] Create one JSON record using `session_record.schema.json`.
-- [ ] Run `python3 validation/validate_sessions.py`.
+- [ ] Run `python3 docs/validation/validate_sessions.py`.
 - [ ] Mark every P0 hypothesis `supported`, `mixed`, `contradicted`, or `not_tested`.
 - [ ] Record contradictions even when they conflict with product intent.
 - [ ] Store no real names in session records.

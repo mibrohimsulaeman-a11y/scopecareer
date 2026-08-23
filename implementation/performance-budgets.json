@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "updated": "2026-08-23",
+  "authority": "docs/27-PERFORMANCE-RELIABILITY-AND-SLO.md",
+  "rule": "Baselines are measured at GATE-P3, never invented earlier. baseline==null requires baseline_set_at=='P3'; a non-null baseline requires baseline_set_at of P3 or later.",
+  "ratchet_policy": {
+    "statement": "A change may not make any measured critical path materially worse without an explicit, registered performance exception.",
+    "exception_process": "Exception record with owner, reason, threshold definition, and review/expiry date; tracked like feature-flag metadata."
+  },
+  "categories": [
+    {"surface": "Web/PWA", "metrics": [{"name": "core_web_vitals", "definition": "LCP, INP, CLS per route class"}, {"name": "initial_bundle", "definition": "compressed JS+CSS shipped on cold load"}, {"name": "interaction_latency", "definition": "input to visible response on primary actions"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "API", "metrics": [{"name": "latency_percentiles", "definition": "p50/p95/p99 per endpoint class (read, mutation, projection)"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "Database", "metrics": [{"name": "query_count", "definition": "queries per request by class"}, {"name": "slow_query_threshold", "definition": "violations above ratified threshold"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "Search", "metrics": [{"name": "query_latency", "definition": "p95 search round-trip"}, {"name": "index_freshness", "definition": "lag from source mutation to searchable"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "AI", "metrics": [{"name": "ttft", "definition": "time-to-first-token per function class"}, {"name": "complete_response", "definition": "total latency per function class"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "Research", "metrics": [{"name": "e2e_task_latency", "definition": "bounded research operation end-to-end duration"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "Queue", "metrics": [{"name": "scheduling_delay", "definition": "enqueue to start"}, {"name": "backlog_age", "definition": "oldest pending job age"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "MCP", "metrics": [{"name": "tool_call_latency", "definition": "p95 per tool"}, {"name": "output_size_ceiling", "definition": "enforced max payload per tool"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "Extension", "metrics": [{"name": "capture_overhead", "definition": "added load-time cost to host pages"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "Background jobs", "metrics": [{"name": "throughput", "definition": "jobs completed per minute per worker class"}], "baseline": null, "baseline_set_at": "P3"},
+    {"surface": "Cost", "metrics": [{"name": "cost_per_user", "definition": "infrastructure + AI cost per active user / month"}, {"name": "cost_per_intelligence_operation", "definition": "cost per research/assessment/recommendation operation"}], "baseline": null, "baseline_set_at": "P3"}
+  ]
+}

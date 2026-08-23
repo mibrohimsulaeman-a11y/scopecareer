@@ -17,7 +17,7 @@ python3 web/tests/run_smoke.py     # full suite (must be green)
 python3 -m http.server 8800        # then open http://127.0.0.1:8800/web/
 ```
 
-Self-check URL: `/web/?selfcheck=1` (writes `validation/web_smoke_report.json`).
+Self-check URL: `/web/?selfcheck=1` (writes `docs/validation/web_smoke_report.json`).
 Probe URL without selfcheck: `/web/`.
 
 ## Screen inventory (route → view model)

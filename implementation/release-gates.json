@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "updated": "2026-08-23",
+  "authority": "docs/29-RELEASE-OPERATIONS-AND-GA-GATES.md",
+  "environments_ordered": ["local", "ci", "ephemeral_test", "integration", "staging", "production_candidate", "canary", "ga"],
+  "rule_no_skip": "Every promotion passes its named gate; hotfixes accelerate through the same ladder, never around it.",
+  "required_artifacts": [
+    {"artifact": "infrastructure_as_code", "rule": "all environments reproducible from code; no console-only changes"},
+    {"artifact": "immutable_build_artifact", "rule": "build once, promote the same artifact through every stage"},
+    {"artifact": "sbom_provenance", "rule": "attached from P5 onward"},
+    {"artifact": "secret_management", "rule": "managed store with rotation; zero secrets in repo/config/images"},
+    {"artifact": "migration_set", "rule": "versioned, tested up+down, backward-compatible within a release window"},
+    {"artifact": "backup_snapshot", "rule": "automated + monitored; restore drill on cadence"},
+    {"artifact": "rollback_plan", "rule": "tested per release; release without tested rollback is NOT releasable"},
+    {"artifact": "feature_flag_manifest", "rule": "governed metadata per doc 22 schema"},
+    {"artifact": "observability_bundle", "rule": "tracing, metrics, structured logging, alerting wired before first production user"},
+    {"artifact": "release_notes_runbook", "rule": "what changed, how to verify, how to roll back"}
+  ],
+  "rollback_drill": {
+    "cadence": "every release window",
+    "required_for": ["staging", "production_candidate"]
+  },
+  "gates": [
+    {"id": "GATE-P12", "phase": "P12", "criteria": ["doc 26 verification classes green on candidate artifact", "security review complete", "performance ratchets holding"]},
+    {"id": "GATE-P13", "phase": "P13", "criteria": ["real ICP users on production telemetry for defined period", "incident process exercised", "beta acceptance criteria met"]},
+    {"id": "GATE-P14", "phase": "P14", "criteria": ["legal/compliance closed or accepted in register (GDPR, India privacy, retention, subprocessors)", "SLOs published", "backup/restore drill passed", "incident response staffed", "canary stages + abort criteria approved"]}
+  ],
+  "canary": {
+    "abort_criteria": ["error-rate threshold breach", "SLO burn-rate breach", "cost anomaly"],
+    "exposure": "progressive via governed feature flags only"
+  }
+}

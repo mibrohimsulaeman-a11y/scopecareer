@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "updated": "2026-08-23",
+  "authority": "docs/24-SECURITY-PRIVACY-THREAT-MODEL.md",
+  "standards": {
+    "sdlc_baseline": "NIST SSDF v1.1 (SP 800-218, final 2022-02)",
+    "ai_profile": "NIST SP 800-218A SSDF Community Profile for Generative AI and Dual-Use Foundation Models (final 2024-07)",
+    "tracked_draft": "SSDF v1.2 (SP 800-218r1 initial public draft, 2025-12) - tracked, never claimed final",
+    "accessibility_target": "WCAG 2.2 AA (W3C Recommendation)"
+  },
+  "ssdf_id_format": "<GROUP>.<practice> with GROUP in PO|PS|PW|RV",
+  "control_families": [
+    {"id": "SEC-FAM-01", "name": "Governance & security requirements", "ssdf_refs": ["PO.1", "PO.2"], "applies_phases": ["P0", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14"], "invariants": ["INV-10"], "controls": ["security requirements derived from threat catalog per feature", "roles/responsibilities recorded per work package brief"]},
+    {"id": "SEC-FAM-02", "name": "Toolchain & environment security", "ssdf_refs": ["PO.3", "PO.5"], "applies_phases": ["P3", "P4", "P5"], "invariants": ["INV-10"], "controls": ["pinned toolchains", "environment hardening baseline", "CI isolation"]},
+    {"id": "SEC-FAM-03", "name": "Component integrity & provenance", "ssdf_refs": ["PW.4", "PS.2", "PS.3"], "applies_phases": ["P4", "P5"], "invariants": ["INV-09"], "controls": ["SBOM per artifact", "build provenance attestation", "dependency pinning + update review"]},
+    {"id": "SEC-FAM-04", "name": "Secure design & threat modeling", "ssdf_refs": ["PW.1", "PW.2"], "applies_phases": ["P3", "P4", "P5"], "invariants": ["INV-10"], "controls": ["STRIDE-per-service template", "abuse-case minimum set from doc 24", "design review gate"]},
+    {"id": "SEC-FAM-05", "name": "Secure implementation & verification", "ssdf_refs": ["PW.5", "PW.6", "PW.7", "PW.8"], "applies_phases": ["P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12"], "invariants": ["INV-17"], "controls": ["secure coding standards per language", "code review with invariant checklist", "security test class in doc 26 taxonomy"]},
+    {"id": "SEC-FAM-06", "name": "Identity, AuthZ & secrets", "ssdf_refs": [], "applies_phases": ["P5"], "invariants": ["INV-03", "INV-10", "INV-11"], "controls": ["deny-by-default policy engine", "purpose-scoped access", "managed secret store with rotation; no secrets in repo/config/images"]},
+    {"id": "SEC-FAM-07", "name": "Vulnerability response", "ssdf_refs": ["RV.1", "RV.2"], "applies_phases": ["P5", "P12", "P13", "P14"], "invariants": ["INV-14"], "controls": ["vulnerability intake and SLA ladder", "postmortem discipline feeding the decision register"]},
+    {"id": "SEC-FAM-08", "name": "AI-specific secure development", "ssdf_refs": ["profile:800-218A"], "applies_phases": ["P10", "P11"], "invariants": ["INV-06", "INV-07"], "controls": ["model/weights/pipeline protection", "prompt-injection defenses tested adversarially", "AI commit-authority absence enforced by eval hard-failures"]}
+  ],
+  "threat_catalog_ref": "docs/24 T-01..T-10",
+  "trust_planes": {
+    "candidate": "private candidate data plane",
+    "talent": "separate program plane (D-014); never searchable across planes"
+  }
+}
