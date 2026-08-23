@@ -4,5 +4,6 @@ __pycache__/
 node_modules/
 .DS_Store
 *.log
+.kilo/
 docs/validation/screenshots/
 docs/validation/artifacts/
