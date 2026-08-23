@@ -23,3 +23,12 @@ jobs:
         run: python3 implementation/validate_program.py --scan-clients
       - name: PV-1 session evidence pipeline
         run: python3 docs/validation/validate_sessions.py
+
+  browser-suites:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reference UI behavioral smoke (121 checks)
+        run: python3 web/tests/run_smoke.py
+      - name: PV-1 prototype harness V3 (20 checks)
+        run: python3 docs/validation/browser_harness_v3.py
