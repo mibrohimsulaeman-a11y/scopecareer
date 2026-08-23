@@ -1,1 +1,29 @@
-{"version": "1.0", "updated": "2026-08-23", "authority": "docs/validation/README.md + docs/21-IMPLEMENTATION-MASTER-PROGRAM.md (P1)", "purpose": "Operational recruitment/pipeline tracker for Product Validation-1 moderated ICP sessions. One entry per real person, anonymized reference id only. Target: 6-8 completed sessions.", "stages": ["sourced", "screened", "scheduled", "completed", "excluded"], "participants": []}
+{
+  "version": "1.1",
+  "updated": "2026-08-24",
+  "authority": "docs/validation/README.md + docs/21-IMPLEMENTATION-MASTER-PROGRAM.md (P1)",
+  "purpose": "Operational recruitment/pipeline tracker for Product Validation-1 moderated ICP sessions. One entry per real person, anonymized reference id only. Target: 6-8 completed sessions.",
+  "stages": ["sourced", "screened", "scheduled", "completed", "excluded"],
+  "participants": [],
+  "targets": {
+    "completed_min": 6,
+    "completed_max": 8,
+    "sourced_min_start": 24,
+    "rationale": "Cold executive outreach converts low; plan roughly 3x sourced vs completed target so one channel underperforming does not stall the gate.",
+    "mix_requirements": [
+      ">=4 participants with a senior-level transition in the last 3 years",
+      ">=3 participants with recruiter or executive-search-consultant interaction",
+      ">=2 participants who considered confidential/non-public opportunities",
+      "mix of currently employed and actively searching participants",
+      "do not recruit only highly technical AI enthusiasts"
+    ],
+    "stage_allocation_counterbalance": {
+      "PV1-P01": "recruiter", "PV1-P02": "recruiter",
+      "PV1-P03": "selection", "PV1-P04": "selection",
+      "PV1-P05": "final", "PV1-P06": "offer",
+      "PV1-P07": "repeat highest-uncertainty stage from P01-P06",
+      "PV1-P08": "repeat highest-uncertainty stage from P01-P06"
+    },
+    "review_cadence": "Check funnel weekly; if sourced < 12 after week one, widen channels before screening further."
+  }
+}

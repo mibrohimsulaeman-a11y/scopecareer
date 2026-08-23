@@ -65,7 +65,7 @@
     "researchOpen": true,
     "pursueCta": "Open pursuit workspace",
     "event": {
-      "t_ms": 581,
+      "t_ms": 424,
       "type": "disposition_changed",
       "opportunity_id": "opp_apac_vpt_01",
       "to": "exploring",
@@ -75,7 +75,7 @@
     "external": 0
   },
   "evidenceBound": {
-    "t_ms": 664,
+    "t_ms": 522,
     "type": "evidence_bound",
     "opportunity_id": "opp_apac_vpt_01",
     "evidence_ids": [
@@ -98,7 +98,7 @@
     "working": "Pre-contactWorking briefOne working file for this live opportunity.Next moveConfirm strategy ownership before asking Sarah for an introduction.The warm route is useful only if the role is worth network capital.Prepare questionsCurrent pictureScopeAPAC remitReporting lineCEO · confirmedTeam~180 · estimateHighest-impact unknownStrategy ownershipRouteSarah Tan · former colleagueOpen questionsStrategy ownershipNot confirmedNo direct evidenceOpenHigh impactP&L ownershipNot knownNo direct evidenceOpenMedium impactCompensationNot disclosedNo credible rangeOpenMedium impactReady to useCareer evidence3 relevantPositioning briefNot preparedResume variantNot preparedRecent activity22 AugReporting line confirmed: CEO21 AugRole page captured20 AugRecruiter note added",
     "rail": "StagePre-contactNext moveConfirm strategy ownership before asking Sarah for an introduction.Decision stateCandidateActiveSearchOpenSelectionNot startedConfidentialityPrivate opportunity workspace. No outreach, application, or sharing occurs automatically.",
     "event": {
-      "t_ms": 685,
+      "t_ms": 546,
       "type": "disposition_changed",
       "opportunity_id": "opp_apac_vpt_01",
       "to": "pursuing",
