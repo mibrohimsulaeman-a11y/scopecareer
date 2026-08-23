@@ -1,0 +1,2279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "registry_id": "REG-MCP-CANDIDATE-SCHEMA-V1",
+  "version": "1.0.0-draft",
+  "rules": [
+    "schemas define transport shape; canonical semantics remain entity/action/policy contracts",
+    "additional properties are denied unless explicitly allowed",
+    "external-effect absence is explicit where consequential"
+  ],
+  "tools": {
+    "career.get_context": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          },
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "requested_dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "purpose"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidate_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "career_intent_version": {
+            "type": "string"
+          },
+          "career_claim_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "career_object_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "assertions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "subject_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "predicate": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {},
+                "epistemic_status": {
+                  "type": "string",
+                  "enum": [
+                    "unknown",
+                    "needs_research",
+                    "inferred",
+                    "known"
+                  ]
+                },
+                "observation_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "source_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "moderate",
+                    "high"
+                  ]
+                },
+                "sensitivity": {
+                  "type": "string",
+                  "enum": [
+                    "public",
+                    "career_internal",
+                    "sensitive",
+                    "highly_confidential"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "subject_ref",
+                "predicate",
+                "epistemic_status",
+                "observation_refs",
+                "source_refs"
+              ]
+            }
+          },
+          "restrictions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "unknowns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "research_question": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "reason"
+              ]
+            }
+          },
+          "context_revision": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "purpose",
+          "candidate_ref",
+          "career_claim_refs",
+          "career_object_refs",
+          "assertions",
+          "restrictions",
+          "unknowns",
+          "context_revision"
+        ]
+      }
+    },
+    "career.review_strategy": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "time_window": {
+            "type": "string"
+          },
+          "hypothesis": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "signals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "signal_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "statement": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sample_size": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "time_window": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "context": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "moderate",
+                    "high"
+                  ]
+                },
+                "supporting_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "statement",
+                "sample_size",
+                "time_window",
+                "context",
+                "confidence",
+                "supporting_refs"
+              ]
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "signals",
+          "limitations",
+          "generated_at"
+        ]
+      }
+    },
+    "career.bind_evidence": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role_mandate_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mandate_fragment": {
+            "type": "string",
+            "minLength": 1
+          },
+          "career_claim_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "career_object_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "role_mandate_ref",
+          "mandate_fragment",
+          "career_claim_refs"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "binding_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role_mandate_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "career_claim_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "career_object_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "evidence_status_unchanged": {
+            "const": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "binding_id",
+          "opportunity_id",
+          "role_mandate_ref",
+          "career_claim_refs",
+          "evidence_status_unchanged",
+          "created_at"
+        ]
+      }
+    },
+    "market.discover_targets": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "intent_scope": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "company_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "rationale": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1
+                },
+                "signal_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "assertion_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "moderate",
+                    "high"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "company_ref",
+                "rationale",
+                "signal_refs",
+                "assertion_refs",
+                "confidence"
+              ]
+            }
+          },
+          "unknowns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "research_question": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "reason"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "targets",
+          "unknowns"
+        ]
+      }
+    },
+    "market.research": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "subject_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "research_questions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "subject_ref"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "subject_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "assertion_proposals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "subject_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "predicate": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {},
+                "epistemic_status": {
+                  "type": "string",
+                  "enum": [
+                    "unknown",
+                    "needs_research",
+                    "inferred",
+                    "known"
+                  ]
+                },
+                "observation_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "source_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "moderate",
+                    "high"
+                  ]
+                },
+                "sensitivity": {
+                  "type": "string",
+                  "enum": [
+                    "public",
+                    "career_internal",
+                    "sensitive",
+                    "highly_confidential"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "subject_ref",
+                "predicate",
+                "epistemic_status",
+                "observation_refs",
+                "source_refs"
+              ]
+            }
+          },
+          "market_signal_proposals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "signal_type": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "observation_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "assertion_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "signal_type",
+                "observation_refs",
+                "assertion_refs"
+              ]
+            }
+          },
+          "unknowns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "research_question": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "reason"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "subject_ref",
+          "observation_refs",
+          "assertion_proposals",
+          "market_signal_proposals",
+          "unknowns"
+        ]
+      }
+    },
+    "market.create_watch": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "watch_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "criteria": {
+            "type": "object"
+          },
+          "frequency_policy": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "watch_type",
+          "criteria",
+          "frequency_policy"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "watch_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "state": {
+            "const": "active"
+          },
+          "watch_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "criteria": {
+            "type": "object"
+          },
+          "frequency_policy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "watch_id",
+          "state",
+          "watch_type",
+          "criteria",
+          "frequency_policy",
+          "created_at"
+        ]
+      }
+    },
+    "opportunity.discover": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "intent_scope": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "include_confidential_manual": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "opportunities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "opportunity_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "role_label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "company_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "disposition": {
+                  "type": "string",
+                  "enum": [
+                    "discovered",
+                    "passed",
+                    "watching",
+                    "exploring",
+                    "pursuing",
+                    "closed"
+                  ]
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": [
+                    "inactive",
+                    "active"
+                  ]
+                },
+                "search_state": {
+                  "type": "string",
+                  "enum": [
+                    "hypothesis",
+                    "open",
+                    "recruiting",
+                    "paused",
+                    "filled",
+                    "cancelled",
+                    "unknown"
+                  ]
+                },
+                "selection_state": {
+                  "type": "string",
+                  "enum": [
+                    "not_started",
+                    "contacted",
+                    "applied",
+                    "recruiter_screen",
+                    "interview",
+                    "final",
+                    "reference",
+                    "offer",
+                    "closed"
+                  ]
+                },
+                "why_surfaced": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "top_upside": {
+                  "type": "string"
+                },
+                "top_concern": {
+                  "type": "string"
+                },
+                "trust_band": {
+                  "type": "string",
+                  "enum": [
+                    "high",
+                    "moderate",
+                    "unresolved",
+                    "elevated_risk"
+                  ]
+                },
+                "access_summary": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "opportunity_id",
+                "role_label",
+                "disposition",
+                "priority",
+                "search_state",
+                "selection_state",
+                "why_surfaced"
+              ]
+            }
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunities",
+          "generated_at"
+        ]
+      }
+    },
+    "opportunity.capture": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "source_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "pasted_text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "confidential": {
+            "type": "boolean"
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "source_url"
+            ]
+          },
+          {
+            "required": [
+              "pasted_text"
+            ]
+          },
+          {
+            "required": [
+              "source_ref"
+            ]
+          }
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "source_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidate_disposition": {
+            "const": "discovered"
+          },
+          "assertion_proposals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "subject_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "predicate": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {},
+                "epistemic_status": {
+                  "type": "string",
+                  "enum": [
+                    "unknown",
+                    "needs_research",
+                    "inferred",
+                    "known"
+                  ]
+                },
+                "observation_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "source_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "moderate",
+                    "high"
+                  ]
+                },
+                "sensitivity": {
+                  "type": "string",
+                  "enum": [
+                    "public",
+                    "career_internal",
+                    "sensitive",
+                    "highly_confidential"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "subject_ref",
+                "predicate",
+                "epistemic_status",
+                "observation_refs",
+                "source_refs"
+              ]
+            }
+          },
+          "confidential": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "source_ref",
+          "observation_refs",
+          "opportunity_id",
+          "candidate_disposition",
+          "assertion_proposals",
+          "confidential"
+        ]
+      }
+    },
+    "opportunity.research": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "assertion_proposals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "subject_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "predicate": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {},
+                "epistemic_status": {
+                  "type": "string",
+                  "enum": [
+                    "unknown",
+                    "needs_research",
+                    "inferred",
+                    "known"
+                  ]
+                },
+                "observation_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "source_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "moderate",
+                    "high"
+                  ]
+                },
+                "sensitivity": {
+                  "type": "string",
+                  "enum": [
+                    "public",
+                    "career_internal",
+                    "sensitive",
+                    "highly_confidential"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "subject_ref",
+                "predicate",
+                "epistemic_status",
+                "observation_refs",
+                "source_refs"
+              ]
+            }
+          },
+          "open_questions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "research_question": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "reason"
+              ]
+            }
+          },
+          "research_snapshot_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "observation_refs",
+          "assertion_proposals",
+          "open_questions",
+          "research_snapshot_ref"
+        ]
+      }
+    },
+    "opportunity.check_trust": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assessment_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_snapshot_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "trust_band": {
+            "type": "string",
+            "enum": [
+              "high",
+              "moderate",
+              "unresolved",
+              "elevated_risk"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "risk_signals": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "unresolved_risks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "research_question": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "reason"
+              ]
+            }
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "moderate",
+              "high"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "assessment_id",
+          "input_snapshot_ref",
+          "trust_band",
+          "evidence_refs",
+          "risk_signals",
+          "unresolved_risks",
+          "confidence",
+          "created_at"
+        ]
+      }
+    },
+    "opportunity.assess_pursuit": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "force_refresh": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_snapshot_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fit_assessment_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "quality_assessment_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "transition_assessment_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "access_plan_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pursuit_assessment_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recommendation_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recommendation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "concerns": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "unknowns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "research_question": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "reason"
+              ]
+            }
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "moderate",
+              "high"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "input_snapshot_ref",
+          "fit_assessment_ref",
+          "quality_assessment_ref",
+          "transition_assessment_ref",
+          "pursuit_assessment_ref",
+          "recommendation_ref",
+          "recommendation",
+          "reasons",
+          "concerns",
+          "unknowns",
+          "confidence",
+          "created_at"
+        ]
+      }
+    },
+    "access.plan": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "allowed_relationship_scope": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "access_plan_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_snapshot_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "route_assessments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "route_type": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "viability": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "relationship_assessment_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "unknowns": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "research_question": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "label",
+                      "reason"
+                    ]
+                  }
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "moderate",
+                    "high"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "route_type",
+                "viability",
+                "relationship_assessment_refs",
+                "evidence_refs",
+                "unknowns",
+                "confidence"
+              ]
+            }
+          },
+          "recommended_route": {
+            "type": "string",
+            "minLength": 1
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "moderate",
+              "high"
+            ]
+          },
+          "unknowns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "research_question": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "reason"
+              ]
+            }
+          },
+          "no_external_outreach": {
+            "const": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "access_plan_id",
+          "input_snapshot_ref",
+          "route_assessments",
+          "recommended_route",
+          "confidence",
+          "unknowns",
+          "no_external_outreach",
+          "created_at"
+        ]
+      }
+    },
+    "positioning.prepare": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "purpose"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "proposal": {
+            "type": "object",
+            "properties": {
+              "narrative": {
+                "type": "string",
+                "minLength": 1
+              },
+              "strengths": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "anticipated_concerns": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "unknowns": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "research_question": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "label",
+                    "reason"
+                  ]
+                }
+              },
+              "evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "career_claim_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "usage_permission_checks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "claim_ref": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "purpose": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "allowed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "claim_ref",
+                    "purpose",
+                    "allowed"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "narrative",
+              "strengths",
+              "anticipated_concerns",
+              "unknowns",
+              "evidence_refs",
+              "career_claim_refs",
+              "usage_permission_checks"
+            ],
+            "additionalProperties": false
+          },
+          "proposal_only": {
+            "const": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "proposal",
+          "proposal_only"
+        ]
+      }
+    },
+    "resume.prepare_variant": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "base_resume_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "resume_variant_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "state": {
+            "const": "draft"
+          },
+          "change_proposals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "change_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "original_text": {
+                  "type": "string"
+                },
+                "proposed_text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "career_claim_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "interpretation_status": {
+                  "type": "string",
+                  "enum": [
+                    "fact",
+                    "inference",
+                    "suggested_wording"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "change_id",
+                "proposed_text",
+                "reason",
+                "career_claim_refs",
+                "evidence_refs",
+                "interpretation_status"
+              ]
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "no_external_share": {
+            "const": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "resume_variant_id",
+          "state",
+          "change_proposals",
+          "evidence_refs",
+          "no_external_share"
+        ]
+      }
+    },
+    "selection.prepare": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stage_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "participant_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "preparation_brief_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stage_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "participant_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "agenda_hypotheses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "statement": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "moderate",
+                    "high"
+                  ]
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "statement",
+                "confidence",
+                "evidence_refs"
+              ]
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "open_questions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "research_question": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "reason"
+              ]
+            }
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "moderate",
+              "high"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "preparation_brief_id",
+          "agenda_hypotheses",
+          "evidence_refs",
+          "open_questions",
+          "confidence"
+        ]
+      }
+    },
+    "interaction.debrief": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "interaction_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "interaction_type",
+          "content"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "debrief_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "assertion_proposals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "subject_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "predicate": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {},
+                "epistemic_status": {
+                  "type": "string",
+                  "enum": [
+                    "unknown",
+                    "needs_research",
+                    "inferred",
+                    "known"
+                  ]
+                },
+                "observation_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "source_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "moderate",
+                    "high"
+                  ]
+                },
+                "sensitivity": {
+                  "type": "string",
+                  "enum": [
+                    "public",
+                    "career_internal",
+                    "sensitive",
+                    "highly_confidential"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "subject_ref",
+                "predicate",
+                "epistemic_status",
+                "observation_refs",
+                "source_refs"
+              ]
+            }
+          },
+          "commitment_proposals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "owner_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "due_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "description"
+              ]
+            }
+          },
+          "open_question_proposals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "research_question": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "reason"
+              ]
+            }
+          },
+          "candidate_review_required": {
+            "const": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "debrief_id",
+          "observation_refs",
+          "assertion_proposals",
+          "commitment_proposals",
+          "open_question_proposals",
+          "candidate_review_required"
+        ]
+      }
+    },
+    "opportunity.set_disposition": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "disposition": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "watching",
+              "exploring",
+              "pursuing",
+              "closed"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "disposition"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "receipt": {
+            "type": "object",
+            "properties": {
+              "entity_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "state_machine": {
+                "type": "string",
+                "minLength": 1
+              },
+              "from_state": {
+                "type": "string"
+              },
+              "to_state": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "recorded_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "entity_ref",
+              "state_machine",
+              "to_state",
+              "action_id",
+              "recorded_at"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "receipt"
+        ]
+      }
+    },
+    "opportunity.set_priority": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "opportunity_id",
+          "active"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "receipt": {
+            "type": "object",
+            "properties": {
+              "entity_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "state_machine": {
+                "type": "string",
+                "minLength": 1
+              },
+              "from_state": {
+                "type": "string"
+              },
+              "to_state": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "recorded_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "entity_ref",
+              "state_machine",
+              "to_state",
+              "action_id",
+              "recorded_at"
+            ]
+          },
+          "active_priority_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "policy_max_active": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "receipt",
+          "active_priority_count",
+          "policy_max_active"
+        ]
+      }
+    },
+    "selection.update_state": {
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "selection_state": {
+            "type": "string",
+            "enum": [
+              "contacted",
+              "applied",
+              "recruiter_screen",
+              "interview",
+              "final",
+              "reference",
+              "offer",
+              "closed"
+            ]
+          },
+          "basis_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "opportunity_id",
+          "selection_state"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "selection_state": {
+                  "const": "applied"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "basis_ref"
+              ]
+            }
+          }
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "receipt": {
+            "type": "object",
+            "properties": {
+              "entity_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "state_machine": {
+                "type": "string",
+                "minLength": 1
+              },
+              "from_state": {
+                "type": "string"
+              },
+              "to_state": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "recorded_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "entity_ref",
+              "state_machine",
+              "to_state",
+              "action_id",
+              "recorded_at"
+            ]
+          },
+          "external_effect_performed": {
+            "const": false
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "receipt",
+          "external_effect_performed"
+        ]
+      }
+    }
+  }
+}

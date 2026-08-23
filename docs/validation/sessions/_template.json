@@ -1,0 +1,40 @@
+{
+  "session_id": "PV1-P01",
+  "conducted_at": "2026-08-22T00:00:00+07:00",
+  "participant_segment": {
+    "seniority": "VP",
+    "function": "Technology",
+    "search_state": "quietly_exploring",
+    "recent_transition": true,
+    "recruiter_or_search_firm_experience": true,
+    "confidential_opportunity_experience": true,
+    "international_search_experience": true
+  },
+  "consent": {"research_participation": true, "recording": false},
+  "tasks": [
+    {"task_id": "attention", "completed": false, "time_to_first_action_seconds": null, "observations": [], "participant_quotes": [], "confusions": []},
+    {"task_id": "opportunity_compare", "completed": false, "time_to_first_action_seconds": null, "observations": [], "participant_quotes": [], "confusions": []},
+    {"task_id": "opportunity_dossier", "completed": false, "time_to_first_action_seconds": null, "observations": [], "participant_quotes": [], "confusions": []},
+    {"task_id": "explore_pursue", "completed": false, "time_to_first_action_seconds": null, "observations": [], "participant_quotes": [], "confusions": []},
+    {"task_id": "pursuit_workspace", "completed": false, "time_to_first_action_seconds": null, "observations": [], "participant_quotes": [], "confusions": []},
+    {"task_id": "access_plan", "completed": false, "time_to_first_action_seconds": null, "observations": [], "participant_quotes": [], "confusions": []},
+    {"task_id": "evidence_binding", "completed": false, "time_to_first_action_seconds": null, "observations": [], "participant_quotes": [], "confusions": []},
+    {"task_id": "stage_aware_workspace", "completed": false, "time_to_first_action_seconds": null, "observations": [], "participant_quotes": [], "confusions": []}
+  ],
+  "hypotheses": [
+    {"hypothesis_id": "PV-H01", "outcome": "not_tested", "evidence": [], "confidence": "low"},
+    {"hypothesis_id": "PV-H02", "outcome": "not_tested", "evidence": [], "confidence": "low"},
+    {"hypothesis_id": "PV-H03", "outcome": "not_tested", "evidence": [], "confidence": "low"},
+    {"hypothesis_id": "PV-H04", "outcome": "not_tested", "evidence": [], "confidence": "low"},
+    {"hypothesis_id": "PV-H05", "outcome": "not_tested", "evidence": [], "confidence": "low"},
+    {"hypothesis_id": "PV-H06", "outcome": "not_tested", "evidence": [], "confidence": "low"},
+    {"hypothesis_id": "PV-H07", "outcome": "not_tested", "evidence": [], "confidence": "low"},
+    {"hypothesis_id": "PV-H08", "outcome": "not_tested", "evidence": [], "confidence": "low"}
+  ],
+  "terminology_confusion": [],
+  "trust_concerns": [],
+  "missing_information": [],
+  "requested_features": [],
+  "spontaneous_value_statements": [],
+  "overall_notes": []
+}

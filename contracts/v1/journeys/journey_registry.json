@@ -1,0 +1,88 @@
+{
+  "registry_id": "REG-JOURNEY-V1",
+  "version": "1.0.0-draft",
+  "journeys": [
+    {
+      "id": "JRN-CAREER-EVIDENCE-ONBOARDING",
+      "name": "Career Evidence Onboarding",
+      "validation_priority": "P1",
+      "semantic_chain": ["ENT-SOURCE", "ENT-OBSERVATION", "ENT-CAREER-CLAIM", "ENT-CAREER-PROFILE"],
+      "allowed_user_actions": ["ACT-CAREER-CLAIM-REVIEW", "ACT-CAREER-CLAIM-ATTEST", "ACT-CAREER-CLAIM-REJECT"],
+      "success_signal": "candidate understands provenance/evidence/attestation distinctions without manually rebuilding a CV"
+    },
+    {
+      "id": "JRN-DAILY-SHORTLIST",
+      "name": "Daily Shortlist",
+      "validation_priority": "P0",
+      "entry": "what_deserves_attention_now",
+      "reads": ["ENT-OPPORTUNITY", "ENT-PURSUIT-RECOMMENDATION", "ENT-OPPORTUNITY-TRUST-ASSESSMENT", "ENT-ACCESS-PLAN", "ENT-ASSERTION"],
+      "allowed_user_actions": ["ACT-OPPORTUNITY-PASS", "ACT-OPPORTUNITY-WATCH", "ACT-OPPORTUNITY-EXPLORE"],
+      "success_signal": "executive can identify worthwhile attention without reading a dashboard or large job list"
+    },
+    {
+      "id": "JRN-EXPLORE-PURSUE",
+      "name": "Explore to Pursue",
+      "validation_priority": "P0",
+      "entry_state": {"machine":"SM-CANDIDATE-DISPOSITION","state":"exploring"},
+      "reads": ["ENT-ROLE-MANDATE", "ENT-FIT-ASSESSMENT", "ENT-QUALITY-ASSESSMENT", "ENT-TRANSITION-ASSESSMENT", "ENT-PURSUIT-RECOMMENDATION", "ENT-ACCESS-PLAN", "ENT-OPPORTUNITY-TRUST-ASSESSMENT"],
+      "exit_action": "ACT-OPPORTUNITY-PURSUE",
+      "success_signal": "user understands difference between interesting and worth serious career/network investment"
+    },
+    {
+      "id": "JRN-PURSUIT-RECOMMENDATION",
+      "name": "Pursuit Recommendation",
+      "validation_priority": "P0",
+      "semantic_chain": ["ENT-SOURCE", "ENT-OBSERVATION", "ENT-ASSERTION", "ENT-EVIDENCE-SNAPSHOT", "ENT-FIT-ASSESSMENT", "ENT-QUALITY-ASSESSMENT", "ENT-TRANSITION-ASSESSMENT", "ENT-ACCESS-PLAN", "ENT-PURSUIT-ASSESSMENT", "ENT-PURSUIT-RECOMMENDATION"],
+      "success_signal": "user trusts recommendation because reasons, concerns, unknowns, confidence and evidence are visible"
+    },
+    {
+      "id": "JRN-ACCESS-PLAN",
+      "name": "Access Plan",
+      "validation_priority": "P0",
+      "reads": ["ENT-RELATIONSHIP-EVIDENCE", "ENT-RELATIONSHIP-ASSESSMENT", "ENT-ACCESS-ROUTE-ASSESSMENT"],
+      "writes": ["ENT-ACCESS-PLAN"],
+      "success_signal": "user sees a credible route beyond direct apply without confusing relationship fact and recommendation"
+    },
+    {
+      "id": "JRN-EVIDENCE-BINDING",
+      "name": "Evidence Binding",
+      "validation_priority": "P0",
+      "reads": ["ENT-ROLE-MANDATE", "ENT-CAREER-CLAIM", "ENT-EMPLOYMENT-EPISODE", "ENT-LEADERSHIP-MANDATE", "ENT-ACHIEVEMENT"],
+      "writes": ["ENT-MANDATE-EVIDENCE-BINDING"],
+      "allowed_user_actions": ["ACT-MANDATE-EVIDENCE-BIND"],
+      "success_signal": "user can bind relevant career evidence to a mandate and understands downstream reuse"
+    },
+    {
+      "id": "JRN-BROWSER-CAPTURE",
+      "name": "Browser Capture",
+      "validation_priority": "P1",
+      "client": "CLI-BROWSER-EXTENSION",
+      "flow": ["ENT-SOURCE", "ENT-OBSERVATION", "ENT-OPPORTUNITY", "ENT-ASSERTION"],
+      "success_signal": "untrusted page becomes structured candidate data without page-derived authority"
+    },
+    {
+      "id": "JRN-DEBRIEF-LOOP",
+      "name": "Recruiter or Interview Debrief",
+      "validation_priority": "P1",
+      "semantic_chain": ["ENT-INTERACTION", "ENT-DEBRIEF", "ENT-OBSERVATION", "ENT-ASSERTION", "ENT-OPEN-QUESTION", "ENT-COMMITMENT"],
+      "allowed_user_actions": ["ACT-DEBRIEF-CAPTURE", "ACT-ASSERTION-COMMIT-INFERRED", "ACT-ASSERTION-COMMIT-KNOWN", "ACT-OPEN-QUESTION-ADD", "ACT-COMMITMENT-ADD"],
+      "success_signal": "candidate can turn a short debrief into reviewable intelligence without silently rewriting known facts"
+    },
+    {
+      "id": "JRN-OFFER-DECISION",
+      "name": "Offer Decision",
+      "validation_priority": "P2",
+      "reads": ["ENT-OFFER", "ENT-OFFER-COMPONENT", "ENT-DECISION-CRITERION", "ENT-PURSUIT-ASSESSMENT", "ENT-DECISION-BRIEF"],
+      "allowed_user_actions": ["ACT-OFFER-REVIEW", "ACT-OFFER-DECISION-PREPARE", "ACT-OFFER-INTENT-ACCEPT", "ACT-OFFER-INTENT-DECLINE"],
+      "success_signal": "candidate sees financial and career tradeoffs while preserving explicit human decision authority"
+    },
+    {
+      "id": "JRN-STRATEGY-REVIEW",
+      "name": "Career Strategy Review",
+      "validation_priority": "P2",
+      "semantic_chain": ["ENT-OUTCOME", "ENT-STRATEGY-SIGNAL", "ENT-STRATEGY-HYPOTHESIS", "ENT-STRATEGY-EXPERIMENT", "ENT-EXPERIMENT-OBSERVATION"],
+      "allowed_user_actions": ["ACT-STRATEGY-HYPOTHESIS-CREATE", "ACT-STRATEGY-EXPERIMENT-CREATE", "ACT-STRATEGY-EXPERIMENT-ACTIVATE"],
+      "success_signal": "candidate can distinguish preliminary signal from tested strategy conclusion"
+    }
+  ]
+}

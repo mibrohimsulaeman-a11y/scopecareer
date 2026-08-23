@@ -1,0 +1,40 @@
+{
+  "registry_id": "REG-CLIENT-V1",
+  "version": "1.0.0-draft",
+  "clients": [
+    {
+      "id": "CLI-WEB",
+      "type": "web",
+      "trust": "first_party",
+      "purpose": "Primary desktop intelligence workspace.",
+      "authority_model": "user action mapped to canonical actions; server decides",
+      "untrusted_content_ingestion": false
+    },
+    {
+      "id": "CLI-PWA",
+      "type": "pwa",
+      "trust": "first_party",
+      "purpose": "Responsive/mobile companion with canonical semantics.",
+      "authority_model": "user action mapped to canonical actions; server decides",
+      "untrusted_content_ingestion": false
+    },
+    {
+      "id": "CLI-BROWSER-EXTENSION",
+      "type": "browser_extension",
+      "trust": "first_party_code_untrusted_content",
+      "purpose": "Capture arbitrary external pages into Source/Observation and proposed Opportunity data.",
+      "authority_model": "data producer only; no page-derived authority",
+      "untrusted_content_ingestion": true,
+      "canonical_flow": ["untrusted_webpage", "capture_sandbox", "content_normalisation", "source_snapshot", "research_extraction_boundary", "proposed_opportunity", "validated_domain_mutation"],
+      "forbidden": ["execute_page_instructions_as_policy", "external_effect_from_page_content", "tool_authority_from_page_content"]
+    },
+    {
+      "id": "CLI-MCP-CANDIDATE",
+      "type": "mcp_host",
+      "trust": "external_host_authorized_principal",
+      "purpose": "Candidate-selected AI client reasoning over ScopeCareer.",
+      "authority_model": "server reauthorizes every resource/tool/action regardless of cached lists",
+      "untrusted_content_ingestion": true
+    }
+  ]
+}

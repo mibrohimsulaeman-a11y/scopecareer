@@ -1,0 +1,222 @@
+{
+  "checks": {
+    "briefingIsTemporalLedger": true,
+    "briefingProjectsCanonicalAssertion": true,
+    "opportunityDetailIsDecisionDossier": true,
+    "provenanceIsVisible": true,
+    "contextualResearchCta": true,
+    "exploreIsBoundedInternalResearch": true,
+    "evidenceBindingPreservesTruth": true,
+    "pursueActivatesWorkspaceOnly": true,
+    "workspaceHasStableFiveAreaIA": true,
+    "precontactIsNextMoveDriven": true,
+    "recruiterConversationIsStageAware": true,
+    "selectionIsStakeholderAware": true,
+    "finalRoundIsContextual": true,
+    "offerIsDecisionSurface": true,
+    "evidenceRevisionProjectsAcrossSurfaces": true,
+    "sameFactProjectsBriefDetailWorkspace": true,
+    "compareIsTradeoffNotWinner": true,
+    "shortlistMembershipIndependent": true,
+    "mobileUsesDedicatedListDetail": true,
+    "noRuntimeErrors": true
+  },
+  "failed": [],
+  "errors": [],
+  "briefing": {
+    "groups": [
+      "Now",
+      "Due today",
+      "Tomorrow"
+    ],
+    "events": 4,
+    "kinds": [
+      "Evidence changed",
+      "Role reopened",
+      "Follow-up",
+      "Prepare"
+    ],
+    "hasRelationshipEvent": true,
+    "opportunityRows": 0,
+    "reportingText": "Reporting line confirmed: CEO.",
+    "genericGreeting": false
+  },
+  "detail": {
+    "active": true,
+    "role": "VP Technology",
+    "sections": [
+      "What is supported",
+      "What could change the decision",
+      "Career move",
+      "Route in",
+      "Source trail",
+      "Research notes",
+      "Alternative routes",
+      "Use your evidence"
+    ],
+    "reporting": "Reporting lineCEORecruiter call · 20 AugConfirmedHigh impact",
+    "team": "Team size~180Leadership announcement · 18 Aug · Moderate confidenceEstimateMedium impact",
+    "strategy": "Strategy ownershipNot confirmedNo direct evidenceOpenHigh impact",
+    "hasMetricCard": false,
+    "cta": "Investigate authority & pay"
+  },
+  "explore": {
+    "state": "Under review",
+    "researchOpen": true,
+    "pursueCta": "Open pursuit workspace",
+    "event": {
+      "t_ms": 581,
+      "type": "disposition_changed",
+      "opportunity_id": "opp_apac_vpt_01",
+      "to": "exploring",
+      "canonical_action": "ACT-OPPORTUNITY-EXPLORE",
+      "surface_label": "Investigate authority & pay"
+    },
+    "external": 0
+  },
+  "evidenceBound": {
+    "t_ms": 664,
+    "type": "evidence_bound",
+    "opportunity_id": "opp_apac_vpt_01",
+    "evidence_ids": [
+      "claim_apac_scale"
+    ],
+    "truth_status_changed": false,
+    "canonical_action": "ACT-MANDATE-EVIDENCE-BIND"
+  },
+  "precontact": {
+    "active": true,
+    "stage": "PRE-CONTACT",
+    "nav": [
+      "Brief",
+      "People",
+      "Positioning",
+      "Process",
+      "Record"
+    ],
+    "next": "Confirm strategy ownership before asking Sarah for an introduction.",
+    "working": "Pre-contactWorking briefOne working file for this live opportunity.Next moveConfirm strategy ownership before asking Sarah for an introduction.The warm route is useful only if the role is worth network capital.Prepare questionsCurrent pictureScopeAPAC remitReporting lineCEO · confirmedTeam~180 · estimateHighest-impact unknownStrategy ownershipRouteSarah Tan · former colleagueOpen questionsStrategy ownershipNot confirmedNo direct evidenceOpenHigh impactP&L ownershipNot knownNo direct evidenceOpenMedium impactCompensationNot disclosedNo credible rangeOpenMedium impactReady to useCareer evidence3 relevantPositioning briefNot preparedResume variantNot preparedRecent activity22 AugReporting line confirmed: CEO21 AugRole page captured20 AugRecruiter note added",
+    "rail": "StagePre-contactNext moveConfirm strategy ownership before asking Sarah for an introduction.Decision stateCandidateActiveSearchOpenSelectionNot startedConfidentialityPrivate opportunity workspace. No outreach, application, or sharing occurs automatically.",
+    "event": {
+      "t_ms": 685,
+      "type": "disposition_changed",
+      "opportunity_id": "opp_apac_vpt_01",
+      "to": "pursuing",
+      "canonical_action": "ACT-OPPORTUNITY-PURSUE",
+      "surface_label": "Open pursuit workspace",
+      "external_effect": false
+    },
+    "external": 0
+  },
+  "recruiterPeople": "Recruiter conversationPeopleRelationships, recruiter context, and selection stakeholders.Sarah TanFormer colleague · worked together 2021Relationship fact: worked together previously and Sarah is in Asteria's regional unit.Route assessment: credible warm route; current relationship strength is not assumed.Jane LiuSearch consultantCurrent search contact. Asked for an updated CV and is checking P&L ownership and compensation range.",
+  "recruiterRecord": "Recruiter conversationRecordSource trail, interactions, commitments, and debriefs in one chronology.Timeline18 AugCompany leadership announcement captured20 AugRecruiter call: reporting line = CEO21 AugRole page snapshot captured22 AugRecruiter call debrief captured22 AugUpdated CV requested22 AugReporting line confirmed: CEOLatest debriefObservedRecruiter asked for updated CVProposed assertionP&L ownership appears material · requires reviewCommitmentSend CV after scope questions are answeredDebrief extraction proposes observations/assertions. It does not silently rewrite known facts.",
+  "recruiterAssertions": {
+    "pnl": {
+      "id": "ast_pnl",
+      "label": "P&L ownership",
+      "value": "Material ownership indicated",
+      "status": "Estimate",
+      "source": "Recruiter call",
+      "observed": "22 Aug",
+      "impact": "Medium",
+      "confidence": "Moderate"
+    },
+    "comp": {
+      "id": "ast_comp",
+      "label": "Compensation",
+      "value": "Range discussed; not yet confirmed",
+      "status": "Estimate",
+      "source": "Recruiter call",
+      "observed": "22 Aug",
+      "impact": "Medium",
+      "confidence": "Low"
+    }
+  },
+  "selection": {
+    "content": "SelectionProcessThe workspace surfaces only the process work relevant to the current stage.ProgressPre-contactCompletedoneRecruiter conversationCompletedoneCEO interviewNext · 26 AugcurrentFinal / referencesNot startedfutureOfferNot startedfutureNext stakeholderCEO26 Aug · 10:00Known concernDirect fintech experience is adjacent, not exactEvidence to useThree-country platform expansion",
+    "stage": "SELECTION",
+    "authority": {
+      "id": "ast_strategy_authority",
+      "label": "Strategy ownership",
+      "value": "Owns regional technology strategy",
+      "status": "Confirmed",
+      "source": "CEO interview brief",
+      "observed": "26 Aug",
+      "impact": "High"
+    }
+  },
+  "finalStage": "Final / referencesProcessThe workspace surfaces only the process work relevant to the current stage.ProgressPre-contactCompletedoneRecruiter conversationCompletedoneSelectionCEO round completedoneFinal / referencesCurrentcurrentOfferNot startedfutureFinal roundCase15-minute operating thesisReferences2 confirmed · 1 needed",
+  "offer": {
+    "content": "Offer reviewProcessThe workspace surfaces only the process work relevant to the current stage.ProgressPre-contactCompletedoneRecruiter conversationCompletedoneSelectionCompletedoneFinal / referencesCompletedoneOfferCurrent decisioncurrentOffer termsBaseSGD 310kBonus30% targetEquity4-year grant · details under reviewAuthorityStrategy ownership confirmed in offer brief",
+    "comp": {
+      "id": "ast_comp",
+      "label": "Compensation",
+      "value": "SGD 310k base · 30% target bonus · equity grant",
+      "status": "Confirmed",
+      "source": "Written offer",
+      "observed": "04 Sep",
+      "impact": "Medium"
+    },
+    "strategy": {
+      "id": "ast_strategy_authority",
+      "label": "Strategy ownership",
+      "value": "Owns regional technology strategy",
+      "status": "Confirmed",
+      "source": "Written offer brief",
+      "observed": "04 Sep",
+      "impact": "High"
+    },
+    "pnl": {
+      "id": "ast_pnl",
+      "label": "P&L ownership",
+      "value": "Technology budget authority confirmed; no business-unit P&L",
+      "status": "Confirmed",
+      "source": "Written offer brief",
+      "observed": "04 Sep",
+      "impact": "Medium"
+    }
+  },
+  "offerDetail": {
+    "strategy": "Strategy ownershipOwns regional technology strategyWritten offer brief · 04 SepConfirmedHigh impact",
+    "comp": "CompensationSGD 310k base · 30% target bonus · equity grantWritten offer · 04 SepConfirmedMedium impact",
+    "decision": "Authority and package are now known. The decision is whether the mandate and trade-offs justify the move."
+  },
+  "crossSurface": {
+    "detailCEO": true,
+    "briefingCEO": true,
+    "workspaceCEO": true
+  },
+  "compare": {
+    "visible": true,
+    "cols": 2,
+    "dims": [
+      "Trajectory",
+      "Scope / mandate",
+      "Route in",
+      "Biggest unknown",
+      "Source",
+      "Candidate state"
+    ],
+    "hasWinner": false
+  },
+  "shortlist": {
+    "count": "2",
+    "all": true
+  },
+  "mobile": {
+    "before": {
+      "listVisible": true,
+      "detailVisible": false
+    },
+    "detail": {
+      "open": true,
+      "listVisible": false,
+      "detailVisible": true,
+      "back": true
+    },
+    "after": {
+      "open": false,
+      "listVisible": true
+    }
+  }
+}

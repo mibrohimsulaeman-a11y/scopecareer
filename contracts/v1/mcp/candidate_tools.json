@@ -1,0 +1,309 @@
+{
+  "registry_id": "REG-MCP-CANDIDATE-V1",
+  "version": "1.0.0-draft",
+  "rules": [
+    "domain tools over CRUD explosion",
+    "every call is server-side reauthorized",
+    "resource minimization by purpose",
+    "prepare is not external effect",
+    "disposition and selection state use separate tools"
+  ],
+  "tools": [
+    {
+      "name": "career.get_context",
+      "effect_class": "read",
+      "output_contract": {
+        "entities": [
+          "ENT-CAREER-CLAIM",
+          "ENT-CAREER-INTENT",
+          "ENT-ASSERTION"
+        ],
+        "minimized": true
+      },
+      "canonical_actions": [],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/career.get_context/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/career.get_context/output_schema"
+    },
+    {
+      "name": "career.review_strategy",
+      "effect_class": "read",
+      "output_contract": {
+        "requires": [
+          "sample_size",
+          "confidence",
+          "context"
+        ]
+      },
+      "canonical_actions": [],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/career.review_strategy/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/career.review_strategy/output_schema"
+    },
+    {
+      "name": "career.bind_evidence",
+      "effect_class": "internal_mutation",
+      "canonical_actions": [
+        "ACT-MANDATE-EVIDENCE-BIND"
+      ],
+      "output_contract": {
+        "entities": [
+          "ENT-MANDATE-EVIDENCE-BINDING"
+        ],
+        "evidence_status_unchanged": true
+      },
+      "input_schema_ref": "candidate_schema_registry.json#/tools/career.bind_evidence/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/career.bind_evidence/output_schema"
+    },
+    {
+      "name": "market.discover_targets",
+      "effect_class": "read",
+      "output_contract": {
+        "entities": [
+          "ENT-COMPANY",
+          "ENT-ASSERTION"
+        ]
+      },
+      "canonical_actions": [],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/market.discover_targets/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/market.discover_targets/output_schema"
+    },
+    {
+      "name": "market.research",
+      "effect_class": "internal_proposal",
+      "output_contract": {
+        "entities": [
+          "ENT-OBSERVATION",
+          "ENT-ASSERTION"
+        ],
+        "proposal_only": true
+      },
+      "canonical_actions": [
+        "ACT-ASSERTION-PROPOSE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/market.research/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/market.research/output_schema"
+    },
+    {
+      "name": "market.create_watch",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "entities": [
+          "ENT-MARKET-WATCH"
+        ]
+      },
+      "canonical_actions": [
+        "ACT-MARKET-WATCH-CREATE"
+      ],
+      "task_semantics": "creates durable ScopeCareer object; not a long-lived MCP task",
+      "input_schema_ref": "candidate_schema_registry.json#/tools/market.create_watch/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/market.create_watch/output_schema"
+    },
+    {
+      "name": "opportunity.discover",
+      "effect_class": "read",
+      "output_contract": {
+        "entities": [
+          "ENT-OPPORTUNITY",
+          "ENT-PURSUIT-RECOMMENDATION"
+        ]
+      },
+      "canonical_actions": [],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/opportunity.discover/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/opportunity.discover/output_schema"
+    },
+    {
+      "name": "opportunity.capture",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "entities": [
+          "ENT-SOURCE",
+          "ENT-OBSERVATION",
+          "ENT-OPPORTUNITY"
+        ]
+      },
+      "canonical_actions": [
+        "ACT-SOURCE-CAPTURE",
+        "ACT-OPPORTUNITY-CAPTURE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/opportunity.capture/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/opportunity.capture/output_schema"
+    },
+    {
+      "name": "opportunity.research",
+      "effect_class": "internal_proposal",
+      "output_contract": {
+        "entities": [
+          "ENT-OBSERVATION",
+          "ENT-ASSERTION"
+        ],
+        "proposal_only": true
+      },
+      "canonical_actions": [
+        "ACT-OPPORTUNITY-RESEARCH",
+        "ACT-ASSERTION-PROPOSE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/opportunity.research/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/opportunity.research/output_schema"
+    },
+    {
+      "name": "opportunity.check_trust",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "requires": [
+          "evidence",
+          "unresolved_risks",
+          "confidence"
+        ]
+      },
+      "canonical_actions": [
+        "ACT-OPPORTUNITY-TRUST-ASSESS"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/opportunity.check_trust/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/opportunity.check_trust/output_schema"
+    },
+    {
+      "name": "opportunity.assess_pursuit",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "entities": [
+          "ENT-PURSUIT-ASSESSMENT",
+          "ENT-PURSUIT-RECOMMENDATION"
+        ],
+        "versioned": true
+      },
+      "canonical_actions": [
+        "ACT-FIT-ASSESS",
+        "ACT-QUALITY-ASSESS",
+        "ACT-TRANSITION-ASSESS",
+        "ACT-PURSUIT-ASSESS"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/opportunity.assess_pursuit/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/opportunity.assess_pursuit/output_schema"
+    },
+    {
+      "name": "access.plan",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "entities": [
+          "ENT-ACCESS-PLAN"
+        ],
+        "no_external_outreach": true
+      },
+      "canonical_actions": [
+        "ACT-RELATIONSHIP-ASSESS",
+        "ACT-ACCESS-ROUTE-ASSESS",
+        "ACT-ACCESS-PLAN-CREATE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/access.plan/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/access.plan/output_schema"
+    },
+    {
+      "name": "positioning.prepare",
+      "effect_class": "internal_proposal",
+      "output_contract": {
+        "requires": [
+          "evidence_refs",
+          "unknowns",
+          "usage_permissions"
+        ]
+      },
+      "canonical_actions": [
+        "ACT-POSITIONING-PREPARE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/positioning.prepare/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/positioning.prepare/output_schema"
+    },
+    {
+      "name": "resume.prepare_variant",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "requires": [
+          "change_proposals",
+          "evidence_refs",
+          "approval_state"
+        ],
+        "no_external_share": true
+      },
+      "canonical_actions": [
+        "ACT-RESUME-VARIANT-PREPARE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/resume.prepare_variant/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/resume.prepare_variant/output_schema"
+    },
+    {
+      "name": "selection.prepare",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "requires": [
+          "agenda_hypotheses",
+          "evidence",
+          "open_questions",
+          "confidence"
+        ]
+      },
+      "canonical_actions": [
+        "ACT-SELECTION-PREPARE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/selection.prepare/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/selection.prepare/output_schema"
+    },
+    {
+      "name": "interaction.debrief",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "entities": [
+          "ENT-OBSERVATION",
+          "ENT-ASSERTION"
+        ],
+        "proposal_only": true
+      },
+      "canonical_actions": [
+        "ACT-DEBRIEF-CAPTURE",
+        "ACT-ASSERTION-PROPOSE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/interaction.debrief/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/interaction.debrief/output_schema"
+    },
+    {
+      "name": "opportunity.set_disposition",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "state_machine": "SM-CANDIDATE-DISPOSITION"
+      },
+      "canonical_actions": [
+        "ACT-OPPORTUNITY-PASS",
+        "ACT-OPPORTUNITY-WATCH",
+        "ACT-OPPORTUNITY-EXPLORE",
+        "ACT-OPPORTUNITY-PURSUE",
+        "ACT-OPPORTUNITY-CLOSE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/opportunity.set_disposition/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/opportunity.set_disposition/output_schema"
+    },
+    {
+      "name": "opportunity.set_priority",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "state_machine": "SM-PRIORITY-ALLOCATION"
+      },
+      "canonical_actions": [
+        "ACT-PRIORITY-ACTIVATE",
+        "ACT-PRIORITY-DEACTIVATE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/opportunity.set_priority/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/opportunity.set_priority/output_schema"
+    },
+    {
+      "name": "selection.update_state",
+      "effect_class": "internal_mutation",
+      "output_contract": {
+        "state_machine": "SM-CANDIDATE-SELECTION"
+      },
+      "canonical_actions": [
+        "ACT-SELECTION-STATE-UPDATE"
+      ],
+      "input_schema_ref": "candidate_schema_registry.json#/tools/selection.update_state/input_schema",
+      "output_schema_ref": "candidate_schema_registry.json#/tools/selection.update_state/output_schema"
+    }
+  ],
+  "schema_registry": "candidate_schema_registry.json"
+}

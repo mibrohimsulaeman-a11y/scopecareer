@@ -1,0 +1,394 @@
+{
+  "registry_id": "REG-AI-FUNCTION-V1",
+  "version": "1.0.0-draft",
+  "functions": [
+    {
+      "id": "AIF-SOURCE-EXTRACT",
+      "name": "Source Extraction",
+      "inputs": [
+        "ENT-SOURCE"
+      ],
+      "outputs": [
+        "ENT-OBSERVATION"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "server validates normalized observation write",
+      "eval_dimensions": [
+        "faithfulness",
+        "source_span_preservation",
+        "prompt_injection_resistance"
+      ]
+    },
+    {
+      "id": "AIF-ASSERTION-PROPOSE",
+      "name": "Assertion Proposal",
+      "inputs": [
+        "ENT-OBSERVATION",
+        "ENT-SOURCE"
+      ],
+      "outputs": [
+        "ENT-ASSERTION"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "assertion action/policy determines inferred/known transition",
+      "eval_dimensions": [
+        "epistemic_label_accuracy",
+        "provenance_preservation",
+        "unknown_preservation"
+      ]
+    },
+    {
+      "id": "AIF-OPPORTUNITY-RESEARCH",
+      "name": "Opportunity Research",
+      "inputs": [
+        "ENT-OPPORTUNITY",
+        "ENT-COMPANY",
+        "ENT-SOURCE",
+        "ENT-ASSERTION"
+      ],
+      "outputs": [
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "research results are proposals; canonical assertions use policy transitions",
+      "eval_dimensions": [
+        "coverage",
+        "source_quality",
+        "freshness",
+        "hallucination_rate",
+        "unknown_preservation"
+      ]
+    },
+    {
+      "id": "AIF-PURSUIT-ASSESS",
+      "name": "Pursuit Assessment",
+      "inputs": [
+        "ENT-EVIDENCE-SNAPSHOT",
+        "ENT-FIT-ASSESSMENT",
+        "ENT-QUALITY-ASSESSMENT",
+        "ENT-TRANSITION-ASSESSMENT",
+        "ENT-ACCESS-PLAN",
+        "ENT-CAREER-INTENT"
+      ],
+      "outputs": [
+        "ENT-PURSUIT-ASSESSMENT",
+        "ENT-PURSUIT-RECOMMENDATION"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "versioned function execution creates governed assessment/recommendation; never disposition mutation",
+      "eval_dimensions": [
+        "reasoning_grounding",
+        "unknown_sensitivity",
+        "recommendation_consistency",
+        "calibration"
+      ]
+    },
+    {
+      "id": "AIF-ACCESS-PLAN",
+      "name": "Access Planning",
+      "inputs": [
+        "ENT-OPPORTUNITY",
+        "ENT-RELATIONSHIP-EVIDENCE",
+        "ENT-RELATIONSHIP-ASSESSMENT",
+        "ENT-ACCESS-ROUTE-ASSESSMENT"
+      ],
+      "outputs": [
+        "ENT-ACCESS-PLAN"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "plan is internal strategy; outreach is separate external action",
+      "eval_dimensions": [
+        "route_grounding",
+        "relationship_fact_separation",
+        "uncertainty",
+        "privacy_minimization"
+      ]
+    },
+    {
+      "id": "AIF-DEBRIEF-STRUCTURE",
+      "name": "Interaction Debrief Structuring",
+      "inputs": [
+        "ENT-INTERACTION",
+        "ENT-SOURCE"
+      ],
+      "outputs": [
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "candidate reviews material proposed updates",
+      "eval_dimensions": [
+        "speaker_fact_separation",
+        "commitment_accuracy",
+        "inference_labeling",
+        "sensitive_data_handling"
+      ]
+    },
+    {
+      "id": "AIF-CAREER-EXTRACT",
+      "name": "Career Evidence Extraction",
+      "inputs": [
+        "ENT-SOURCE",
+        "ENT-OBSERVATION"
+      ],
+      "outputs": [
+        "ENT-CAREER-CLAIM",
+        "ENT-EMPLOYMENT-EPISODE",
+        "ENT-LEADERSHIP-MANDATE",
+        "ENT-ACHIEVEMENT",
+        "ENT-SCOPE-FACT"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "outputs are proposals; candidate attests claims and server validates evidence semantics",
+      "eval_dimensions": [
+        "claim_faithfulness",
+        "scope_value_accuracy",
+        "provenance_preservation",
+        "no_fabrication"
+      ]
+    },
+    {
+      "id": "AIF-MARKET-RESEARCH",
+      "name": "Market and Target Research",
+      "inputs": [
+        "ENT-COMPANY",
+        "ENT-CAREER-INTENT",
+        "ENT-SOURCE",
+        "ENT-ASSERTION"
+      ],
+      "outputs": [
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION",
+        "ENT-MARKET-SIGNAL"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "signals/assertions use source and assertion policies",
+      "eval_dimensions": [
+        "source_quality",
+        "freshness",
+        "signal_precision",
+        "opportunity_non_fabrication"
+      ]
+    },
+    {
+      "id": "AIF-ROLE-MANDATE",
+      "name": "Role Mandate Synthesis",
+      "inputs": [
+        "ENT-OPPORTUNITY",
+        "ENT-EVIDENCE-SNAPSHOT",
+        "ENT-ASSERTION"
+      ],
+      "outputs": [
+        "ENT-ROLE-MANDATE",
+        "ENT-SUCCESS-PROFILE"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "server commits versioned synthesis against snapshot",
+      "eval_dimensions": [
+        "mandate_grounding",
+        "success_profile_relevance",
+        "unknown_preservation",
+        "version_sensitivity"
+      ]
+    },
+    {
+      "id": "AIF-FIT-ASSESS",
+      "name": "Fit Assessment",
+      "inputs": [
+        "ENT-OPPORTUNITY",
+        "ENT-ROLE-MANDATE",
+        "ENT-CAREER-INTENT",
+        "ENT-CAREER-CLAIM",
+        "ENT-MANDATE-EVIDENCE-BINDING",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "outputs": [
+        "ENT-FIT-ASSESSMENT"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "versioned assessment action; no disposition mutation",
+      "eval_dimensions": [
+        "evidence_coverage",
+        "mandate_alignment",
+        "gap_precision",
+        "calibration"
+      ]
+    },
+    {
+      "id": "AIF-QUALITY-ASSESS",
+      "name": "Opportunity Quality Assessment",
+      "inputs": [
+        "ENT-OPPORTUNITY",
+        "ENT-ROLE-MANDATE",
+        "ENT-ASSERTION",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "outputs": [
+        "ENT-QUALITY-ASSESSMENT"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "versioned assessment action",
+      "eval_dimensions": [
+        "quality_dimension_grounding",
+        "unknown_preservation",
+        "source_sensitivity"
+      ]
+    },
+    {
+      "id": "AIF-TRANSITION-ASSESS",
+      "name": "Transition Assessment",
+      "inputs": [
+        "ENT-OPPORTUNITY",
+        "ENT-CAREER-INTENT",
+        "ENT-CAREER-PROFILE",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "outputs": [
+        "ENT-TRANSITION-ASSESSMENT"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "versioned assessment action",
+      "eval_dimensions": [
+        "trajectory_reasoning",
+        "scope_comparison",
+        "risk_grounding",
+        "uncertainty"
+      ]
+    },
+    {
+      "id": "AIF-POSITIONING-PREPARE",
+      "name": "Executive Positioning Preparation",
+      "inputs": [
+        "ENT-ROLE-MANDATE",
+        "ENT-MANDATE-EVIDENCE-BINDING",
+        "ENT-CAREER-CLAIM",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "outputs": [
+        "ENT-POSITIONING-BRIEF"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "candidate/server confirms evidence and usage permissions before canonical commit",
+      "eval_dimensions": [
+        "evidence_grounding",
+        "narrative_relevance",
+        "no_fabrication",
+        "usage_permission_compliance"
+      ]
+    },
+    {
+      "id": "AIF-RESUME-VARIANT",
+      "name": "Resume Variant Preparation",
+      "inputs": [
+        "ENT-RESUME-MASTER",
+        "ENT-POSITIONING-BRIEF",
+        "ENT-CAREER-CLAIM",
+        "ENT-MANDATE-EVIDENCE-BINDING"
+      ],
+      "outputs": [
+        "ENT-RESUME-VARIANT",
+        "ENT-RESUME-CHANGE"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "candidate reviews/approves; no external share",
+      "eval_dimensions": [
+        "claim_faithfulness",
+        "change_relevance",
+        "ATS_terminology_semantic_fidelity",
+        "no_fabrication"
+      ]
+    },
+    {
+      "id": "AIF-SELECTION-PREPARE",
+      "name": "Selection Preparation",
+      "inputs": [
+        "ENT-SELECTION-STAGE",
+        "ENT-SELECTION-PARTICIPANT",
+        "ENT-POSITIONING-BRIEF",
+        "ENT-CAREER-CLAIM",
+        "ENT-OPEN-QUESTION",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "outputs": [
+        "ENT-STAKEHOLDER-HYPOTHESIS",
+        "ENT-PREPARATION-BRIEF"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "hypotheses remain labeled; preparation is internal",
+      "eval_dimensions": [
+        "stakeholder_hypothesis_labeling",
+        "evidence_relevance",
+        "question_quality",
+        "unknown_preservation"
+      ]
+    },
+    {
+      "id": "AIF-OFFER-DECISION",
+      "name": "Offer Decision Support",
+      "inputs": [
+        "ENT-OFFER",
+        "ENT-OFFER-COMPONENT",
+        "ENT-DECISION-CRITERION",
+        "ENT-PURSUIT-ASSESSMENT",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "outputs": [
+        "ENT-DECISION-BRIEF"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "candidate decides; AI cannot set accept/decline intent",
+      "eval_dimensions": [
+        "term_faithfulness",
+        "tradeoff_completeness",
+        "uncertainty",
+        "no_autonomous_decision"
+      ]
+    },
+    {
+      "id": "AIF-STRATEGY-ANALYZE",
+      "name": "Career Strategy Analysis",
+      "inputs": [
+        "ENT-OUTCOME",
+        "ENT-INTERACTION",
+        "ENT-OPPORTUNITY",
+        "ENT-STRATEGY-EXPERIMENT"
+      ],
+      "outputs": [
+        "ENT-STRATEGY-SIGNAL",
+        "ENT-STRATEGY-HYPOTHESIS"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "signal contract requires sample/time/context/confidence",
+      "eval_dimensions": [
+        "sample_awareness",
+        "confounder_awareness",
+        "confidence_calibration",
+        "non_prescriptive_small_sample"
+      ]
+    },
+    {
+      "id": "AIF-OPPORTUNITY-TRUST",
+      "name": "Opportunity Trust Assessment",
+      "inputs": [
+        "ENT-OPPORTUNITY",
+        "ENT-SOURCE",
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "outputs": [
+        "ENT-OPPORTUNITY-TRUST-ASSESSMENT"
+      ],
+      "may_commit": false,
+      "human_or_server_gate": "versioned assessment action; no binary authenticity claim without evidence",
+      "eval_dimensions": [
+        "risk_signal_precision",
+        "identity_consistency_grounding",
+        "freshness_awareness",
+        "false_certainty_rate",
+        "unknown_preservation"
+      ]
+    }
+  ]
+}

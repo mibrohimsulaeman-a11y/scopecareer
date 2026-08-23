@@ -1,0 +1,37 @@
+{
+  "registry_id": "REG-VOCAB-V1",
+  "version": "1.0.0-draft",
+  "id_prefixes": {
+    "entity": "ENT-",
+    "state_machine": "SM-",
+    "action": "ACT-",
+    "capability": "CAP-",
+    "policy": "POL-",
+    "ai_function": "AIF-",
+    "journey": "JRN-",
+    "client": "CLI-",
+    "conformance": "CONF-"
+  },
+  "enums": {
+    "epistemic_status": ["unknown", "needs_research", "inferred", "known"],
+    "assessment_confidence": ["low", "moderate", "high"],
+    "sensitivity": ["public", "career_internal", "sensitive", "highly_confidential"],
+    "evidence_status": ["self_attested", "source_backed", "corroborated", "externally_verified"],
+    "interpretation_status": ["fact", "inference", "suggested_wording"],
+    "usage_permission": ["private_only", "resume", "executive_bio", "interview", "recruiter_sharing", "external_sharing"],
+    "effect_class": ["read", "internal_proposal", "internal_mutation", "external_effect"],
+    "approval_class": ["none", "normal_authorization", "explicit_user_confirmation", "step_up"],
+    "trust_plane": ["candidate", "talent"],
+    "principal_type": ["candidate", "delegated_coach", "talent_recruiter", "search_consultant", "sourcer", "hiring_manager", "system_service"],
+    "source_trust": ["first_party", "candidate_provided", "verified_external", "untrusted_external"],
+    "client_type": ["web", "pwa", "browser_extension", "mcp_host", "internal_service"]
+  },
+  "semantic_rules": [
+    "unknown and needs_research are valid information states, not errors",
+    "known and inferred are epistemic states of assertions, not lifecycle states of opportunity",
+    "assessment confidence does not convert inference into known fact",
+    "candidate disposition is independent from opportunity search state and selection state",
+    "priority allocation is independent from candidate disposition and requires pursuing disposition by policy",
+    "external effect requires a distinct canonical action"
+  ]
+}

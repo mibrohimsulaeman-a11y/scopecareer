@@ -1,0 +1,124 @@
+{
+  "checks": {
+    "briefingIsActionQueue": true,
+    "noDuplicateTodayNav": true,
+    "researcherHiddenByDefault": true,
+    "shortlistVisibleInOpportunities": true,
+    "splitDetailWorks": true,
+    "structuredArgumentNotDataModel": true,
+    "contextualCtaFollowsMissingWork": true,
+    "initialCtaClear": true,
+    "researchProgressive": true,
+    "ctaMapsToCanonicalExplore": true,
+    "pursuingCtaClear": true,
+    "evidenceTruthUnchanged": true,
+    "pursuingActionsAligned": true,
+    "pursueNotExternal": true,
+    "compareAffordanceWorks": true,
+    "shortlistIsCollectionNotLifecycle": true,
+    "noRuntimeErrors": true
+  },
+  "failed": [],
+  "errors": [],
+  "initial": {
+    "groups": [
+      "Needs a decision",
+      "Due today"
+    ],
+    "items": 3,
+    "eventLabels": [
+      "Role changed2h",
+      "Scope unclearToday",
+      "PrepareTomorrow"
+    ],
+    "genericDecisionRepeat": 0,
+    "researchVisible": false,
+    "todayNav": false
+  },
+  "opened": {
+    "oppView": true,
+    "shortlistTab": "shortlist",
+    "listRows": 3,
+    "detailRole": "VP Technology",
+    "sections": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "metricBars": false,
+    "actions": [
+      "Close",
+      "Save for later",
+      "Investigate authority & pay"
+    ]
+  },
+  "ctas": {
+    "meridianCta": "Investigate scope & reporting",
+    "northstarCta": "Prepare for call"
+  },
+  "researching": {
+    "state": "Under review",
+    "researchOpen": true,
+    "hasRoutes": 3,
+    "actions": [
+      "Save for later",
+      "Close",
+      "Open pursuit workspace"
+    ]
+  },
+  "canonicalExplore": {
+    "t_ms": 7835,
+    "type": "disposition_changed",
+    "opportunity_id": "opp_apac_vpt_01",
+    "to": "exploring",
+    "canonical_action": "ACT-OPPORTUNITY-EXPLORE",
+    "surface_label": "Investigate authority & pay"
+  },
+  "final": {
+    "state": "Active",
+    "actions": [
+      "Add note",
+      "Open workspace",
+      "Archive"
+    ],
+    "workspace": true,
+    "evidenceBound": {
+      "t_ms": 8027,
+      "type": "evidence_bound",
+      "opportunity_id": "opp_apac_vpt_01",
+      "evidence_ids": [
+        "claim_apac_scale"
+      ],
+      "truth_status_changed": false,
+      "canonical_action": "ACT-MANDATE-EVIDENCE-BIND"
+    },
+    "pursuing": {
+      "t_ms": 8056,
+      "type": "disposition_changed",
+      "opportunity_id": "opp_apac_vpt_01",
+      "to": "pursuing",
+      "canonical_action": "ACT-OPPORTUNITY-PURSUE",
+      "surface_label": "Open pursuit workspace"
+    },
+    "externalEffects": 0
+  },
+  "compare": {
+    "visible": true,
+    "columns": 2,
+    "dimensions": [
+      "Trajectory",
+      "Scope / mandate",
+      "Route in",
+      "Biggest unknown",
+      "Source",
+      "Candidate state"
+    ],
+    "workbenchHidden": true
+  },
+  "pin": {
+    "shortlistCount": "2",
+    "stillInAll": true,
+    "statePreserved": true
+  }
+}

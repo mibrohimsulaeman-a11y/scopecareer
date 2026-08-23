@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "registry_id": "REG-MCP-CANDIDATE-RESOURCE-V1",
+  "version": "1.0.0-draft",
+  "rules": [
+    "resources expose bounded context, not authority",
+    "resource reads are server-side authorized at read time",
+    "candidate-private resources are never shared-cacheable",
+    "purpose-sensitive expansion uses tools rather than dumping the full Career Evidence Graph"
+  ],
+  "resources": [
+    {
+      "id": "RES-CAREER-ME",
+      "uri_template": "career://me",
+      "entity_refs": ["ENT-CAREER-PROFILE", "ENT-CAREER-CLAIM", "ENT-CAREER-INTENT"],
+      "policy_refs": ["POL-CANDIDATE-OWN-DATA", "POL-MINIMUM-NECESSARY-CONTEXT"],
+      "sensitivity": "career_internal",
+      "cache_scope": "principal_private",
+      "output_schema": {
+        "type": "object",
+        "required": ["candidate_ref", "profile_revision", "career_intent_version", "claim_summary", "restricted_dimensions"],
+        "properties": {
+          "candidate_ref": {"type": "string", "minLength": 1},
+          "profile_revision": {"type": "string", "minLength": 1},
+          "career_intent_version": {"type": "string"},
+          "claim_summary": {"type": "object", "required": ["attested", "source_backed", "corroborated", "externally_verified"], "properties": {"attested":{"type":"integer","minimum":0},"source_backed":{"type":"integer","minimum":0},"corroborated":{"type":"integer","minimum":0},"externally_verified":{"type":"integer","minimum":0}}, "additionalProperties": false},
+          "restricted_dimensions": {"type":"array","items":{"type":"string"},"uniqueItems":true}
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "RES-CAREER-INTENT",
+      "uri_template": "career://intent",
+      "entity_refs": ["ENT-CAREER-INTENT"],
+      "policy_refs": ["POL-CANDIDATE-OWN-DATA", "POL-MINIMUM-NECESSARY-CONTEXT"],
+      "sensitivity": "sensitive",
+      "cache_scope": "principal_private_versioned",
+      "output_schema": {
+        "type":"object","required":["intent_ref","version","target_role_families","desired_mandates","geographies","constraints","avoidances"],
+        "properties":{"intent_ref":{"type":"string"},"version":{"type":"string"},"target_role_families":{"type":"array","items":{"type":"string"}},"desired_mandates":{"type":"array","items":{"type":"string"}},"geographies":{"type":"array","items":{"type":"string"}},"constraints":{"type":"object"},"avoidances":{"type":"array","items":{"type":"string"}}},
+        "additionalProperties":false
+      }
+    },
+    {
+      "id": "RES-CAREER-EVIDENCE",
+      "uri_template": "career://evidence/{id}",
+      "entity_refs": ["ENT-CAREER-CLAIM", "ENT-ASSERTION", "ENT-SOURCE"],
+      "policy_refs": ["POL-CANDIDATE-OWN-DATA", "POL-CAREER-USAGE-PERMISSION", "POL-MINIMUM-NECESSARY-CONTEXT"],
+      "sensitivity": "sensitive",
+      "cache_scope": "principal_private_versioned",
+      "output_schema": {
+        "type":"object","required":["claim_ref","claim_type","structured_value","evidence_status","interpretation_status","usage_permissions","source_refs","sensitivity"],
+        "properties":{"claim_ref":{"type":"string"},"claim_type":{"type":"string"},"structured_value":{},"evidence_status":{"type":"string","enum":["self_attested","source_backed","corroborated","externally_verified"]},"interpretation_status":{"type":"string","enum":["fact","inference","suggested_wording"]},"usage_permissions":{"type":"array","items":{"type":"string"}},"source_refs":{"type":"array","items":{"type":"string"}},"sensitivity":{"type":"string","enum":["public","career_internal","sensitive","highly_confidential"]}},
+        "additionalProperties":false
+      }
+    },
+    {
+      "id": "RES-OPPORTUNITY",
+      "uri_template": "opportunity://{id}",
+      "entity_refs": ["ENT-OPPORTUNITY", "ENT-ROLE-MANDATE", "ENT-PURSUIT-ASSESSMENT", "ENT-PURSUIT-RECOMMENDATION", "ENT-ACCESS-PLAN", "ENT-OPPORTUNITY-TRUST-ASSESSMENT"],
+      "policy_refs": ["POL-CANDIDATE-OWN-DATA", "POL-ASSESSMENT-STALE-INPUT", "POL-MINIMUM-NECESSARY-CONTEXT"],
+      "sensitivity": "sensitive",
+      "cache_scope": "principal_private_versioned",
+      "output_schema": {
+        "type":"object","required":["opportunity_id","role_label","states","current_refs","unknowns"],
+        "properties":{"opportunity_id":{"type":"string"},"role_label":{"type":"string"},"company_ref":{"type":["string","null"]},"states":{"type":"object","required":["candidate_disposition","priority_allocation","opportunity_search_state","candidate_selection_state"],"properties":{"candidate_disposition":{"type":"string"},"priority_allocation":{"type":"string"},"opportunity_search_state":{"type":"string"},"candidate_selection_state":{"type":"string"}},"additionalProperties":false},"current_refs":{"type":"object","properties":{"role_mandate_ref":{"type":["string","null"]},"trust_assessment_ref":{"type":["string","null"]},"pursuit_assessment_ref":{"type":["string","null"]},"pursuit_recommendation_ref":{"type":["string","null"]},"access_plan_ref":{"type":["string","null"]}},"additionalProperties":false},"unknowns":{"type":"array","items":{"type":"string"}},"confidentiality":{"type":"string"}},
+        "additionalProperties":false
+      }
+    },
+    {
+      "id": "RES-COMPANY",
+      "uri_template": "company://{id}",
+      "entity_refs": ["ENT-COMPANY", "ENT-ASSERTION", "ENT-MARKET-SIGNAL", "ENT-TARGET-COMPANY"],
+      "policy_refs": ["POL-MINIMUM-NECESSARY-CONTEXT"],
+      "sensitivity": "career_internal",
+      "cache_scope": "principal_private_versioned",
+      "output_schema": {
+        "type":"object","required":["company_ref","canonical_name","assertions","market_signal_refs"],
+        "properties":{"company_ref":{"type":"string"},"canonical_name":{"type":"string"},"canonical_domain":{"type":["string","null"]},"assertions":{"type":"array","items":{"type":"object","required":["assertion_ref","predicate","epistemic_status","source_refs"],"properties":{"assertion_ref":{"type":"string"},"predicate":{"type":"string"},"value":{},"epistemic_status":{"type":"string","enum":["unknown","needs_research","inferred","known"]},"source_refs":{"type":"array","items":{"type":"string"}},"confidence":{"type":["string","null"]}},"additionalProperties":false}},"market_signal_refs":{"type":"array","items":{"type":"string"}},"target_company_ref":{"type":["string","null"]}},
+        "additionalProperties":false
+      }
+    },
+    {
+      "id": "RES-RELATIONSHIP-PERSON",
+      "uri_template": "relationship://person/{id}",
+      "entity_refs": ["ENT-PERSON", "ENT-RELATIONSHIP", "ENT-RELATIONSHIP-EVIDENCE", "ENT-RELATIONSHIP-ASSESSMENT", "ENT-INTERACTION"],
+      "policy_refs": ["POL-CANDIDATE-OWN-DATA", "POL-DELEGATED-COACH-BOUNDARY", "POL-MINIMUM-NECESSARY-CONTEXT"],
+      "sensitivity": "highly_confidential",
+      "cache_scope": "principal_private_no_shared_cache",
+      "output_schema": {
+        "type":"object","required":["person_ref","relationship_ref","evidence_refs","interaction_summary","current_assessment_refs"],
+        "properties":{"person_ref":{"type":"string"},"display_name":{"type":"string"},"relationship_ref":{"type":"string"},"relationship_type":{"type":"string"},"evidence_refs":{"type":"array","items":{"type":"string"}},"interaction_summary":{"type":"object","required":["count","last_interaction_at"],"properties":{"count":{"type":"integer","minimum":0},"last_interaction_at":{"type":["string","null"],"format":"date-time"}},"additionalProperties":false},"current_assessment_refs":{"type":"array","items":{"type":"string"}}},
+        "additionalProperties":false
+      }
+    },
+    {
+      "id": "RES-SELECTION",
+      "uri_template": "selection://{opportunity_id}",
+      "entity_refs": ["ENT-SELECTION-PROCESS", "ENT-SELECTION-STAGE", "ENT-SELECTION-PARTICIPANT", "ENT-PREPARATION-BRIEF", "ENT-OPEN-QUESTION", "ENT-COMMITMENT"],
+      "policy_refs": ["POL-CANDIDATE-OWN-DATA", "POL-MINIMUM-NECESSARY-CONTEXT"],
+      "sensitivity": "sensitive",
+      "cache_scope": "principal_private_versioned",
+      "output_schema": {
+        "type":"object","required":["opportunity_id","selection_process_ref","candidate_selection_state","stages","open_question_refs","commitment_refs"],
+        "properties":{"opportunity_id":{"type":"string"},"selection_process_ref":{"type":"string"},"candidate_selection_state":{"type":"string"},"stages":{"type":"array","items":{"type":"object","required":["stage_ref","stage_type","state","participant_refs"],"properties":{"stage_ref":{"type":"string"},"stage_type":{"type":"string"},"state":{"type":"string"},"participant_refs":{"type":"array","items":{"type":"string"}},"preparation_brief_ref":{"type":["string","null"]}},"additionalProperties":false}},"open_question_refs":{"type":"array","items":{"type":"string"}},"commitment_refs":{"type":"array","items":{"type":"string"}}},
+        "additionalProperties":false
+      }
+    }
+  ]
+}

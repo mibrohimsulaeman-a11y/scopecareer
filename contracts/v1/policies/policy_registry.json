@@ -1,0 +1,371 @@
+{
+  "registry_id": "REG-POLICY-V1",
+  "version": "1.0.0-draft",
+  "decision_tuple": [
+    "principal",
+    "trust_plane",
+    "delegation",
+    "purpose",
+    "capability",
+    "action",
+    "object",
+    "data_scope",
+    "sensitivity",
+    "current_state"
+  ],
+  "default_decision": "deny",
+  "policies": [
+    {
+      "id": "POL-CANDIDATE-OWN-DATA",
+      "effect": "allow",
+      "principal_types": [
+        "candidate"
+      ],
+      "trust_plane": "candidate",
+      "condition": "object.candidate_id == principal.candidate_id",
+      "actions": [
+        "ACT-ACCESS-PLAN-CREATE",
+        "ACT-ACCESS-ROUTE-ASSESS",
+        "ACT-CAREER-CLAIM-ATTEST",
+        "ACT-CAREER-CLAIM-PROPOSE",
+        "ACT-CAREER-CLAIM-REJECT",
+        "ACT-CAREER-CLAIM-REVIEW",
+        "ACT-CAREER-CLAIM-SUPERSEDE",
+        "ACT-CAREER-HISTORY-RECORD",
+        "ACT-CAREER-INTENT-UPDATE",
+        "ACT-COMMITMENT-ADD",
+        "ACT-COMMITMENT-COMPLETE",
+        "ACT-CONSENT-RECORD",
+        "ACT-DEBRIEF-CAPTURE",
+        "ACT-DELEGATION-ACTIVATE",
+        "ACT-DELEGATION-CREATE",
+        "ACT-DELEGATION-EXPIRE",
+        "ACT-DELEGATION-REVOKE",
+        "ACT-EXECUTIVE-BIO-PREPARE",
+        "ACT-FIT-ASSESS",
+        "ACT-LEADERSHIP-STORY-CREATE",
+        "ACT-MANDATE-EVIDENCE-BIND",
+        "ACT-MARKET-SIGNAL-RECORD",
+        "ACT-MARKET-WATCH-ARCHIVE",
+        "ACT-MARKET-WATCH-CREATE",
+        "ACT-MARKET-WATCH-PAUSE",
+        "ACT-MARKET-WATCH-RESUME",
+        "ACT-OFFER-CAPTURE",
+        "ACT-OFFER-CLOSE",
+        "ACT-OFFER-DECISION-PREPARE",
+        "ACT-OFFER-INTENT-ACCEPT",
+        "ACT-OFFER-INTENT-DECLINE",
+        "ACT-OFFER-REVIEW",
+        "ACT-OPEN-QUESTION-ADD",
+        "ACT-OPEN-QUESTION-RESOLVE",
+        "ACT-OPPORTUNITY-CLOSE",
+        "ACT-OPPORTUNITY-EXPLORE",
+        "ACT-OPPORTUNITY-PASS",
+        "ACT-OPPORTUNITY-PURSUE",
+        "ACT-OPPORTUNITY-TRUST-ASSESS",
+        "ACT-OPPORTUNITY-WATCH",
+        "ACT-OUTCOME-RECORD",
+        "ACT-POSITIONING-COMMIT",
+        "ACT-POSITIONING-PREPARE",
+        "ACT-PRIORITY-ACTIVATE",
+        "ACT-PRIORITY-DEACTIVATE",
+        "ACT-PURSUIT-ASSESS",
+        "ACT-QUALITY-ASSESS",
+        "ACT-RELATIONSHIP-ASSESS",
+        "ACT-RESUME-VARIANT-APPROVE",
+        "ACT-RESUME-VARIANT-PREPARE",
+        "ACT-RESUME-VARIANT-REJECT",
+        "ACT-RESUME-VARIANT-REVIEW",
+        "ACT-RESUME-VARIANT-SUPERSEDE",
+        "ACT-ROLE-MANDATE-SYNTHESIZE",
+        "ACT-SELECTION-PREPARE",
+        "ACT-SELECTION-PROCESS-DEFINE",
+        "ACT-SELECTION-STAGE-CANCEL",
+        "ACT-SELECTION-STAGE-COMPLETE",
+        "ACT-SELECTION-STAGE-SCHEDULE",
+        "ACT-SELECTION-STATE-UPDATE",
+        "ACT-STRATEGY-EXPERIMENT-ACTIVATE",
+        "ACT-STRATEGY-EXPERIMENT-CANCEL",
+        "ACT-STRATEGY-EXPERIMENT-COMPLETE",
+        "ACT-STRATEGY-EXPERIMENT-CREATE",
+        "ACT-STRATEGY-EXPERIMENT-PAUSE",
+        "ACT-STRATEGY-HYPOTHESIS-CREATE",
+        "ACT-STRATEGY-SIGNAL-CREATE",
+        "ACT-TARGET-COMPANY-ADD",
+        "ACT-TARGET-COMPANY-ARCHIVE",
+        "ACT-TRANSITION-ASSESS"
+      ]
+    },
+    {
+      "id": "POL-DELEGATED-COACH-BOUNDARY",
+      "effect": "conditional",
+      "principal_types": [
+        "delegated_coach"
+      ],
+      "trust_plane": "candidate",
+      "condition": "active_delegation AND purpose_match AND object_in_scope AND action_in_scope AND sensitivity_allowed",
+      "forbidden_by_default": [
+        "external_effect",
+        "all_relationships",
+        "compensation",
+        "share_packet_send",
+        "application_submit"
+      ]
+    },
+    {
+      "id": "POL-CROSS-PLANE-SHARE-PACKET-ONLY",
+      "effect": "deny_unless",
+      "condition": "candidate_to_talent_disclosure_requires_active_share_packet_with_recipient_purpose_scope_and_expiry",
+      "invariants": [
+        "talent principal cannot query private candidate graph by backend adjacency"
+      ]
+    },
+    {
+      "id": "POL-ASSERTION-KNOWN-EVIDENCE",
+      "effect": "guard",
+      "actions": [
+        "ACT-ASSERTION-COMMIT-KNOWN"
+      ],
+      "condition": "accepted_source_evidence AND source_not_disallowed AND observation_or_source_link_preserved",
+      "invariants": [
+        "candidate approval alone is insufficient",
+        "model confidence alone is insufficient"
+      ]
+    },
+    {
+      "id": "POL-INFERENCE-LABEL",
+      "effect": "guard",
+      "actions": [
+        "ACT-ASSERTION-COMMIT-INFERRED"
+      ],
+      "condition": "confidence_present AND supporting_observation_or_source",
+      "invariants": [
+        "inferred remains inferred until evidence transition"
+      ]
+    },
+    {
+      "id": "POL-ASSESSMENT-VERSIONING",
+      "effect": "guard",
+      "actions": [
+        "ACT-ASSESSMENT-CREATE",
+        "ACT-PURSUIT-ASSESS",
+        "ACT-ACCESS-PLAN-CREATE",
+        "ACT-FIT-ASSESS",
+        "ACT-QUALITY-ASSESS",
+        "ACT-TRANSITION-ASSESS",
+        "ACT-RELATIONSHIP-ASSESS",
+        "ACT-ACCESS-ROUTE-ASSESS",
+        "ACT-OPPORTUNITY-TRUST-ASSESS"
+      ],
+      "condition": "immutable_input_snapshot AND method_version_present",
+      "invariants": [
+        "new evidence creates new assessment version",
+        "old assessment retained and may be superseded"
+      ]
+    },
+    {
+      "id": "POL-PRIORITY-BUDGET",
+      "effect": "guard",
+      "actions": [
+        "ACT-PRIORITY-ACTIVATE"
+      ],
+      "condition": "candidate_disposition == pursuing AND active_priority_count < policy.max_active when max_active is configured",
+      "invariants": [
+        "limit is configurable policy",
+        "priority is private"
+      ]
+    },
+    {
+      "id": "POL-EXTERNAL-EFFECT-SEPARATION",
+      "effect": "guard",
+      "condition": "external_effect_action_requires_distinct_request_authorization_confirmation_and_receipt_path",
+      "invariants": [
+        "draft_not_send",
+        "prepare_not_apply",
+        "approve_not_share",
+        "assess_not_reject"
+      ]
+    },
+    {
+      "id": "POL-EXTENSION-UNTRUSTED-CONTENT",
+      "effect": "guard",
+      "client_types": [
+        "browser_extension"
+      ],
+      "condition": "page_content_treated_as_untrusted_data",
+      "allowed_effect_classes": [
+        "read",
+        "internal_proposal",
+        "internal_mutation"
+      ],
+      "forbidden_actions": [
+        "ACT-EXTERNAL-EFFECT-EXECUTE",
+        "ACT-SHARE-PACKET-SEND"
+      ],
+      "invariants": [
+        "extension is data producer not authority producer",
+        "page content cannot redefine tool/policy instructions"
+      ]
+    },
+    {
+      "id": "POL-MCP-REAUTHORIZE-EVERY-CALL",
+      "effect": "guard",
+      "client_types": [
+        "mcp_host"
+      ],
+      "condition": "every_resource_and_tool_operation_is_authorized_server_side_at_call_time",
+      "invariants": [
+        "cached tool catalog cannot widen current authorization"
+      ]
+    },
+    {
+      "id": "POL-MINIMUM-NECESSARY-CONTEXT",
+      "effect": "guard",
+      "condition": "purpose_bounded_context_only",
+      "invariants": [
+        "career context does not dump all sensitive fields by default"
+      ]
+    },
+    {
+      "id": "POL-CAREER-CLAIM-ATTESTATION",
+      "effect": "guard",
+      "actions": [
+        "ACT-CAREER-CLAIM-ATTEST"
+      ],
+      "condition": "principal is owning candidate AND explicit candidate confirmation",
+      "invariants": [
+        "AI/delegated coach cannot attest on candidate behalf",
+        "attestation does not set externally_verified"
+      ]
+    },
+    {
+      "id": "POL-CAREER-USAGE-PERMISSION",
+      "effect": "guard",
+      "actions": [
+        "ACT-POSITIONING-COMMIT",
+        "ACT-RESUME-VARIANT-PREPARE",
+        "ACT-RESUME-VARIANT-APPROVE",
+        "ACT-EXECUTIVE-BIO-PREPARE",
+        "ACT-SELECTION-PREPARE"
+      ],
+      "condition": "every externally wordable factual claim is permitted for requested purpose",
+      "invariants": [
+        "private_only claim cannot appear in external artifact",
+        "usage permission is independent from truth/evidence status"
+      ]
+    },
+    {
+      "id": "POL-EVIDENCE-BINDING",
+      "effect": "guard",
+      "actions": [
+        "ACT-MANDATE-EVIDENCE-BIND"
+      ],
+      "condition": "candidate owns evidence AND role_mandate belongs to candidate opportunity AND evidence usage permits downstream purpose",
+      "invariants": [
+        "binding does not upgrade evidence status"
+      ]
+    },
+    {
+      "id": "POL-RESUME-NO-FABRICATION",
+      "effect": "guard",
+      "actions": [
+        "ACT-RESUME-VARIANT-PREPARE",
+        "ACT-RESUME-VARIANT-APPROVE"
+      ],
+      "condition": "every factual resume statement resolves to candidate career claim/assertion with permitted usage",
+      "invariants": [
+        "suggested wording cannot create employer/title/scope/achievement not supported by evidence"
+      ]
+    },
+    {
+      "id": "POL-ROLE-MANDATE-VERSIONING",
+      "effect": "guard",
+      "actions": [
+        "ACT-ROLE-MANDATE-SYNTHESIZE"
+      ],
+      "condition": "immutable_input_snapshot AND assertion/source links preserved",
+      "invariants": [
+        "material new evidence creates a new mandate version"
+      ]
+    },
+    {
+      "id": "POL-DEBRIEF-EXTRACTION-BOUNDARY",
+      "effect": "guard",
+      "actions": [
+        "ACT-DEBRIEF-CAPTURE"
+      ],
+      "condition": "candidate-provided content may create observation plus proposed assertions only",
+      "invariants": [
+        "debrief cannot directly rewrite known opportunity/company facts"
+      ]
+    },
+    {
+      "id": "POL-DELEGATION-LIFECYCLE",
+      "effect": "guard",
+      "actions": [
+        "ACT-DELEGATION-ACTIVATE",
+        "ACT-DELEGATION-REVOKE",
+        "ACT-DELEGATION-EXPIRE"
+      ],
+      "condition": "grantor candidate owns delegation AND current delegation state permits transition",
+      "invariants": [
+        "revoked/expired grant denied immediately at authorization time"
+      ]
+    },
+    {
+      "id": "POL-OFFER-NO-AUTONOMOUS-DECISION",
+      "effect": "guard",
+      "actions": [
+        "ACT-OFFER-INTENT-ACCEPT",
+        "ACT-OFFER-INTENT-DECLINE"
+      ],
+      "condition": "explicit owning-candidate confirmation",
+      "invariants": [
+        "AI cannot set accept/decline intent",
+        "intent is not external response"
+      ]
+    },
+    {
+      "id": "POL-STRATEGY-UNCERTAINTY",
+      "effect": "guard",
+      "actions": [
+        "ACT-STRATEGY-SIGNAL-CREATE"
+      ],
+      "condition": "sample_size AND time_window AND context AND confidence present",
+      "invariants": [
+        "small samples cannot be rendered as strong deterministic prescription"
+      ]
+    },
+    {
+      "id": "POL-ASSESSMENT-STALE-INPUT",
+      "effect": "guard",
+      "condition": "assessment/recommendation derived views compare current evidence revision to input snapshot revision",
+      "invariants": [
+        "stale assessment is flagged or superseded rather than silently treated current"
+      ]
+    },
+    {
+      "id": "POL-MARKET-SIGNAL-NOT-OPPORTUNITY",
+      "effect": "guard",
+      "actions": [
+        "ACT-MARKET-SIGNAL-RECORD"
+      ],
+      "condition": "signal remains distinct from Opportunity unless a separate opportunity capture action has sufficient basis",
+      "invariants": [
+        "market signal alone does not fabricate vacancy"
+      ]
+    },
+    {
+      "id": "POL-OPPORTUNITY-TRUST-NO-FALSE-CERTAINTY",
+      "effect": "guard",
+      "actions": [
+        "ACT-OPPORTUNITY-TRUST-ASSESS"
+      ],
+      "condition": "input snapshot preserves source identity/freshness and unresolved evidence",
+      "invariants": [
+        "assessment cannot assert real/fake certainty beyond evidence",
+        "unresolved remains valid output"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ScopeCareer — Progressive Pursuit Prototype V3</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="shell-header">
+    <a class="brand" href="#" aria-label="ScopeCareer"><span class="brand-mark">S</span><span>ScopeCareer</span></a>
+    <nav aria-label="Primary navigation">
+      <button class="nav-item active" data-view="briefing">Briefing</button>
+      <button class="nav-item" data-view="opportunities">Opportunities</button>
+      <button class="nav-item" data-view="career">Career</button>
+    </nav>
+    <button class="research-toggle" id="researchToggle" hidden>Research controls</button>
+  </header>
+
+  <main class="shell-main">
+    <section id="briefingView" class="view active" aria-labelledby="briefingTitle">
+      <div class="surface-head">
+        <div><div class="eyebrow">SATURDAY · 22 AUG</div><h1 id="briefingTitle">Briefing</h1></div>
+        <div class="head-note"><strong id="briefingCount">4</strong><span>items in the next 24 hours</span></div>
+      </div>
+      <div id="briefingLedger" class="briefing-ledger"></div>
+    </section>
+
+    <section id="opportunitiesView" class="view" aria-labelledby="opportunitiesTitle">
+      <div class="surface-head">
+        <div><div class="eyebrow">OPPORTUNITIES</div><h1 id="opportunitiesTitle">Opportunities</h1></div>
+        <div class="head-note compact"><span><strong>27</strong> reviewed</span><span><strong id="scanShortlistCount">3</strong> shortlisted</span></div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Opportunity filters">
+        <button class="tab active" data-filter="shortlist">Shortlist <span id="countShortlist">3</span></button>
+        <button class="tab" data-filter="all">All <span id="countAll">3</span></button>
+        <button class="tab" data-filter="saved">Saved <span id="countSaved">0</span></button>
+        <button class="tab" data-filter="pursuing">Active <span id="countPursuing">0</span></button>
+        <button class="tab" data-filter="closed">Closed <span id="countClosed">0</span></button>
+      </div>
+
+      <div class="workbench" id="workbench">
+        <div class="list-pane">
+          <div class="list-head"><span>Role</span><span>Trajectory / route</span><span>Updated</span></div>
+          <div id="oppList" class="opp-list"></div>
+        </div>
+        <aside id="oppDetail" class="inspector" aria-live="polite"></aside>
+      </div>
+
+      <section id="compareView" class="compare-view" hidden>
+        <div class="compare-head"><div><div class="eyebrow">COMPARE</div><h2>Trade-offs across your shortlist</h2></div><button class="text-btn" id="cmpBack">← Back to opportunities</button></div>
+        <div id="compareTable"></div>
+      </section>
+
+      <div id="compareBar" class="compare-bar" hidden>
+        <div><strong id="compareCount">0 selected</strong><span>Compare the same decision dimensions side by side.</span></div>
+        <div class="compare-actions"><button class="text-btn" id="compareClear">Clear</button><button class="btn primary signal" id="compareGo">Compare</button></div>
+      </div>
+    </section>
+
+    <section id="pursuitView" class="view pursuit-view" aria-labelledby="pursuitTitle">
+      <div class="pursuit-head">
+        <div class="pursuit-breadcrumb"><button class="text-btn" id="backToOpportunities">← Opportunities</button><span>/</span><span>Active pursuit</span></div>
+        <div class="pursuit-identity"><div><div class="eyebrow" id="pursuitStageEyebrow">PRE-CONTACT</div><h1 id="pursuitTitle">VP Technology</h1><p id="pursuitCompany">Asteria Group · Singapore</p></div><div class="pursuit-flags"><span id="pursuitShortlistFlag">★ Shortlist</span><span>Private</span></div></div>
+      </div>
+      <div class="workspace-shell">
+        <nav class="workspace-nav" id="workspaceNav" aria-label="Pursuit workspace">
+          <button class="workspace-nav-item active" data-workspace-section="brief">Brief</button>
+          <button class="workspace-nav-item" data-workspace-section="people">People</button>
+          <button class="workspace-nav-item" data-workspace-section="positioning">Positioning</button>
+          <button class="workspace-nav-item" data-workspace-section="process">Process</button>
+          <button class="workspace-nav-item" data-workspace-section="record">Record</button>
+        </nav>
+        <section id="workspaceContent" class="workspace-content"></section>
+        <aside id="workspaceRail" class="workspace-rail"></aside>
+      </div>
+    </section>
+
+    <section id="careerView" class="view" aria-labelledby="careerTitle">
+      <div class="surface-head career-head"><div><div class="eyebrow">CAREER</div><h1 id="careerTitle">Career evidence</h1><p>Claims, supporting evidence, and reuse permissions stay separate.</p></div></div>
+      <div id="evidenceLibrary" class="evidence-table"></div>
+    </section>
+  </main>
+
+  <aside id="researchPanel" class="research-panel" aria-hidden="true">
+    <div class="research-head"><div><span>RESEARCHER ONLY</span><strong>Prototype controls</strong></div><button id="closeResearch" aria-label="Close research controls">×</button></div>
+    <div class="research-scenarios">
+      <span>Workspace scenario</span>
+      <div class="scenario-grid">
+        <button data-demo-stage="precontact">Pre-contact</button>
+        <button data-demo-stage="recruiter">Recruiter</button>
+        <button data-demo-stage="selection">Selection</button>
+        <button data-demo-stage="final">Final</button>
+        <button data-demo-stage="offer">Offer</button>
+      </div>
+    </div>
+    <div id="eventLog" class="event-log"></div>
+    <button id="copySession" class="secondary-button">Copy session JSON</button>
+  </aside>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

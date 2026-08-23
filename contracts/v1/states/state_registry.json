@@ -1,0 +1,748 @@
+{
+  "registry_id": "REG-STATE-V1",
+  "version": "1.0.0-draft",
+  "state_machines": [
+    {
+      "id": "SM-CANDIDATE-DISPOSITION",
+      "entity": "ENT-OPPORTUNITY",
+      "dimension": "candidate_disposition",
+      "states": [
+        "discovered",
+        "passed",
+        "watching",
+        "exploring",
+        "pursuing",
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": "discovered",
+          "to": "passed",
+          "action": "ACT-OPPORTUNITY-PASS"
+        },
+        {
+          "from": "discovered",
+          "to": "watching",
+          "action": "ACT-OPPORTUNITY-WATCH"
+        },
+        {
+          "from": "discovered",
+          "to": "exploring",
+          "action": "ACT-OPPORTUNITY-EXPLORE"
+        },
+        {
+          "from": "passed",
+          "to": "watching",
+          "action": "ACT-OPPORTUNITY-WATCH"
+        },
+        {
+          "from": "passed",
+          "to": "exploring",
+          "action": "ACT-OPPORTUNITY-EXPLORE"
+        },
+        {
+          "from": "watching",
+          "to": "exploring",
+          "action": "ACT-OPPORTUNITY-EXPLORE"
+        },
+        {
+          "from": "exploring",
+          "to": "pursuing",
+          "action": "ACT-OPPORTUNITY-PURSUE"
+        },
+        {
+          "from": "pursuing",
+          "to": "watching",
+          "action": "ACT-OPPORTUNITY-WATCH"
+        },
+        {
+          "from": "pursuing",
+          "to": "closed",
+          "action": "ACT-OPPORTUNITY-CLOSE"
+        },
+        {
+          "from": "watching",
+          "to": "closed",
+          "action": "ACT-OPPORTUNITY-CLOSE"
+        },
+        {
+          "from": "exploring",
+          "to": "closed",
+          "action": "ACT-OPPORTUNITY-CLOSE"
+        },
+        {
+          "from": "passed",
+          "to": "closed",
+          "action": "ACT-OPPORTUNITY-CLOSE"
+        }
+      ],
+      "orthogonal_to": [
+        "SM-OPPORTUNITY-SEARCH",
+        "SM-CANDIDATE-SELECTION",
+        "SM-PRIORITY-ALLOCATION"
+      ],
+      "invariants": [
+        "priority is not a disposition state",
+        "pass is reversible through later watch/explore",
+        "disposition is candidate-private"
+      ]
+    },
+    {
+      "id": "SM-PRIORITY-ALLOCATION",
+      "entity": "ENT-OPPORTUNITY",
+      "dimension": "priority_allocation",
+      "states": [
+        "inactive",
+        "active"
+      ],
+      "transitions": [
+        {
+          "from": "inactive",
+          "to": "active",
+          "action": "ACT-PRIORITY-ACTIVATE",
+          "guard": "candidate_disposition == pursuing AND priority_policy_allows"
+        },
+        {
+          "from": "active",
+          "to": "inactive",
+          "action": "ACT-PRIORITY-DEACTIVATE"
+        }
+      ],
+      "orthogonal_to": [
+        "SM-CANDIDATE-DISPOSITION",
+        "SM-OPPORTUNITY-SEARCH",
+        "SM-CANDIDATE-SELECTION"
+      ],
+      "invariants": [
+        "priority is internal attention allocation",
+        "priority is not employer-visible",
+        "max_active is policy-controlled"
+      ]
+    },
+    {
+      "id": "SM-OPPORTUNITY-SEARCH",
+      "entity": "ENT-OPPORTUNITY",
+      "dimension": "opportunity_search_state",
+      "states": [
+        "hypothesis",
+        "open",
+        "recruiting",
+        "paused",
+        "filled",
+        "cancelled",
+        "unknown"
+      ],
+      "transitions": [
+        {
+          "from": "hypothesis",
+          "to": "open",
+          "action": "ACT-SEARCH-STATE-UPDATE"
+        },
+        {
+          "from": "unknown",
+          "to": "open",
+          "action": "ACT-SEARCH-STATE-UPDATE"
+        },
+        {
+          "from": "open",
+          "to": "recruiting",
+          "action": "ACT-SEARCH-STATE-UPDATE"
+        },
+        {
+          "from": "recruiting",
+          "to": "paused",
+          "action": "ACT-SEARCH-STATE-UPDATE"
+        },
+        {
+          "from": "paused",
+          "to": "recruiting",
+          "action": "ACT-SEARCH-STATE-UPDATE"
+        },
+        {
+          "from": "open",
+          "to": "filled",
+          "action": "ACT-SEARCH-STATE-UPDATE"
+        },
+        {
+          "from": "recruiting",
+          "to": "filled",
+          "action": "ACT-SEARCH-STATE-UPDATE"
+        },
+        {
+          "from": "open",
+          "to": "cancelled",
+          "action": "ACT-SEARCH-STATE-UPDATE"
+        },
+        {
+          "from": "recruiting",
+          "to": "cancelled",
+          "action": "ACT-SEARCH-STATE-UPDATE"
+        }
+      ],
+      "orthogonal_to": [
+        "SM-CANDIDATE-DISPOSITION",
+        "SM-CANDIDATE-SELECTION",
+        "SM-PRIORITY-ALLOCATION"
+      ],
+      "invariants": [
+        "search state requires source/assertion basis",
+        "candidate disposition never mutates search state implicitly"
+      ]
+    },
+    {
+      "id": "SM-CANDIDATE-SELECTION",
+      "entity": "ENT-OPPORTUNITY",
+      "dimension": "candidate_selection_state",
+      "states": [
+        "not_started",
+        "contacted",
+        "applied",
+        "recruiter_screen",
+        "interview",
+        "final",
+        "reference",
+        "offer",
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": "not_started",
+          "to": "contacted",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "not_started",
+          "to": "applied",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "contacted",
+          "to": "recruiter_screen",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "applied",
+          "to": "recruiter_screen",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "recruiter_screen",
+          "to": "interview",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "interview",
+          "to": "final",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "final",
+          "to": "reference",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "reference",
+          "to": "offer",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "offer",
+          "to": "closed",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "contacted",
+          "to": "closed",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "applied",
+          "to": "closed",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "recruiter_screen",
+          "to": "closed",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "interview",
+          "to": "closed",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "final",
+          "to": "closed",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        },
+        {
+          "from": "reference",
+          "to": "closed",
+          "action": "ACT-SELECTION-STATE-UPDATE"
+        }
+      ],
+      "orthogonal_to": [
+        "SM-CANDIDATE-DISPOSITION",
+        "SM-OPPORTUNITY-SEARCH",
+        "SM-PRIORITY-ALLOCATION"
+      ],
+      "invariants": [
+        "selection state does not imply candidate pursuit recommendation",
+        "external application submission requires separate external-effect receipt"
+      ]
+    },
+    {
+      "id": "SM-ASSERTION-EPISTEMIC",
+      "entity": "ENT-ASSERTION",
+      "dimension": "epistemic_status",
+      "states": [
+        "unknown",
+        "needs_research",
+        "inferred",
+        "known"
+      ],
+      "transitions": [
+        {
+          "from": "unknown",
+          "to": "needs_research",
+          "action": "ACT-ASSERTION-MARK-RESEARCH"
+        },
+        {
+          "from": "unknown",
+          "to": "inferred",
+          "action": "ACT-ASSERTION-COMMIT-INFERRED",
+          "guard": "supporting_observation_or_source AND confidence_present"
+        },
+        {
+          "from": "unknown",
+          "to": "known",
+          "action": "ACT-ASSERTION-COMMIT-KNOWN",
+          "guard": "accepted_source_evidence"
+        },
+        {
+          "from": "needs_research",
+          "to": "inferred",
+          "action": "ACT-ASSERTION-COMMIT-INFERRED",
+          "guard": "supporting_observation_or_source AND confidence_present"
+        },
+        {
+          "from": "needs_research",
+          "to": "known",
+          "action": "ACT-ASSERTION-COMMIT-KNOWN",
+          "guard": "accepted_source_evidence"
+        },
+        {
+          "from": "inferred",
+          "to": "known",
+          "action": "ACT-ASSERTION-COMMIT-KNOWN",
+          "guard": "new_accepted_source_evidence"
+        }
+      ],
+      "invariants": [
+        "AI confidence alone cannot produce known",
+        "history is preserved by supersession"
+      ]
+    },
+    {
+      "id": "SM-SHARE-PACKET",
+      "entity": "ENT-SHARE-PACKET",
+      "dimension": "share_packet_state",
+      "states": [
+        "draft",
+        "approved",
+        "shared",
+        "expired",
+        "revoked"
+      ],
+      "transitions": [
+        {
+          "from": "draft",
+          "to": "approved",
+          "action": "ACT-SHARE-PACKET-APPROVE"
+        },
+        {
+          "from": "approved",
+          "to": "shared",
+          "action": "ACT-SHARE-PACKET-SEND"
+        },
+        {
+          "from": "approved",
+          "to": "revoked",
+          "action": "ACT-SHARE-PACKET-REVOKE"
+        },
+        {
+          "from": "shared",
+          "to": "revoked",
+          "action": "ACT-SHARE-PACKET-REVOKE"
+        },
+        {
+          "from": "shared",
+          "to": "expired",
+          "action": "ACT-SHARE-PACKET-EXPIRE"
+        }
+      ],
+      "invariants": [
+        "approve is not share",
+        "share is an external effect"
+      ]
+    },
+    {
+      "id": "SM-EXTERNAL-EFFECT",
+      "entity": "ENT-EXTERNAL-EFFECT-REQUEST",
+      "dimension": "external_effect_state",
+      "states": [
+        "draft",
+        "awaiting_confirmation",
+        "authorized",
+        "executing",
+        "succeeded",
+        "failed",
+        "outcome_unknown",
+        "cancelled"
+      ],
+      "transitions": [
+        {
+          "from": "draft",
+          "to": "awaiting_confirmation",
+          "action": "ACT-EXTERNAL-EFFECT-REQUEST"
+        },
+        {
+          "from": "awaiting_confirmation",
+          "to": "authorized",
+          "action": "ACT-EXTERNAL-EFFECT-CONFIRM"
+        },
+        {
+          "from": "authorized",
+          "to": "executing",
+          "action": "ACT-EXTERNAL-EFFECT-EXECUTE"
+        },
+        {
+          "from": "executing",
+          "to": "succeeded",
+          "action": "ACT-EXTERNAL-EFFECT-RECONCILE",
+          "guard": "success_receipt"
+        },
+        {
+          "from": "executing",
+          "to": "failed",
+          "action": "ACT-EXTERNAL-EFFECT-RECONCILE",
+          "guard": "failure_receipt"
+        },
+        {
+          "from": "executing",
+          "to": "outcome_unknown",
+          "action": "ACT-EXTERNAL-EFFECT-RECONCILE",
+          "guard": "no_definitive_receipt"
+        },
+        {
+          "from": "awaiting_confirmation",
+          "to": "cancelled",
+          "action": "ACT-EXTERNAL-EFFECT-CANCEL"
+        }
+      ],
+      "invariants": [
+        "succeeded requires receipt",
+        "draft/internal preparation cannot transition directly to succeeded"
+      ]
+    },
+    {
+      "id": "SM-CAREER-CLAIM-REVIEW",
+      "entity": "ENT-CAREER-CLAIM",
+      "dimension": "claim_review_state",
+      "states": [
+        "proposed",
+        "under_review",
+        "attested",
+        "rejected",
+        "superseded"
+      ],
+      "transitions": [
+        {
+          "from": "proposed",
+          "to": "under_review",
+          "action": "ACT-CAREER-CLAIM-REVIEW"
+        },
+        {
+          "from": "proposed",
+          "to": "attested",
+          "action": "ACT-CAREER-CLAIM-ATTEST"
+        },
+        {
+          "from": "under_review",
+          "to": "attested",
+          "action": "ACT-CAREER-CLAIM-ATTEST"
+        },
+        {
+          "from": "proposed",
+          "to": "rejected",
+          "action": "ACT-CAREER-CLAIM-REJECT"
+        },
+        {
+          "from": "under_review",
+          "to": "rejected",
+          "action": "ACT-CAREER-CLAIM-REJECT"
+        },
+        {
+          "from": "attested",
+          "to": "superseded",
+          "action": "ACT-CAREER-CLAIM-SUPERSEDE"
+        }
+      ],
+      "invariants": [
+        "attested is self-attestation, not external verification",
+        "AI cannot attest for candidate"
+      ]
+    },
+    {
+      "id": "SM-DELEGATION-GRANT",
+      "entity": "ENT-DELEGATION-GRANT",
+      "dimension": "delegation_state",
+      "states": [
+        "draft",
+        "active",
+        "revoked",
+        "expired"
+      ],
+      "transitions": [
+        {
+          "from": "draft",
+          "to": "active",
+          "action": "ACT-DELEGATION-ACTIVATE"
+        },
+        {
+          "from": "active",
+          "to": "revoked",
+          "action": "ACT-DELEGATION-REVOKE"
+        },
+        {
+          "from": "active",
+          "to": "expired",
+          "action": "ACT-DELEGATION-EXPIRE"
+        }
+      ],
+      "invariants": [
+        "revoked/expired grants cannot authorize any call",
+        "activation requires candidate approval"
+      ]
+    },
+    {
+      "id": "SM-RESUME-VARIANT",
+      "entity": "ENT-RESUME-VARIANT",
+      "dimension": "resume_variant_state",
+      "states": [
+        "draft",
+        "reviewing",
+        "approved",
+        "rejected",
+        "superseded"
+      ],
+      "transitions": [
+        {
+          "from": "draft",
+          "to": "reviewing",
+          "action": "ACT-RESUME-VARIANT-REVIEW"
+        },
+        {
+          "from": "draft",
+          "to": "approved",
+          "action": "ACT-RESUME-VARIANT-APPROVE"
+        },
+        {
+          "from": "reviewing",
+          "to": "approved",
+          "action": "ACT-RESUME-VARIANT-APPROVE"
+        },
+        {
+          "from": "draft",
+          "to": "rejected",
+          "action": "ACT-RESUME-VARIANT-REJECT"
+        },
+        {
+          "from": "reviewing",
+          "to": "rejected",
+          "action": "ACT-RESUME-VARIANT-REJECT"
+        },
+        {
+          "from": "approved",
+          "to": "superseded",
+          "action": "ACT-RESUME-VARIANT-SUPERSEDE"
+        }
+      ],
+      "invariants": [
+        "approved does not mean externally shared or applied",
+        "approval requires evidence-grounding policy"
+      ]
+    },
+    {
+      "id": "SM-SELECTION-STAGE",
+      "entity": "ENT-SELECTION-STAGE",
+      "dimension": "selection_stage_state",
+      "states": [
+        "planned",
+        "scheduled",
+        "completed",
+        "cancelled"
+      ],
+      "transitions": [
+        {
+          "from": "planned",
+          "to": "scheduled",
+          "action": "ACT-SELECTION-STAGE-SCHEDULE"
+        },
+        {
+          "from": "planned",
+          "to": "completed",
+          "action": "ACT-SELECTION-STAGE-COMPLETE"
+        },
+        {
+          "from": "scheduled",
+          "to": "completed",
+          "action": "ACT-SELECTION-STAGE-COMPLETE"
+        },
+        {
+          "from": "planned",
+          "to": "cancelled",
+          "action": "ACT-SELECTION-STAGE-CANCEL"
+        },
+        {
+          "from": "scheduled",
+          "to": "cancelled",
+          "action": "ACT-SELECTION-STAGE-CANCEL"
+        }
+      ]
+    },
+    {
+      "id": "SM-MARKET-WATCH",
+      "entity": "ENT-MARKET-WATCH",
+      "dimension": "market_watch_state",
+      "states": [
+        "active",
+        "paused",
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "active",
+          "to": "paused",
+          "action": "ACT-MARKET-WATCH-PAUSE"
+        },
+        {
+          "from": "paused",
+          "to": "active",
+          "action": "ACT-MARKET-WATCH-RESUME"
+        },
+        {
+          "from": "active",
+          "to": "archived",
+          "action": "ACT-MARKET-WATCH-ARCHIVE"
+        },
+        {
+          "from": "paused",
+          "to": "archived",
+          "action": "ACT-MARKET-WATCH-ARCHIVE"
+        }
+      ],
+      "invariants": [
+        "watch lifecycle is business state, not MCP task lifecycle"
+      ]
+    },
+    {
+      "id": "SM-OFFER-DECISION",
+      "entity": "ENT-OFFER",
+      "dimension": "offer_decision_state",
+      "states": [
+        "received",
+        "under_review",
+        "decision_ready",
+        "intent_accept",
+        "intent_decline",
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": "received",
+          "to": "under_review",
+          "action": "ACT-OFFER-REVIEW"
+        },
+        {
+          "from": "under_review",
+          "to": "decision_ready",
+          "action": "ACT-OFFER-DECISION-PREPARE"
+        },
+        {
+          "from": "decision_ready",
+          "to": "intent_accept",
+          "action": "ACT-OFFER-INTENT-ACCEPT"
+        },
+        {
+          "from": "decision_ready",
+          "to": "intent_decline",
+          "action": "ACT-OFFER-INTENT-DECLINE"
+        },
+        {
+          "from": "intent_accept",
+          "to": "closed",
+          "action": "ACT-OFFER-CLOSE"
+        },
+        {
+          "from": "intent_decline",
+          "to": "closed",
+          "action": "ACT-OFFER-CLOSE"
+        }
+      ],
+      "invariants": [
+        "intent_accept/intent_decline are private candidate intent until an external response action occurs",
+        "AI cannot set candidate intent"
+      ]
+    },
+    {
+      "id": "SM-STRATEGY-EXPERIMENT",
+      "entity": "ENT-STRATEGY-EXPERIMENT",
+      "dimension": "strategy_experiment_state",
+      "states": [
+        "draft",
+        "active",
+        "paused",
+        "completed",
+        "cancelled"
+      ],
+      "transitions": [
+        {
+          "from": "draft",
+          "to": "active",
+          "action": "ACT-STRATEGY-EXPERIMENT-ACTIVATE"
+        },
+        {
+          "from": "active",
+          "to": "paused",
+          "action": "ACT-STRATEGY-EXPERIMENT-PAUSE"
+        },
+        {
+          "from": "paused",
+          "to": "active",
+          "action": "ACT-STRATEGY-EXPERIMENT-ACTIVATE"
+        },
+        {
+          "from": "active",
+          "to": "completed",
+          "action": "ACT-STRATEGY-EXPERIMENT-COMPLETE"
+        },
+        {
+          "from": "draft",
+          "to": "cancelled",
+          "action": "ACT-STRATEGY-EXPERIMENT-CANCEL"
+        },
+        {
+          "from": "active",
+          "to": "cancelled",
+          "action": "ACT-STRATEGY-EXPERIMENT-CANCEL"
+        },
+        {
+          "from": "paused",
+          "to": "cancelled",
+          "action": "ACT-STRATEGY-EXPERIMENT-CANCEL"
+        }
+      ]
+    }
+  ]
+}

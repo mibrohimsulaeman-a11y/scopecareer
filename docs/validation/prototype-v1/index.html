@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ScopeCareer — Validation Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="shell-header">
+    <a class="brand" href="#" aria-label="ScopeCareer"><span class="brand-mark">S</span><span>ScopeCareer</span></a>
+    <nav aria-label="Primary navigation">
+      <button class="nav-item active" data-view="briefing">Briefing</button>
+      <button class="nav-item" data-view="opportunities">Opportunities</button>
+      <button class="nav-item" data-view="career">Career</button>
+    </nav>
+    <button class="research-toggle" id="researchToggle" hidden>Research log</button>
+  </header>
+
+  <main class="shell-main">
+    <section id="briefingView" class="view active" aria-labelledby="briefingTitle">
+      <div class="briefing-head">
+        <div><div class="eyebrow">FRIDAY · 21 AUG</div><h1 id="briefingTitle">Briefing</h1></div>
+        <div class="briefing-count"><strong>3</strong><span>items</span></div>
+      </div>
+      <div id="briefingGroups"></div>
+    </section>
+
+    <section id="opportunitiesView" class="view" aria-labelledby="opportunitiesTitle">
+      <div class="opportunities-head">
+        <div><div class="eyebrow">OPPORTUNITIES</div><h1 id="opportunitiesTitle">Opportunities</h1></div>
+        <div class="scan-context"><span><strong>27</strong> leads reviewed</span><span><strong id="scanShortlistCount">3</strong> shortlisted</span></div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Opportunity filters">
+        <button class="tab active" data-filter="shortlist">Shortlist <span id="countShortlist">3</span></button>
+        <button class="tab" data-filter="all">All <span id="countAll">3</span></button>
+        <button class="tab" data-filter="saved">Saved <span id="countSaved">0</span></button>
+        <button class="tab" data-filter="pursuing">In progress <span id="countPursuing">0</span></button>
+        <button class="tab" data-filter="closed">Closed <span id="countClosed">0</span></button>
+      </div>
+
+      <div class="workbench" id="workbench">
+        <div class="list-pane">
+          <div class="list-head"><span>Role</span><span>Trajectory / route</span><span>Updated</span></div>
+          <div id="oppList" class="opp-list"></div>
+        </div>
+        <aside id="oppDetail" class="inspector" aria-live="polite"></aside>
+      </div>
+
+      <section id="compareView" class="compare-view" hidden>
+        <div class="compare-head"><div><div class="eyebrow">COMPARE</div><h2>Opportunity comparison</h2></div><button class="text-btn" id="cmpBack">← Back to opportunities</button></div>
+        <div id="compareTable"></div>
+      </section>
+
+      <div id="compareBar" class="compare-bar" hidden>
+        <div><strong id="compareCount">0 selected</strong><span>Compare the evidence, not a single score.</span></div>
+        <div class="compare-actions"><button class="text-btn" id="compareClear">Clear</button><button class="btn primary" id="compareGo">Compare</button></div>
+      </div>
+    </section>
+
+    <section id="careerView" class="view" aria-labelledby="careerTitle">
+      <div class="career-head"><div><div class="eyebrow">CAREER</div><h1 id="careerTitle">Career evidence</h1><p>Claims, supporting evidence, and reuse permissions remain separate.</p></div></div>
+      <div id="evidenceLibrary" class="evidence-table"></div>
+    </section>
+  </main>
+
+  <aside id="researchPanel" class="research-panel" aria-hidden="true">
+    <div class="research-head"><div><span>RESEARCHER ONLY</span><strong>Session events</strong></div><button id="closeResearch" aria-label="Close research log">×</button></div>
+    <div id="eventLog" class="event-log"></div>
+    <button id="copySession" class="secondary-button">Copy session JSON</button>
+  </aside>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

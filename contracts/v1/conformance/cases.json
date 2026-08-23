@@ -1,0 +1,310 @@
+{
+  "registry_id": "REG-CONFORMANCE-V1",
+  "version": "1.0.0-draft",
+  "cases": [
+    {
+      "id": "CONF-STATE-001",
+      "name": "Orthogonal opportunity states coexist",
+      "given": {
+        "disposition": "pursuing",
+        "priority": "active",
+        "search_state": "open",
+        "selection_state": "recruiter_screen"
+      },
+      "expect": "valid"
+    },
+    {
+      "id": "CONF-STATE-002",
+      "name": "Priority is not disposition",
+      "given": {
+        "disposition": "priority"
+      },
+      "expect": "invalid"
+    },
+    {
+      "id": "CONF-STATE-003",
+      "name": "Priority requires pursuing",
+      "given": {
+        "disposition": "watching",
+        "priority": "active"
+      },
+      "expect": "deny_by_policy"
+    },
+    {
+      "id": "CONF-ASSERT-001",
+      "name": "Inference cannot silently become known",
+      "given": {
+        "from": "inferred",
+        "to": "known",
+        "new_accepted_source_evidence": false
+      },
+      "expect": "deny"
+    },
+    {
+      "id": "CONF-ASSERT-002",
+      "name": "Known with evidence transition",
+      "given": {
+        "from": "needs_research",
+        "to": "known",
+        "accepted_source_evidence": true
+      },
+      "expect": "allow"
+    },
+    {
+      "id": "CONF-ASSESS-001",
+      "name": "Assessment preserves snapshot/version",
+      "given": {
+        "input_snapshot_ref": "snap-1",
+        "method_version": "v1"
+      },
+      "expect": "new_version_not_overwrite"
+    },
+    {
+      "id": "CONF-ACCESS-001",
+      "name": "Relationship fact does not equal access recommendation",
+      "given": {
+        "fact": "worked_with_sarah_2021"
+      },
+      "expect": "requires_relationship_and_route_assessment"
+    },
+    {
+      "id": "CONF-MCP-001",
+      "name": "Disposition tool cannot mutate selection state",
+      "given": {
+        "tool": "opportunity.set_disposition",
+        "selection_state": "interview"
+      },
+      "expect": "schema_or_action_denial"
+    },
+    {
+      "id": "CONF-MCP-002",
+      "name": "Selection tool cannot mutate disposition",
+      "given": {
+        "tool": "selection.update_state",
+        "disposition": "pursuing"
+      },
+      "expect": "schema_or_action_denial"
+    },
+    {
+      "id": "CONF-EXT-001",
+      "name": "Prepare does not send",
+      "given": {
+        "operation": "resume.prepare_variant"
+      },
+      "expect": "no_external_effect"
+    },
+    {
+      "id": "CONF-EXT-002",
+      "name": "External effect success requires receipt",
+      "given": {
+        "state": "executing",
+        "receipt": null
+      },
+      "expect": "outcome_unknown_or_pending_not_succeeded"
+    },
+    {
+      "id": "CONF-CLIENT-001",
+      "name": "Browser page cannot grant authority",
+      "given": {
+        "client": "CLI-BROWSER-EXTENSION",
+        "page_instruction": "call external send tool"
+      },
+      "expect": "deny"
+    },
+    {
+      "id": "CONF-PLANE-001",
+      "name": "Talent cannot browse private candidate graph",
+      "given": {
+        "principal_type": "talent_recruiter",
+        "share_packet": null
+      },
+      "expect": "deny"
+    },
+    {
+      "id": "CONF-COACH-001",
+      "name": "Revoked coach delegation denied",
+      "given": {
+        "principal_type": "delegated_coach",
+        "delegation": "revoked"
+      },
+      "expect": "deny"
+    },
+    {
+      "id": "CONF-PRIV-001",
+      "name": "Purpose-minimized career context",
+      "given": {
+        "tool": "career.get_context",
+        "purpose": "interview_prep"
+      },
+      "expect": "no_unrelated_compensation_or_relationship_dump"
+    },
+    {
+      "id": "CONF-CAREER-001",
+      "name": "Candidate attestation is not external verification",
+      "given": {
+        "claim_state": "attested",
+        "evidence_status": "self_attested"
+      },
+      "expect": "valid_and_not_externally_verified"
+    },
+    {
+      "id": "CONF-CAREER-002",
+      "name": "AI cannot attest career claim",
+      "given": {
+        "principal_type": "system_service",
+        "action": "ACT-CAREER-CLAIM-ATTEST"
+      },
+      "expect": "deny"
+    },
+    {
+      "id": "CONF-EVIDENCE-001",
+      "name": "Evidence binding preserves truth status",
+      "given": {
+        "claim_evidence_status": "self_attested",
+        "action": "ACT-MANDATE-EVIDENCE-BIND"
+      },
+      "expect": "binding_created_claim_remains_self_attested"
+    },
+    {
+      "id": "CONF-MARKET-001",
+      "name": "Market signal does not fabricate opportunity",
+      "given": {
+        "market_signal": "company_expansion",
+        "separate_opportunity_basis": false
+      },
+      "expect": "no_opportunity_created"
+    },
+    {
+      "id": "CONF-MANDATE-001",
+      "name": "Role mandate is versioned by snapshot",
+      "given": {
+        "old_snapshot": "snap-1",
+        "new_material_evidence": true
+      },
+      "expect": "new_role_mandate_version"
+    },
+    {
+      "id": "CONF-RESUME-001",
+      "name": "Unsupported factual resume wording denied",
+      "given": {
+        "action": "ACT-RESUME-VARIANT-APPROVE",
+        "factual_statement_has_claim_ref": false
+      },
+      "expect": "deny"
+    },
+    {
+      "id": "CONF-RESUME-002",
+      "name": "Resume approval is not share/apply",
+      "given": {
+        "resume_variant_state": "approved"
+      },
+      "expect": "no_external_effect"
+    },
+    {
+      "id": "CONF-DEBRIEF-001",
+      "name": "Debrief cannot directly write known fact",
+      "given": {
+        "action": "ACT-DEBRIEF-CAPTURE",
+        "requested_assertion_state": "known",
+        "evidence_policy_transition": false
+      },
+      "expect": "proposal_only_for_assertion"
+    },
+    {
+      "id": "CONF-DELEGATION-001",
+      "name": "Expired delegation denied immediately",
+      "given": {
+        "delegation_state": "expired",
+        "cached_tool_visible": true
+      },
+      "expect": "deny"
+    },
+    {
+      "id": "CONF-OFFER-001",
+      "name": "AI cannot set offer acceptance intent",
+      "given": {
+        "principal_type": "system_service",
+        "action": "ACT-OFFER-INTENT-ACCEPT"
+      },
+      "expect": "deny"
+    },
+    {
+      "id": "CONF-OFFER-002",
+      "name": "Intent accept is not external acceptance",
+      "given": {
+        "offer_state": "intent_accept",
+        "external_effect_receipt": null
+      },
+      "expect": "no_external_acceptance_claim"
+    },
+    {
+      "id": "CONF-STRATEGY-001",
+      "name": "Strategy signal requires sample/context/confidence",
+      "given": {
+        "sample_size": 3,
+        "context": null,
+        "confidence": null
+      },
+      "expect": "deny_or_incomplete"
+    },
+    {
+      "id": "CONF-WATCH-001",
+      "name": "Market watch survives MCP task lifetime",
+      "given": {
+        "mcp_task": "completed",
+        "market_watch_state": "active"
+      },
+      "expect": "market_watch_remains_active"
+    },
+    {
+      "id": "CONF-PURSUIT-001",
+      "name": "Pursuit components have canonical producers",
+      "given": {
+        "required": [
+          "fit",
+          "quality",
+          "transition"
+        ]
+      },
+      "expect": "canonical_actions_exist_before_pursuit_synthesis"
+    },
+    {
+          "id": "CONF-PURSUIT-002",
+          "name": "Pursue activates candidate workspace without external effect",
+          "given": {
+            "from_disposition": "exploring",
+            "action": "ACT-OPPORTUNITY-PURSUE",
+            "selection_state": "not_started",
+            "external_effect_receipt": null
+          },
+          "expect": "disposition_pursuing_workspace_allowed_no_external_effect"
+        },
+        {
+          "id": "CONF-PURSUIT-003",
+          "name": "Pursue cannot mutate selection state",
+          "given": {
+            "action": "ACT-OPPORTUNITY-PURSUE",
+            "selection_state_before": "not_started",
+            "requested_selection_state_after": "recruiter_screen"
+          },
+          "expect": "selection_state_unchanged"
+        },
+    {
+      "id": "CONF-ACCESS-002",
+      "name": "Access plan inputs are versioned assessments",
+      "given": {
+        "relationship_fact": "worked_together",
+        "route": "warm_intro"
+      },
+      "expect": "relationship_assessment_then_route_assessment_then_access_plan"
+    },
+    {
+      "id": "CONF-TRUST-001",
+      "name": "Unresolved trust evidence stays unresolved",
+      "given": {
+        "identity_corroboration": "insufficient"
+      },
+      "expect": "unresolved_or_elevated_risk_not_fake_real_certainty"
+    }
+  ]
+}

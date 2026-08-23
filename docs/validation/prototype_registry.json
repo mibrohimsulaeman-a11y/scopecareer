@@ -1,0 +1,116 @@
+{
+  "registry_id": "REG-PRODUCT-VALIDATION-PROTOTYPE-V3",
+  "version": "3.0.0-progressive-pursuit",
+  "status": "ready_for_moderated_test",
+  "source_contracts": {
+    "views": "../contracts/v1/views/view_model_registry.json",
+    "journeys": "../contracts/v1/journeys/journey_registry.json",
+    "semantics": "../contracts/v1/"
+  },
+  "prototype_path": "prototype-v3/index.html",
+  "previous_prototype_path": "prototype-v2/index.html",
+  "baseline_prototype_path": "prototype-v1/index.html",
+  "design_direction": "executive opportunity desk",
+  "visual_grammar_references": [
+    "Ghiyaats Muhammad — Job Listing Dashboard (master list -> persistent detail)",
+    "Outcrowd — Sync CRM (restrained controls, density, one meaningful accent)",
+    "Ronas IT — CRM Dashboard Web UI (prolonged-use neutral data workspace)",
+    "Stephanie Howden — Financial Portfolio Management (executive-grade information hierarchy)",
+    "Outcrowd — Investment Dashboard (selective expressive emphasis)"
+  ],
+  "rejected_references": [
+    "AI job dashboard / ATS visual pattern: match %, card galleries, apply-first mechanics"
+  ],
+  "p0_hypotheses": [
+    {
+      "id": "PV-H01",
+      "journey": "JRN-DAILY-SHORTLIST",
+      "hypothesis": "Executives understand Briefing as a temporal decision queue and Opportunities as the durable opportunity workspace, with Shortlist explicitly available inside Opportunities.",
+      "success_evidence": [
+        "user does not confuse Briefing with the opportunity catalog",
+        "user reaches the relevant opportunity from a briefing item without searching again",
+        "user finds Shortlist immediately inside Opportunities",
+        "user compares shortlisted roles through list + detail inspection without forced pagination"
+      ]
+    },
+    {
+      "id": "PV-H02",
+      "journey": "JRN-EXPLORE-PURSUE",
+      "hypothesis": "Contextual investigation actions and Open pursuit workspace represent meaningfully different levels of commitment while mapping to canonical Explore and Pursue actions.",
+      "success_evidence": [
+        "user describes Investigate authority & pay, Investigate scope & reporting, or Prepare for call as bounded work to reduce uncertainty or prepare",
+        "user understands Open pursuit workspace as moving the opportunity into active work",
+        "Open pursuit workspace is not confused with Apply, outreach, or any external submission"
+      ]
+    },
+    {
+      "id": "PV-H03",
+      "journey": "JRN-PURSUIT-RECOMMENDATION",
+      "hypothesis": "Structured opportunity judgement provides more executive value than a fit percentage.",
+      "success_evidence": [
+        "user notices trajectory, scope, access and uncertainty trade-offs",
+        "user can identify at least one open question before pursuing",
+        "user does not ask for a single percentage as the only explanation"
+      ]
+    },
+    {
+      "id": "PV-H04",
+      "journey": "JRN-ACCESS-PLAN",
+      "hypothesis": "Route-to-company guidance is perceived as actionable differentiation beyond direct apply.",
+      "success_evidence": [
+        "user understands relationship fact vs route recommendation",
+        "recommended route feels credible",
+        "user expects outreach to remain manual/explicit"
+      ]
+    },
+    {
+      "id": "PV-H05",
+      "journey": "JRN-EVIDENCE-BINDING",
+      "hypothesis": "Binding a mandate fragment to career evidence feels useful rather than bureaucratic.",
+      "success_evidence": [
+        "user can select relevant evidence without explanation",
+        "user understands reuse in positioning/resume/interview",
+        "user does not think binding independently verifies the claim"
+      ]
+    },
+    {
+      "id": "PV-H06",
+      "journey": "JRN-DAILY-SHORTLIST",
+      "hypothesis": "Explicit side-by-side comparison helps executives resolve trade-offs faster than mentally comparing separate opportunity details.",
+      "success_evidence": [
+        "user selects two or more shortlisted opportunities for comparison without prompting",
+        "user uses named dimensions such as trajectory, scope, route and unknowns rather than asking for one aggregate score",
+        "comparison changes or sharpens at least one stated preference or next action"
+      ]
+    }
+    ,
+        {
+          "id": "PV-H07",
+          "journey": "JRN-EXPLORE-PURSUE",
+          "hypothesis": "Once an opportunity is active, the pursuit workspace makes the next move and current decision context obvious without forcing the executive through multiple modules.",
+          "success_evidence": [
+            "user can state the next move within 30 seconds of entering the workspace",
+            "user can identify the current picture, highest-impact unknown and route without opening multiple areas",
+            "user understands the workspace as a private working file rather than an application submission screen"
+          ]
+        },
+        {
+          "id": "PV-H08",
+          "journey": "JRN-DEBRIEF-LOOP",
+          "hypothesis": "Stable workspace navigation with stage-aware composition remains understandable as the opportunity progresses through recruiter conversation, selection, final/reference and offer contexts.",
+          "success_evidence": [
+            "user recognizes what changed in the selected stage scenario without relearning navigation",
+            "the stage-specific next move feels appropriate to the current process context",
+            "irrelevant future modules such as Offer do not dominate earlier stages"
+          ]
+        }
+  ],
+  "non_goals": [
+    "visual-brand validation",
+    "technical performance",
+    "job-source coverage",
+    "model quality benchmarking",
+    "native mobile behavior",
+    "full application workflow"
+  ]
+}

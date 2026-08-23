@@ -1,0 +1,1402 @@
+{
+  "registry_id": "REG-ENTITY-V1",
+  "version": "1.0.0-draft",
+  "entities": [
+    {
+      "id": "ENT-SOURCE",
+      "name": "Source",
+      "domain": "trust",
+      "purpose": "Identifies origin material from which observations are captured.",
+      "fields": [
+        "id",
+        "source_type",
+        "uri_or_reference",
+        "source_trust",
+        "publisher_or_actor",
+        "captured_at",
+        "published_at",
+        "sensitivity",
+        "content_hash_or_snapshot_ref"
+      ],
+      "invariants": [
+        "source metadata survives downstream extraction",
+        "untrusted external content never grants action authority"
+      ]
+    },
+    {
+      "id": "ENT-OBSERVATION",
+      "name": "Observation",
+      "domain": "trust",
+      "purpose": "Immutable or append-only capture of what a source stated or exposed before interpretation.",
+      "fields": [
+        "id",
+        "source_id",
+        "subject_hint",
+        "raw_value_or_excerpt",
+        "normalized_value",
+        "observed_at",
+        "captured_at",
+        "sensitivity"
+      ],
+      "invariants": [
+        "observation does not itself become a canonical fact",
+        "observation preserves source_id and observed_at"
+      ]
+    },
+    {
+      "id": "ENT-ASSERTION",
+      "name": "Assertion",
+      "domain": "trust",
+      "purpose": "Generic epistemic statement about any subject in ScopeCareer.",
+      "fields": [
+        "id",
+        "subject_ref",
+        "predicate",
+        "value",
+        "epistemic_status",
+        "observation_refs",
+        "source_refs",
+        "confidence",
+        "observed_at",
+        "valid_from",
+        "valid_until",
+        "supersedes_assertion_id",
+        "sensitivity",
+        "created_at",
+        "created_by"
+      ],
+      "state_machine": "SM-ASSERTION-EPISTEMIC",
+      "invariants": [
+        "known requires source-backed evidence accepted by policy",
+        "inferred requires explicit confidence and supporting observations or sources",
+        "unknown and needs_research may have null value",
+        "inferred cannot transition to known without evidence-bearing transition",
+        "supersession preserves historical assertion"
+      ]
+    },
+    {
+      "id": "ENT-EVIDENCE-SNAPSHOT",
+      "name": "EvidenceSnapshot",
+      "domain": "trust",
+      "purpose": "Immutable input snapshot used to make an assessment reproducible.",
+      "fields": [
+        "id",
+        "subject_refs",
+        "assertion_refs",
+        "observation_refs",
+        "career_evidence_revision",
+        "created_at",
+        "content_hash"
+      ],
+      "invariants": [
+        "assessment input snapshot is immutable",
+        "new evidence creates a new snapshot"
+      ]
+    },
+    {
+      "id": "ENT-ASSESSMENT",
+      "name": "Assessment",
+      "domain": "trust",
+      "purpose": "Versioned interpretation of evidence/assertions for a defined decision dimension.",
+      "fields": [
+        "id",
+        "assessment_type",
+        "subject_ref",
+        "input_snapshot_ref",
+        "evidence_revision",
+        "method_version",
+        "model_or_rule_version",
+        "dimensions",
+        "reasons",
+        "concerns",
+        "unknowns",
+        "confidence",
+        "created_at",
+        "superseded_by"
+      ],
+      "invariants": [
+        "assessment is append/versioned, not silently overwritten",
+        "every assessment references an immutable input snapshot",
+        "stale assessment remains auditable after supersession"
+      ]
+    },
+    {
+      "id": "ENT-RECOMMENDATION",
+      "name": "Recommendation",
+      "domain": "trust",
+      "purpose": "Action-oriented advice derived from one or more assessments, separate from the assessment itself.",
+      "fields": [
+        "id",
+        "recommendation_type",
+        "subject_ref",
+        "assessment_refs",
+        "recommendation",
+        "reasons",
+        "concerns",
+        "unknowns",
+        "confidence",
+        "created_at",
+        "superseded_by"
+      ],
+      "invariants": [
+        "recommendation never upgrades evidence status",
+        "recommendation preserves source assessment refs"
+      ]
+    },
+    {
+      "id": "ENT-CAREER-CLAIM",
+      "name": "CareerClaim",
+      "domain": "career",
+      "purpose": "Candidate career claim usable for positioning subject to evidence and usage policy.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "claim_type",
+        "structured_value",
+        "assertion_ref",
+        "provenance",
+        "evidence_status",
+        "interpretation_status",
+        "usage_permissions",
+        "sensitivity",
+        "candidate_attested_at"
+      ],
+      "invariants": [
+        "candidate attestation is not external verification",
+        "usage permission is independent from evidence status"
+      ],
+      "state_machine": "SM-CAREER-CLAIM-REVIEW"
+    },
+    {
+      "id": "ENT-CAREER-INTENT",
+      "name": "CareerIntent",
+      "domain": "career",
+      "purpose": "Desired trajectory, mandates, scope, geography, company context, compensation constraints and avoidances.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "target_role_families",
+        "desired_mandates",
+        "scope_preferences",
+        "geographies",
+        "company_preferences",
+        "constraints",
+        "avoidances",
+        "version",
+        "updated_at"
+      ],
+      "invariants": [
+        "career intent is candidate-owned",
+        "assessment must reference intent version used"
+      ]
+    },
+    {
+      "id": "ENT-COMPANY",
+      "name": "Company",
+      "domain": "market",
+      "purpose": "Canonical company identity; contextual facts are represented by assertions.",
+      "fields": [
+        "id",
+        "canonical_name",
+        "aliases",
+        "canonical_domain",
+        "public_identifiers"
+      ],
+      "invariants": [
+        "time-varying company context belongs in assertions, not silently overwritten scalar fields"
+      ]
+    },
+    {
+      "id": "ENT-PERSON",
+      "name": "Person",
+      "domain": "access",
+      "purpose": "Person identity referenced by relationships, recruiter context or selection process.",
+      "fields": [
+        "id",
+        "display_name",
+        "public_or_candidate_provided_identifiers",
+        "sensitivity"
+      ],
+      "invariants": [
+        "identity data alone does not imply relationship strength or access value"
+      ]
+    },
+    {
+      "id": "ENT-SEARCH-FIRM",
+      "name": "SearchFirm",
+      "domain": "market",
+      "purpose": "Executive-search or recruitment firm identity.",
+      "fields": [
+        "id",
+        "name",
+        "domains",
+        "public_identifiers"
+      ],
+      "invariants": [
+        "specialty and relationship claims use assertions/evidence"
+      ]
+    },
+    {
+      "id": "ENT-OPPORTUNITY",
+      "name": "Opportunity",
+      "domain": "opportunity",
+      "purpose": "Potential career opportunity, public or confidential, with orthogonal candidate/search/selection states.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "company_ref",
+        "role_label",
+        "confidentiality",
+        "primary_source_ref",
+        "created_at"
+      ],
+      "state_machines": [
+        "SM-CANDIDATE-DISPOSITION",
+        "SM-OPPORTUNITY-SEARCH",
+        "SM-CANDIDATE-SELECTION",
+        "SM-PRIORITY-ALLOCATION"
+      ],
+      "invariants": [
+        "public URL or JD is optional",
+        "no generic status field may collapse orthogonal state dimensions"
+      ]
+    },
+    {
+      "id": "ENT-RELATIONSHIP",
+      "name": "Relationship",
+      "domain": "access",
+      "purpose": "Structural candidate-to-person/company/search-firm relationship identity without permanent strength score.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "counterparty_ref",
+        "relationship_type",
+        "created_at",
+        "sensitivity"
+      ],
+      "invariants": [
+        "relationship has no canonical permanent numeric strength",
+        "contextual strength belongs to RelationshipAssessment"
+      ]
+    },
+    {
+      "id": "ENT-RELATIONSHIP-EVIDENCE",
+      "name": "RelationshipEvidence",
+      "domain": "access",
+      "purpose": "Evidence of historical interaction or shared context relevant to a relationship.",
+      "fields": [
+        "id",
+        "relationship_id",
+        "interaction_ref",
+        "assertion_refs",
+        "observed_at",
+        "sensitivity"
+      ],
+      "invariants": [
+        "historical interaction is evidence, not an access recommendation"
+      ]
+    },
+    {
+      "id": "ENT-INTERACTION",
+      "name": "Interaction",
+      "domain": "access",
+      "purpose": "Call, email, meeting, message, recruiter conversation, coaching session or interview event.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "participant_refs",
+        "opportunity_ref",
+        "interaction_type",
+        "occurred_at",
+        "source_refs",
+        "notes_ref",
+        "sensitivity"
+      ],
+      "invariants": [
+        "derived facts are assertions, not direct mutation of business objects"
+      ]
+    },
+    {
+      "id": "ENT-RELATIONSHIP-ASSESSMENT",
+      "name": "RelationshipAssessment",
+      "domain": "access",
+      "extends": "ENT-ASSESSMENT",
+      "purpose": "Time/context-specific interpretation of relationship relevance or strength.",
+      "fields": [
+        "relationship_id",
+        "context_ref",
+        "strength_band",
+        "recency_relevance"
+      ],
+      "invariants": [
+        "assessment is contextual and versioned",
+        "does not overwrite Relationship facts"
+      ]
+    },
+    {
+      "id": "ENT-ACCESS-ROUTE-ASSESSMENT",
+      "name": "AccessRouteAssessment",
+      "domain": "access",
+      "extends": "ENT-ASSESSMENT",
+      "purpose": "Opportunity-specific evaluation of a possible route: direct, recruiter, warm referral, internal intro or network-first.",
+      "fields": [
+        "opportunity_id",
+        "route_type",
+        "relationship_assessment_refs",
+        "route_viability"
+      ],
+      "invariants": [
+        "route viability is recommendation input, not relationship fact"
+      ]
+    },
+    {
+      "id": "ENT-ACCESS-PLAN",
+      "name": "AccessPlan",
+      "domain": "access",
+      "purpose": "Versioned strategy assembling evaluated access routes for an opportunity.",
+      "fields": [
+        "id",
+        "opportunity_id",
+        "input_snapshot_ref",
+        "route_assessment_refs",
+        "recommended_route",
+        "confidence",
+        "unknowns",
+        "created_at",
+        "superseded_by"
+      ],
+      "invariants": [
+        "does not send outreach",
+        "external outreach requires separate action"
+      ]
+    },
+    {
+      "id": "ENT-FIT-ASSESSMENT",
+      "name": "FitAssessment",
+      "domain": "pursuit",
+      "extends": "ENT-ASSESSMENT",
+      "purpose": "Evidence-based assessment of candidate-role/mandate alignment.",
+      "fields": [
+        "opportunity_id",
+        "evidence_coverage",
+        "mandate_fit",
+        "scope_fit",
+        "industry_fit",
+        "intent_fit"
+      ],
+      "invariants": [
+        "default candidate surface must not imply objective probability"
+      ]
+    },
+    {
+      "id": "ENT-QUALITY-ASSESSMENT",
+      "name": "OpportunityQualityAssessment",
+      "domain": "pursuit",
+      "extends": "ENT-ASSESSMENT",
+      "purpose": "Assessment of opportunity quality independent of candidate fit.",
+      "fields": [
+        "opportunity_id",
+        "mandate_clarity",
+        "authority_quality",
+        "sponsorship",
+        "company_trajectory",
+        "role_scope",
+        "compensation_credibility",
+        "freshness",
+        "feasibility"
+      ]
+    },
+    {
+      "id": "ENT-TRANSITION-ASSESSMENT",
+      "name": "TransitionAssessment",
+      "domain": "pursuit",
+      "extends": "ENT-ASSESSMENT",
+      "purpose": "Assessment of career trajectory value/risk.",
+      "fields": [
+        "opportunity_id",
+        "transition_class",
+        "scope_change",
+        "authority_change",
+        "market_value",
+        "learning",
+        "future_optionality",
+        "risk"
+      ]
+    },
+    {
+      "id": "ENT-PURSUIT-ASSESSMENT",
+      "name": "PursuitAssessment",
+      "domain": "pursuit",
+      "extends": "ENT-ASSESSMENT",
+      "purpose": "Versioned synthesis inputs for a pursuit decision, without collapsing recommendation into raw evidence.",
+      "fields": [
+        "opportunity_id",
+        "fit_assessment_ref",
+        "quality_assessment_ref",
+        "transition_assessment_ref",
+        "access_plan_ref",
+        "career_intent_version"
+      ],
+      "invariants": [
+        "assessment does not directly change candidate disposition"
+      ]
+    },
+    {
+      "id": "ENT-PURSUIT-RECOMMENDATION",
+      "name": "PursuitRecommendation",
+      "domain": "pursuit",
+      "extends": "ENT-RECOMMENDATION",
+      "purpose": "Candidate-facing advice derived from PursuitAssessment.",
+      "fields": [
+        "opportunity_id",
+        "pursuit_assessment_ref",
+        "recommendation_band"
+      ],
+      "invariants": [
+        "candidate decides disposition separately",
+        "recommendation may be superseded by later evidence"
+      ]
+    },
+    {
+      "id": "ENT-PRIORITY-POLICY",
+      "name": "PriorityPolicy",
+      "domain": "pursuit",
+      "purpose": "Configurable candidate attention/research budget for Priority allocation.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "max_active",
+        "research_budget",
+        "refresh_frequency",
+        "attention_weight",
+        "version"
+      ],
+      "invariants": [
+        "numeric limit is policy, not enum semantics",
+        "priority has no external employer signal"
+      ]
+    },
+    {
+      "id": "ENT-SELECTION-PROCESS",
+      "name": "SelectionProcess",
+      "domain": "selection",
+      "purpose": "Opportunity-specific selection process and participants.",
+      "fields": [
+        "id",
+        "opportunity_id",
+        "stage_refs",
+        "participant_refs",
+        "created_at",
+        "updated_at"
+      ],
+      "invariants": [
+        "selection process state is orthogonal to candidate disposition and opportunity search state"
+      ]
+    },
+    {
+      "id": "ENT-SHARE-PACKET",
+      "name": "SharePacket",
+      "domain": "trust",
+      "purpose": "Explicit bounded disclosure from Candidate Plane to a recipient.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "recipient_ref",
+        "purpose",
+        "included_refs",
+        "usage_restrictions",
+        "expires_at",
+        "revoked_at",
+        "created_at"
+      ],
+      "state_machine": "SM-SHARE-PACKET",
+      "invariants": [
+        "cross-plane access occurs through packet contents, not graph-wide access"
+      ]
+    },
+    {
+      "id": "ENT-EXTERNAL-EFFECT-REQUEST",
+      "name": "ExternalEffectRequest",
+      "domain": "trust",
+      "purpose": "Explicit request for share/send/publish/apply or other external effect.",
+      "fields": [
+        "id",
+        "principal_id",
+        "action_id",
+        "object_refs",
+        "purpose",
+        "idempotency_key",
+        "approval_state",
+        "created_at"
+      ],
+      "state_machine": "SM-EXTERNAL-EFFECT",
+      "invariants": [
+        "request is distinct from effect receipt"
+      ]
+    },
+    {
+      "id": "ENT-EXTERNAL-EFFECT-RECEIPT",
+      "name": "ExternalEffectReceipt",
+      "domain": "trust",
+      "purpose": "Evidence of actual external effect outcome.",
+      "fields": [
+        "id",
+        "request_id",
+        "provider_or_recipient",
+        "outcome",
+        "external_reference",
+        "occurred_at",
+        "payload_hash_or_summary"
+      ],
+      "invariants": [
+        "no successful external effect state without receipt or explicitly unknown external outcome"
+      ]
+    },
+    {
+      "id": "ENT-MARKET-WATCH",
+      "name": "MarketWatch",
+      "domain": "market",
+      "purpose": "Durable business-level monitoring definition independent from MCP task lifetime.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "watch_type",
+        "criteria",
+        "frequency_policy",
+        "created_at",
+        "updated_at",
+        "archived_at"
+      ],
+      "invariants": [
+        "business durability is platform-owned, not protocol-task-owned",
+        "watch state is not MCP task state"
+      ],
+      "state_machine": "SM-MARKET-WATCH"
+    },
+    {
+      "id": "ENT-OFFER",
+      "name": "Offer",
+      "domain": "outcome",
+      "purpose": "Captured offer terms and decision context.",
+      "fields": [
+        "id",
+        "opportunity_id",
+        "component_refs",
+        "source_refs",
+        "received_at",
+        "sensitivity",
+        "created_at"
+      ],
+      "invariants": [
+        "offer capture does not imply acceptance",
+        "candidate decision intent is distinct from external response"
+      ],
+      "state_machine": "SM-OFFER-DECISION"
+    },
+    {
+      "id": "ENT-OUTCOME",
+      "name": "Outcome",
+      "domain": "outcome",
+      "purpose": "Observed result of pursuit/selection used for longitudinal learning.",
+      "fields": [
+        "id",
+        "opportunity_id",
+        "outcome_type",
+        "occurred_at",
+        "source_refs",
+        "notes",
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "ENT-PRINCIPAL",
+      "name": "Principal",
+      "domain": "trust",
+      "purpose": "Authenticated acting identity resolved for authorization.",
+      "fields": [
+        "id",
+        "user_id",
+        "principal_type",
+        "candidate_id",
+        "trust_plane",
+        "tenant_id",
+        "created_at"
+      ],
+      "invariants": [
+        "principal type does not itself grant object access",
+        "trust plane is explicit"
+      ]
+    },
+    {
+      "id": "ENT-DELEGATION-GRANT",
+      "name": "DelegationGrant",
+      "domain": "trust",
+      "purpose": "Candidate-granted bounded authority for a delegated principal such as a coach.",
+      "fields": [
+        "id",
+        "grantor_candidate_id",
+        "grantee_principal_id",
+        "purpose",
+        "capability_scope",
+        "action_scope",
+        "object_scope",
+        "data_scope",
+        "sensitivity_ceiling",
+        "starts_at",
+        "expires_at",
+        "revoked_at",
+        "created_at"
+      ],
+      "state_machine": "SM-DELEGATION-GRANT",
+      "invariants": [
+        "delegation cannot widen candidate ownership",
+        "revocation and expiry take effect at server authorization time"
+      ]
+    },
+    {
+      "id": "ENT-CONSENT-RECORD",
+      "name": "ConsentRecord",
+      "domain": "trust",
+      "purpose": "Auditable record of explicit consent for a defined purpose/scope.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "purpose",
+        "scope",
+        "recipient_or_processor_ref",
+        "consent_text_version",
+        "granted_at",
+        "withdrawn_at",
+        "source_ref"
+      ],
+      "invariants": [
+        "consent is purpose/scope specific",
+        "withdrawal is preserved rather than deleting historical consent evidence"
+      ]
+    },
+    {
+      "id": "ENT-POLICY-DECISION",
+      "name": "PolicyDecision",
+      "domain": "trust",
+      "purpose": "Auditable authorization decision for a principal/action/object request.",
+      "fields": [
+        "id",
+        "principal_ref",
+        "trust_plane",
+        "purpose",
+        "capability_id",
+        "action_id",
+        "object_refs",
+        "data_scope",
+        "decision",
+        "policy_refs",
+        "decided_at",
+        "request_correlation_id"
+      ],
+      "invariants": [
+        "model output cannot substitute for policy decision",
+        "deny remains default when required context is absent"
+      ]
+    },
+    {
+      "id": "ENT-AI-INTERACTION-RECORD",
+      "name": "AIInteractionRecord",
+      "domain": "trust",
+      "purpose": "Trace material AI execution, inputs, versions, tool proposals and candidate/server review.",
+      "fields": [
+        "id",
+        "principal_ref",
+        "ai_function_id",
+        "model_provider",
+        "model_id",
+        "model_version",
+        "input_snapshot_ref",
+        "source_refs",
+        "prompt_or_template_version",
+        "tool_proposals",
+        "policy_decision_refs",
+        "human_review",
+        "output_refs",
+        "created_at"
+      ],
+      "invariants": [
+        "AI trace does not imply authority",
+        "sensitive input references obey retention policy"
+      ]
+    },
+    {
+      "id": "ENT-CAREER-PROFILE",
+      "name": "CareerProfile",
+      "domain": "career",
+      "purpose": "Candidate-owned root of the Career Evidence Graph.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "current_revision",
+        "created_at",
+        "updated_at"
+      ],
+      "invariants": [
+        "profile revision advances when canonical career evidence changes",
+        "profile is not equivalent to a resume"
+      ]
+    },
+    {
+      "id": "ENT-EMPLOYMENT-EPISODE",
+      "name": "EmploymentEpisode",
+      "domain": "career",
+      "purpose": "Employment/leadership episode linking company, role, dates and contextual evidence.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "company_ref",
+        "role_label",
+        "start_date",
+        "end_date",
+        "location_refs",
+        "assertion_refs",
+        "source_refs",
+        "sensitivity"
+      ],
+      "invariants": [
+        "role/scope claims remain evidence-backed assertions where material"
+      ]
+    },
+    {
+      "id": "ENT-LEADERSHIP-MANDATE",
+      "name": "LeadershipMandate",
+      "domain": "career",
+      "purpose": "Problem or mission entrusted to the candidate in a career episode.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "employment_episode_ref",
+        "mandate_type",
+        "description_claim_ref",
+        "scope_assertion_refs",
+        "outcome_refs",
+        "sensitivity"
+      ],
+      "invariants": [
+        "mandate wording cannot upgrade evidence status",
+        "scope is linked rather than copied into untraceable text"
+      ]
+    },
+    {
+      "id": "ENT-TRANSFORMATION-PROGRAM",
+      "name": "TransformationProgram",
+      "domain": "career",
+      "purpose": "Large change program led or materially influenced by the candidate.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "employment_episode_ref",
+        "leadership_mandate_ref",
+        "program_type",
+        "description_claim_ref",
+        "scope_assertion_refs",
+        "achievement_refs",
+        "stakeholder_exposure_refs"
+      ]
+    },
+    {
+      "id": "ENT-ACHIEVEMENT",
+      "name": "Achievement",
+      "domain": "career",
+      "purpose": "Outcome-bearing career accomplishment linked to claims/evidence.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "employment_episode_ref",
+        "leadership_mandate_ref",
+        "claim_ref",
+        "scope_fact_refs",
+        "source_refs",
+        "sensitivity"
+      ],
+      "invariants": [
+        "quantified outcome must trace to a claim/assertion and evidence status"
+      ]
+    },
+    {
+      "id": "ENT-DECISION-EXAMPLE",
+      "name": "DecisionExample",
+      "domain": "career",
+      "purpose": "Executive decision evidence: context, alternatives, rationale, action and result.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "employment_episode_ref",
+        "context_claim_ref",
+        "alternative_claim_refs",
+        "decision_claim_ref",
+        "rationale_claim_ref",
+        "result_claim_ref",
+        "source_refs",
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "ENT-SCOPE-FACT",
+      "name": "ScopeFact",
+      "domain": "career",
+      "purpose": "Structured scale evidence such as P&L, budget, team, geography, customers or transaction volume.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "scope_type",
+        "value",
+        "unit",
+        "assertion_ref",
+        "valid_from",
+        "valid_until",
+        "sensitivity"
+      ],
+      "invariants": [
+        "scope value epistemics come from linked assertion",
+        "candidate attestation does not imply external verification"
+      ]
+    },
+    {
+      "id": "ENT-STAKEHOLDER-EXPOSURE",
+      "name": "StakeholderExposure",
+      "domain": "career",
+      "purpose": "Evidence of board/executive/regulator/investor/customer/partner exposure.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "employment_episode_ref",
+        "stakeholder_type",
+        "assertion_ref",
+        "context_claim_ref",
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "ENT-SKILL",
+      "name": "Skill",
+      "domain": "career",
+      "purpose": "Canonical capability/skill label referenced by evidence rather than treated as proof itself.",
+      "fields": [
+        "id",
+        "canonical_label",
+        "skill_family",
+        "aliases"
+      ],
+      "invariants": [
+        "skill identity is distinct from candidate evidence of skill"
+      ]
+    },
+    {
+      "id": "ENT-CREDENTIAL",
+      "name": "Credential",
+      "domain": "career",
+      "purpose": "Education, certification or professional qualification record.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "credential_type",
+        "issuer",
+        "name",
+        "issued_at",
+        "expires_at",
+        "assertion_ref",
+        "source_refs",
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "ENT-CAREER-TRANSITION",
+      "name": "CareerTransition",
+      "domain": "career",
+      "purpose": "Structured transition between career episodes or intended trajectory states.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "from_episode_ref",
+        "to_episode_ref",
+        "transition_type",
+        "assertion_refs",
+        "created_at"
+      ]
+    },
+    {
+      "id": "ENT-TARGET-COMPANY",
+      "name": "TargetCompany",
+      "domain": "market",
+      "purpose": "Candidate-specific relationship to a company as a target/watch object.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "company_ref",
+        "rationale",
+        "created_at",
+        "archived_at"
+      ],
+      "invariants": [
+        "target company does not imply an active opportunity"
+      ]
+    },
+    {
+      "id": "ENT-MARKET-SIGNAL",
+      "name": "MarketSignal",
+      "domain": "market",
+      "purpose": "Career-relevant observed signal such as leadership change, expansion, funding, M&A or transformation.",
+      "fields": [
+        "id",
+        "subject_ref",
+        "signal_type",
+        "observation_refs",
+        "assertion_refs",
+        "observed_at",
+        "valid_until",
+        "created_at"
+      ],
+      "invariants": [
+        "market signal does not automatically create an opportunity",
+        "signal epistemics remain source-linked"
+      ]
+    },
+    {
+      "id": "ENT-SEARCH-CONSULTANT",
+      "name": "SearchConsultant",
+      "domain": "market",
+      "purpose": "Search-consultant profile linking a Person to a SearchFirm; specialty claims use assertions.",
+      "fields": [
+        "id",
+        "person_ref",
+        "search_firm_ref",
+        "assertion_refs",
+        "created_at"
+      ],
+      "invariants": [
+        "relationship to candidate remains a separate Relationship"
+      ]
+    },
+    {
+      "id": "ENT-ROLE-MANDATE",
+      "name": "RoleMandate",
+      "domain": "opportunity",
+      "purpose": "Versioned synthesis of what the executive role is expected to accomplish.",
+      "fields": [
+        "id",
+        "opportunity_id",
+        "input_snapshot_ref",
+        "mandate_components",
+        "assertion_refs",
+        "confidence",
+        "created_at",
+        "superseded_by"
+      ],
+      "invariants": [
+        "mandate is evidence-grounded synthesis",
+        "new material evidence creates a new version"
+      ]
+    },
+    {
+      "id": "ENT-SUCCESS-PROFILE",
+      "name": "SuccessProfile",
+      "domain": "opportunity",
+      "purpose": "Versioned outcomes/evidence expected for success in the opportunity.",
+      "fields": [
+        "id",
+        "opportunity_id",
+        "input_snapshot_ref",
+        "success_dimensions",
+        "assertion_refs",
+        "confidence",
+        "created_at",
+        "superseded_by"
+      ]
+    },
+    {
+      "id": "ENT-MANDATE-EVIDENCE-BINDING",
+      "name": "MandateEvidenceBinding",
+      "domain": "career",
+      "purpose": "Candidate-approved binding between a role-mandate fragment and relevant career evidence.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "opportunity_id",
+        "role_mandate_ref",
+        "mandate_fragment",
+        "career_claim_refs",
+        "career_object_refs",
+        "created_at",
+        "updated_at"
+      ],
+      "invariants": [
+        "binding does not alter evidence status",
+        "binding is reusable by positioning/resume/selection under usage policy"
+      ]
+    },
+    {
+      "id": "ENT-POSITIONING-BRIEF",
+      "name": "PositioningBrief",
+      "domain": "positioning",
+      "purpose": "Opportunity-specific executive positioning strategy grounded in permitted evidence.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "opportunity_id",
+        "input_snapshot_ref",
+        "mandate_evidence_binding_refs",
+        "narrative",
+        "strengths",
+        "anticipated_concerns",
+        "unknowns",
+        "evidence_refs",
+        "created_at",
+        "superseded_by"
+      ],
+      "invariants": [
+        "factual statements trace to permitted evidence",
+        "brief itself is not externally shared without a distinct effect"
+      ]
+    },
+    {
+      "id": "ENT-RESUME-MASTER",
+      "name": "ResumeMaster",
+      "domain": "positioning",
+      "purpose": "Candidate-approved base resume representation distinct from Career Evidence Graph.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "source_ref",
+        "version",
+        "created_at",
+        "superseded_by"
+      ]
+    },
+    {
+      "id": "ENT-RESUME-VARIANT",
+      "name": "ResumeVariant",
+      "domain": "positioning",
+      "purpose": "Opportunity-specific resume variant assembled from permitted career evidence.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "opportunity_id",
+        "base_resume_ref",
+        "positioning_brief_ref",
+        "content_ref",
+        "evidence_refs",
+        "created_at",
+        "superseded_by"
+      ],
+      "state_machine": "SM-RESUME-VARIANT",
+      "invariants": [
+        "approved variant cannot contain unsupported factual claims",
+        "prepare does not share/apply"
+      ]
+    },
+    {
+      "id": "ENT-RESUME-CHANGE",
+      "name": "ResumeChange",
+      "domain": "positioning",
+      "purpose": "Reviewable atomic change from base/current resume content to proposed wording.",
+      "fields": [
+        "id",
+        "resume_variant_ref",
+        "original_text",
+        "proposed_text",
+        "reason",
+        "career_claim_refs",
+        "evidence_refs",
+        "interpretation_status",
+        "review_state",
+        "created_at"
+      ]
+    },
+    {
+      "id": "ENT-EXECUTIVE-BIO",
+      "name": "ExecutiveBio",
+      "domain": "positioning",
+      "purpose": "Short executive profile generated from approved/permitted career evidence.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "purpose",
+        "content_ref",
+        "evidence_refs",
+        "usage_scope",
+        "version",
+        "created_at"
+      ]
+    },
+    {
+      "id": "ENT-LEADERSHIP-STORY",
+      "name": "LeadershipStory",
+      "domain": "positioning",
+      "purpose": "Reusable evidence-backed story for executive selection conversations.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "story_type",
+        "context_claim_refs",
+        "action_claim_refs",
+        "outcome_claim_refs",
+        "evidence_refs",
+        "usage_scope",
+        "created_at"
+      ]
+    },
+    {
+      "id": "ENT-SELECTION-STAGE",
+      "name": "SelectionStage",
+      "domain": "selection",
+      "purpose": "Concrete stage node in an opportunity selection process.",
+      "fields": [
+        "id",
+        "selection_process_ref",
+        "stage_type",
+        "sequence_or_dependencies",
+        "scheduled_at",
+        "completed_at",
+        "participant_refs",
+        "source_refs"
+      ],
+      "state_machine": "SM-SELECTION-STAGE"
+    },
+    {
+      "id": "ENT-SELECTION-PARTICIPANT",
+      "name": "SelectionParticipant",
+      "domain": "selection",
+      "purpose": "Person/stakeholder participating in a selection stage.",
+      "fields": [
+        "id",
+        "selection_stage_ref",
+        "person_ref",
+        "role_context",
+        "assertion_refs",
+        "created_at"
+      ]
+    },
+    {
+      "id": "ENT-STAKEHOLDER-HYPOTHESIS",
+      "name": "StakeholderHypothesis",
+      "domain": "selection",
+      "extends": "ENT-ASSESSMENT",
+      "purpose": "Versioned hypothesis about stakeholder agenda, concerns or influence.",
+      "fields": [
+        "selection_participant_ref",
+        "agenda_hypotheses",
+        "concerns",
+        "influence_hypothesis"
+      ],
+      "invariants": [
+        "hypothesis is not a fact unless separately supported by assertions"
+      ]
+    },
+    {
+      "id": "ENT-PREPARATION-BRIEF",
+      "name": "PreparationBrief",
+      "domain": "selection",
+      "purpose": "Stage/participant-specific preparation grounded in career evidence and current opportunity intelligence.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "opportunity_id",
+        "selection_stage_ref",
+        "participant_ref",
+        "input_snapshot_ref",
+        "positioning_brief_ref",
+        "evidence_refs",
+        "open_question_refs",
+        "created_at",
+        "superseded_by"
+      ]
+    },
+    {
+      "id": "ENT-DEBRIEF",
+      "name": "Debrief",
+      "domain": "selection",
+      "purpose": "Candidate-provided post-interaction note/voice-derived record before extracted assertions are committed.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "interaction_ref",
+        "source_ref",
+        "raw_or_transcript_ref",
+        "candidate_reviewed_at",
+        "created_at",
+        "sensitivity"
+      ],
+      "invariants": [
+        "debrief extraction proposes observations/assertions; it does not directly rewrite opportunity facts"
+      ]
+    },
+    {
+      "id": "ENT-OPEN-QUESTION",
+      "name": "OpenQuestion",
+      "domain": "selection",
+      "purpose": "Unresolved question that can materially change pursuit/selection interpretation.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "opportunity_id",
+        "question",
+        "reason",
+        "source_refs",
+        "resolved_assertion_ref",
+        "opened_at",
+        "resolved_at"
+      ]
+    },
+    {
+      "id": "ENT-COMMITMENT",
+      "name": "Commitment",
+      "domain": "selection",
+      "purpose": "Follow-up/action commitment made by candidate or counterpart in an interaction.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "opportunity_id",
+        "interaction_ref",
+        "owner_ref",
+        "description",
+        "due_at",
+        "completed_at",
+        "source_refs"
+      ]
+    },
+    {
+      "id": "ENT-OFFER-COMPONENT",
+      "name": "OfferComponent",
+      "domain": "outcome",
+      "purpose": "Structured financial or non-financial offer term.",
+      "fields": [
+        "id",
+        "offer_ref",
+        "component_type",
+        "value",
+        "currency_or_unit",
+        "assertion_ref",
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "ENT-DECISION-CRITERION",
+      "name": "DecisionCriterion",
+      "domain": "outcome",
+      "purpose": "Candidate-defined criterion for evaluating an offer/opportunity decision.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "criterion_type",
+        "weight_or_priority",
+        "notes",
+        "version"
+      ]
+    },
+    {
+      "id": "ENT-DECISION-BRIEF",
+      "name": "DecisionBrief",
+      "domain": "outcome",
+      "purpose": "Versioned decision support over offer terms, mandate, authority, trajectory, risk and candidate criteria.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "opportunity_id",
+        "offer_ref",
+        "input_snapshot_ref",
+        "criterion_refs",
+        "assessment_refs",
+        "tradeoffs",
+        "unknowns",
+        "confidence",
+        "created_at",
+        "superseded_by"
+      ],
+      "invariants": [
+        "decision brief never accepts or declines an offer"
+      ]
+    },
+    {
+      "id": "ENT-STRATEGY-SIGNAL",
+      "name": "StrategySignal",
+      "domain": "strategy",
+      "purpose": "Longitudinal candidate-facing pattern with explicit sample/context/confidence.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "signal_type",
+        "time_window",
+        "sample_size",
+        "context",
+        "confidence",
+        "supporting_refs",
+        "created_at"
+      ],
+      "invariants": [
+        "small samples remain explicitly low-confidence"
+      ]
+    },
+    {
+      "id": "ENT-STRATEGY-HYPOTHESIS",
+      "name": "StrategyHypothesis",
+      "domain": "strategy",
+      "purpose": "Testable career-search hypothesis derived from evidence/signals.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "statement",
+        "supporting_signal_refs",
+        "created_at",
+        "superseded_by"
+      ]
+    },
+    {
+      "id": "ENT-STRATEGY-EXPERIMENT",
+      "name": "StrategyExperiment",
+      "domain": "strategy",
+      "purpose": "Bounded experiment over role/geography/mandate/access/positioning strategy.",
+      "fields": [
+        "id",
+        "candidate_id",
+        "hypothesis_ref",
+        "variables",
+        "measurement_plan",
+        "start_at",
+        "end_at",
+        "created_at"
+      ],
+      "state_machine": "SM-STRATEGY-EXPERIMENT"
+    },
+    {
+      "id": "ENT-EXPERIMENT-OBSERVATION",
+      "name": "ExperimentObservation",
+      "domain": "strategy",
+      "purpose": "Observed outcome/progression evidence associated with a strategy experiment.",
+      "fields": [
+        "id",
+        "experiment_ref",
+        "opportunity_ref",
+        "interaction_ref",
+        "outcome_ref",
+        "observed_at",
+        "notes"
+      ]
+    },
+    {
+      "id": "ENT-OPPORTUNITY-TRUST-ASSESSMENT",
+      "name": "OpportunityTrustAssessment",
+      "domain": "trust",
+      "extends": "ENT-ASSESSMENT",
+      "purpose": "Versioned assessment of source/recruiter/opportunity trust evidence and unresolved risk.",
+      "fields": [
+        "opportunity_id",
+        "trust_band",
+        "source_integrity",
+        "identity_consistency",
+        "freshness",
+        "risk_signals",
+        "unresolved_risks"
+      ],
+      "invariants": [
+        "trust band is evidence-based assessment, not certainty of real/fake",
+        "new material source evidence creates a new version"
+      ]
+    }
+  ]
+}

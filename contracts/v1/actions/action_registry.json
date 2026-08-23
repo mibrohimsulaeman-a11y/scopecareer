@@ -1,0 +1,1367 @@
+{
+  "registry_id": "REG-ACTION-V1",
+  "version": "1.0.0-draft",
+  "actions": [
+    {
+      "id": "ACT-SOURCE-CAPTURE",
+      "name": "CaptureSource",
+      "capability": "CAP-SOURCE-INGESTION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [],
+      "writes": [
+        "ENT-SOURCE",
+        "ENT-OBSERVATION"
+      ],
+      "produces_evidence": true
+    },
+    {
+      "id": "ACT-ASSERTION-PROPOSE",
+      "name": "ProposeAssertion",
+      "capability": "CAP-RESEARCH-ASSERTIONS",
+      "effect_class": "internal_proposal",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OBSERVATION"
+      ],
+      "writes": [],
+      "proposes": [
+        "ENT-ASSERTION"
+      ]
+    },
+    {
+      "id": "ACT-ASSERTION-MARK-RESEARCH",
+      "name": "MarkAssertionNeedsResearch",
+      "capability": "CAP-RESEARCH-ASSERTIONS",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-ASSERTION"
+      ],
+      "writes": [
+        "ENT-ASSERTION"
+      ]
+    },
+    {
+      "id": "ACT-ASSERTION-COMMIT-INFERRED",
+      "name": "CommitInferredAssertion",
+      "capability": "CAP-RESEARCH-ASSERTIONS",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OBSERVATION",
+        "ENT-SOURCE"
+      ],
+      "writes": [
+        "ENT-ASSERTION"
+      ],
+      "guards": [
+        "supporting_observation_or_source",
+        "confidence_present"
+      ]
+    },
+    {
+      "id": "ACT-ASSERTION-COMMIT-KNOWN",
+      "name": "CommitKnownAssertion",
+      "capability": "CAP-RESEARCH-ASSERTIONS",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OBSERVATION",
+        "ENT-SOURCE"
+      ],
+      "writes": [
+        "ENT-ASSERTION"
+      ],
+      "guards": [
+        "accepted_source_evidence"
+      ]
+    },
+    {
+      "id": "ACT-ASSESSMENT-CREATE",
+      "name": "CreateAssessment",
+      "capability": "CAP-ASSESSMENT",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-EVIDENCE-SNAPSHOT",
+        "ENT-ASSERTION"
+      ],
+      "writes": [
+        "ENT-ASSESSMENT"
+      ],
+      "guards": [
+        "immutable_input_snapshot",
+        "method_version_present"
+      ]
+    },
+    {
+      "id": "ACT-RECOMMENDATION-CREATE",
+      "name": "CreateRecommendation",
+      "capability": "CAP-ASSESSMENT",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-ASSESSMENT"
+      ],
+      "writes": [
+        "ENT-RECOMMENDATION"
+      ]
+    },
+    {
+      "id": "ACT-OPPORTUNITY-CAPTURE",
+      "name": "CaptureOpportunity",
+      "capability": "CAP-OPPORTUNITY-CAPTURE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-SOURCE",
+        "ENT-OBSERVATION"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY"
+      ]
+    },
+    {
+      "id": "ACT-OPPORTUNITY-RESEARCH",
+      "name": "ResearchOpportunity",
+      "capability": "CAP-OPPORTUNITY-RESEARCH",
+      "effect_class": "internal_proposal",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-COMPANY",
+        "ENT-SOURCE",
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION"
+      ],
+      "writes": [],
+      "proposes": [
+        "ENT-ASSERTION"
+      ]
+    },
+    {
+      "id": "ACT-OPPORTUNITY-PASS",
+      "name": "PassOpportunity",
+      "capability": "CAP-OPPORTUNITY-DISPOSITION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY"
+      ]
+    },
+    {
+      "id": "ACT-OPPORTUNITY-WATCH",
+      "name": "WatchOpportunity",
+      "capability": "CAP-OPPORTUNITY-DISPOSITION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY"
+      ]
+    },
+    {
+      "id": "ACT-OPPORTUNITY-EXPLORE",
+      "name": "ExploreOpportunity",
+      "capability": "CAP-OPPORTUNITY-DISPOSITION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY"
+      ]
+    },
+    {
+      "id": "ACT-OPPORTUNITY-PURSUE",
+      "name": "PursueOpportunity",
+      "capability": "CAP-OPPORTUNITY-DISPOSITION",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-PURSUIT-RECOMMENDATION"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY"
+      ]
+    },
+    {
+      "id": "ACT-OPPORTUNITY-CLOSE",
+      "name": "CloseOpportunityDisposition",
+      "capability": "CAP-OPPORTUNITY-DISPOSITION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY"
+      ]
+    },
+    {
+      "id": "ACT-PRIORITY-ACTIVATE",
+      "name": "ActivatePriorityAllocation",
+      "capability": "CAP-PRIORITY-ALLOCATION",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-PRIORITY-POLICY"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY"
+      ],
+      "guards": [
+        "candidate_disposition_is_pursuing",
+        "priority_policy_allows"
+      ]
+    },
+    {
+      "id": "ACT-PRIORITY-DEACTIVATE",
+      "name": "DeactivatePriorityAllocation",
+      "capability": "CAP-PRIORITY-ALLOCATION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY"
+      ]
+    },
+    {
+      "id": "ACT-SEARCH-STATE-UPDATE",
+      "name": "UpdateOpportunitySearchState",
+      "capability": "CAP-OPPORTUNITY-RESEARCH",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-ASSERTION"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY"
+      ],
+      "guards": [
+        "source_or_assertion_basis"
+      ]
+    },
+    {
+      "id": "ACT-SELECTION-STATE-UPDATE",
+      "name": "UpdateCandidateSelectionState",
+      "capability": "CAP-SELECTION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-SELECTION-PROCESS"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY",
+        "ENT-SELECTION-PROCESS"
+      ]
+    },
+    {
+      "id": "ACT-ACCESS-PLAN-CREATE",
+      "name": "CreateAccessPlan",
+      "capability": "CAP-ACCESS-INTELLIGENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-RELATIONSHIP",
+        "ENT-RELATIONSHIP-EVIDENCE",
+        "ENT-RELATIONSHIP-ASSESSMENT",
+        "ENT-ACCESS-ROUTE-ASSESSMENT"
+      ],
+      "writes": [
+        "ENT-ACCESS-PLAN"
+      ]
+    },
+    {
+      "id": "ACT-PURSUIT-ASSESS",
+      "name": "AssessPursuit",
+      "capability": "CAP-PURSUIT",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-CAREER-INTENT",
+        "ENT-FIT-ASSESSMENT",
+        "ENT-QUALITY-ASSESSMENT",
+        "ENT-TRANSITION-ASSESSMENT",
+        "ENT-ACCESS-PLAN",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-PURSUIT-ASSESSMENT",
+        "ENT-PURSUIT-RECOMMENDATION"
+      ]
+    },
+    {
+      "id": "ACT-SHARE-PACKET-APPROVE",
+      "name": "ApproveSharePacket",
+      "capability": "CAP-SHARING",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-SHARE-PACKET"
+      ],
+      "writes": [
+        "ENT-SHARE-PACKET"
+      ]
+    },
+    {
+      "id": "ACT-SHARE-PACKET-SEND",
+      "name": "SendSharePacket",
+      "capability": "CAP-SHARING",
+      "effect_class": "external_effect",
+      "approval_class": "step_up",
+      "reads": [
+        "ENT-SHARE-PACKET"
+      ],
+      "writes": [
+        "ENT-SHARE-PACKET",
+        "ENT-EXTERNAL-EFFECT-REQUEST",
+        "ENT-EXTERNAL-EFFECT-RECEIPT"
+      ]
+    },
+    {
+      "id": "ACT-SHARE-PACKET-REVOKE",
+      "name": "RevokeSharePacket",
+      "capability": "CAP-SHARING",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-SHARE-PACKET"
+      ],
+      "writes": [
+        "ENT-SHARE-PACKET"
+      ]
+    },
+    {
+      "id": "ACT-SHARE-PACKET-EXPIRE",
+      "name": "ExpireSharePacket",
+      "capability": "CAP-SHARING",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-SHARE-PACKET"
+      ],
+      "writes": [
+        "ENT-SHARE-PACKET"
+      ]
+    },
+    {
+      "id": "ACT-EXTERNAL-EFFECT-REQUEST",
+      "name": "RequestExternalEffect",
+      "capability": "CAP-EXTERNAL-EFFECTS",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [],
+      "writes": [
+        "ENT-EXTERNAL-EFFECT-REQUEST"
+      ]
+    },
+    {
+      "id": "ACT-EXTERNAL-EFFECT-CONFIRM",
+      "name": "ConfirmExternalEffect",
+      "capability": "CAP-EXTERNAL-EFFECTS",
+      "effect_class": "internal_mutation",
+      "approval_class": "step_up",
+      "reads": [
+        "ENT-EXTERNAL-EFFECT-REQUEST"
+      ],
+      "writes": [
+        "ENT-EXTERNAL-EFFECT-REQUEST"
+      ]
+    },
+    {
+      "id": "ACT-EXTERNAL-EFFECT-EXECUTE",
+      "name": "ExecuteExternalEffect",
+      "capability": "CAP-EXTERNAL-EFFECTS",
+      "effect_class": "external_effect",
+      "approval_class": "step_up",
+      "reads": [
+        "ENT-EXTERNAL-EFFECT-REQUEST"
+      ],
+      "writes": [
+        "ENT-EXTERNAL-EFFECT-REQUEST"
+      ]
+    },
+    {
+      "id": "ACT-EXTERNAL-EFFECT-RECONCILE",
+      "name": "ReconcileExternalEffect",
+      "capability": "CAP-EXTERNAL-EFFECTS",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-EXTERNAL-EFFECT-REQUEST",
+        "ENT-EXTERNAL-EFFECT-RECEIPT"
+      ],
+      "writes": [
+        "ENT-EXTERNAL-EFFECT-REQUEST"
+      ]
+    },
+    {
+      "id": "ACT-EXTERNAL-EFFECT-CANCEL",
+      "name": "CancelExternalEffect",
+      "capability": "CAP-EXTERNAL-EFFECTS",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-EXTERNAL-EFFECT-REQUEST"
+      ],
+      "writes": [
+        "ENT-EXTERNAL-EFFECT-REQUEST"
+      ]
+    },
+    {
+      "id": "ACT-MARKET-WATCH-CREATE",
+      "name": "CreateMarketWatch",
+      "capability": "CAP-MARKET-WATCH",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-CAREER-INTENT",
+        "ENT-COMPANY"
+      ],
+      "writes": [
+        "ENT-MARKET-WATCH"
+      ]
+    },
+    {
+      "id": "ACT-CAREER-CLAIM-PROPOSE",
+      "name": "ProposeCareerClaim",
+      "capability": "CAP-CAREER-EVIDENCE",
+      "effect_class": "internal_proposal",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-SOURCE",
+        "ENT-OBSERVATION"
+      ],
+      "writes": [],
+      "proposes": [
+        "ENT-CAREER-CLAIM"
+      ]
+    },
+    {
+      "id": "ACT-CAREER-CLAIM-REVIEW",
+      "name": "ReviewCareerClaim",
+      "capability": "CAP-CAREER-EVIDENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-CAREER-CLAIM"
+      ],
+      "writes": [
+        "ENT-CAREER-CLAIM"
+      ]
+    },
+    {
+      "id": "ACT-CAREER-CLAIM-ATTEST",
+      "name": "AttestCareerClaim",
+      "capability": "CAP-CAREER-EVIDENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-CAREER-CLAIM"
+      ],
+      "writes": [
+        "ENT-CAREER-CLAIM"
+      ],
+      "guards": [
+        "candidate_is_claim_owner"
+      ]
+    },
+    {
+      "id": "ACT-CAREER-CLAIM-REJECT",
+      "name": "RejectCareerClaim",
+      "capability": "CAP-CAREER-EVIDENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-CAREER-CLAIM"
+      ],
+      "writes": [
+        "ENT-CAREER-CLAIM"
+      ]
+    },
+    {
+      "id": "ACT-CAREER-CLAIM-SUPERSEDE",
+      "name": "SupersedeCareerClaim",
+      "capability": "CAP-CAREER-EVIDENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-CAREER-CLAIM"
+      ],
+      "writes": [
+        "ENT-CAREER-CLAIM"
+      ]
+    },
+    {
+      "id": "ACT-CAREER-HISTORY-RECORD",
+      "name": "RecordCareerHistory",
+      "capability": "CAP-CAREER-EVIDENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-CAREER-CLAIM",
+        "ENT-ASSERTION"
+      ],
+      "writes": [
+        "ENT-EMPLOYMENT-EPISODE",
+        "ENT-LEADERSHIP-MANDATE",
+        "ENT-TRANSFORMATION-PROGRAM",
+        "ENT-ACHIEVEMENT",
+        "ENT-SCOPE-FACT",
+        "ENT-STAKEHOLDER-EXPOSURE"
+      ]
+    },
+    {
+      "id": "ACT-CAREER-INTENT-UPDATE",
+      "name": "UpdateCareerIntent",
+      "capability": "CAP-CAREER-INTENT",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-CAREER-INTENT"
+      ],
+      "writes": [
+        "ENT-CAREER-INTENT"
+      ]
+    },
+    {
+      "id": "ACT-MANDATE-EVIDENCE-BIND",
+      "name": "BindMandateEvidence",
+      "capability": "CAP-EVIDENCE-BINDING",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-ROLE-MANDATE",
+        "ENT-CAREER-CLAIM",
+        "ENT-EMPLOYMENT-EPISODE",
+        "ENT-LEADERSHIP-MANDATE",
+        "ENT-ACHIEVEMENT"
+      ],
+      "writes": [
+        "ENT-MANDATE-EVIDENCE-BINDING"
+      ]
+    },
+    {
+      "id": "ACT-TARGET-COMPANY-ADD",
+      "name": "AddTargetCompany",
+      "capability": "CAP-MARKET-INTELLIGENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-COMPANY"
+      ],
+      "writes": [
+        "ENT-TARGET-COMPANY"
+      ]
+    },
+    {
+      "id": "ACT-TARGET-COMPANY-ARCHIVE",
+      "name": "ArchiveTargetCompany",
+      "capability": "CAP-MARKET-INTELLIGENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-TARGET-COMPANY"
+      ],
+      "writes": [
+        "ENT-TARGET-COMPANY"
+      ]
+    },
+    {
+      "id": "ACT-MARKET-SIGNAL-RECORD",
+      "name": "RecordMarketSignal",
+      "capability": "CAP-MARKET-INTELLIGENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION"
+      ],
+      "writes": [
+        "ENT-MARKET-SIGNAL"
+      ],
+      "guards": [
+        "source_link_preserved"
+      ]
+    },
+    {
+      "id": "ACT-ROLE-MANDATE-SYNTHESIZE",
+      "name": "SynthesizeRoleMandate",
+      "capability": "CAP-ROLE-MANDATE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-EVIDENCE-SNAPSHOT",
+        "ENT-ASSERTION"
+      ],
+      "writes": [
+        "ENT-ROLE-MANDATE",
+        "ENT-SUCCESS-PROFILE"
+      ],
+      "guards": [
+        "immutable_input_snapshot"
+      ]
+    },
+    {
+      "id": "ACT-POSITIONING-PREPARE",
+      "name": "PreparePositioningBrief",
+      "capability": "CAP-POSITIONING",
+      "effect_class": "internal_proposal",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-ROLE-MANDATE",
+        "ENT-MANDATE-EVIDENCE-BINDING",
+        "ENT-CAREER-CLAIM",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [],
+      "proposes": [
+        "ENT-POSITIONING-BRIEF"
+      ]
+    },
+    {
+      "id": "ACT-POSITIONING-COMMIT",
+      "name": "CommitPositioningBrief",
+      "capability": "CAP-POSITIONING",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-POSITIONING-BRIEF",
+        "ENT-CAREER-CLAIM"
+      ],
+      "writes": [
+        "ENT-POSITIONING-BRIEF"
+      ],
+      "guards": [
+        "usage_permissions_satisfied",
+        "factual_statements_evidence_grounded"
+      ]
+    },
+    {
+      "id": "ACT-RESUME-VARIANT-PREPARE",
+      "name": "PrepareResumeVariant",
+      "capability": "CAP-RESUME",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-RESUME-MASTER",
+        "ENT-POSITIONING-BRIEF",
+        "ENT-CAREER-CLAIM",
+        "ENT-MANDATE-EVIDENCE-BINDING"
+      ],
+      "writes": [
+        "ENT-RESUME-VARIANT",
+        "ENT-RESUME-CHANGE"
+      ],
+      "guards": [
+        "usage_permissions_satisfied"
+      ]
+    },
+    {
+      "id": "ACT-RESUME-VARIANT-REVIEW",
+      "name": "ReviewResumeVariant",
+      "capability": "CAP-RESUME",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-RESUME-VARIANT",
+        "ENT-RESUME-CHANGE"
+      ],
+      "writes": [
+        "ENT-RESUME-VARIANT"
+      ]
+    },
+    {
+      "id": "ACT-RESUME-VARIANT-APPROVE",
+      "name": "ApproveResumeVariant",
+      "capability": "CAP-RESUME",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-RESUME-VARIANT",
+        "ENT-RESUME-CHANGE",
+        "ENT-CAREER-CLAIM"
+      ],
+      "writes": [
+        "ENT-RESUME-VARIANT"
+      ],
+      "guards": [
+        "no_unsupported_factual_claims",
+        "usage_permissions_satisfied"
+      ]
+    },
+    {
+      "id": "ACT-RESUME-VARIANT-REJECT",
+      "name": "RejectResumeVariant",
+      "capability": "CAP-RESUME",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-RESUME-VARIANT"
+      ],
+      "writes": [
+        "ENT-RESUME-VARIANT"
+      ]
+    },
+    {
+      "id": "ACT-RESUME-VARIANT-SUPERSEDE",
+      "name": "SupersedeResumeVariant",
+      "capability": "CAP-RESUME",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-RESUME-VARIANT"
+      ],
+      "writes": [
+        "ENT-RESUME-VARIANT"
+      ]
+    },
+    {
+      "id": "ACT-EXECUTIVE-BIO-PREPARE",
+      "name": "PrepareExecutiveBio",
+      "capability": "CAP-POSITIONING",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-CAREER-CLAIM",
+        "ENT-LEADERSHIP-MANDATE",
+        "ENT-ACHIEVEMENT"
+      ],
+      "writes": [
+        "ENT-EXECUTIVE-BIO"
+      ],
+      "guards": [
+        "usage_permissions_satisfied"
+      ]
+    },
+    {
+      "id": "ACT-LEADERSHIP-STORY-CREATE",
+      "name": "CreateLeadershipStory",
+      "capability": "CAP-POSITIONING",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-CAREER-CLAIM",
+        "ENT-DECISION-EXAMPLE",
+        "ENT-ACHIEVEMENT"
+      ],
+      "writes": [
+        "ENT-LEADERSHIP-STORY"
+      ]
+    },
+    {
+      "id": "ACT-SELECTION-PROCESS-DEFINE",
+      "name": "DefineSelectionProcess",
+      "capability": "CAP-SELECTION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-ASSERTION"
+      ],
+      "writes": [
+        "ENT-SELECTION-PROCESS",
+        "ENT-SELECTION-STAGE",
+        "ENT-SELECTION-PARTICIPANT"
+      ]
+    },
+    {
+      "id": "ACT-SELECTION-STAGE-SCHEDULE",
+      "name": "ScheduleSelectionStage",
+      "capability": "CAP-SELECTION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-SELECTION-STAGE"
+      ],
+      "writes": [
+        "ENT-SELECTION-STAGE"
+      ]
+    },
+    {
+      "id": "ACT-SELECTION-STAGE-COMPLETE",
+      "name": "CompleteSelectionStage",
+      "capability": "CAP-SELECTION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-SELECTION-STAGE"
+      ],
+      "writes": [
+        "ENT-SELECTION-STAGE"
+      ]
+    },
+    {
+      "id": "ACT-SELECTION-STAGE-CANCEL",
+      "name": "CancelSelectionStage",
+      "capability": "CAP-SELECTION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-SELECTION-STAGE"
+      ],
+      "writes": [
+        "ENT-SELECTION-STAGE"
+      ]
+    },
+    {
+      "id": "ACT-SELECTION-PREPARE",
+      "name": "PrepareSelectionStage",
+      "capability": "CAP-SELECTION-PREPARATION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-SELECTION-STAGE",
+        "ENT-SELECTION-PARTICIPANT",
+        "ENT-STAKEHOLDER-HYPOTHESIS",
+        "ENT-POSITIONING-BRIEF",
+        "ENT-CAREER-CLAIM",
+        "ENT-OPEN-QUESTION",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-PREPARATION-BRIEF"
+      ]
+    },
+    {
+      "id": "ACT-DEBRIEF-CAPTURE",
+      "name": "CaptureDebrief",
+      "capability": "CAP-SELECTION-PREPARATION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-INTERACTION",
+        "ENT-SOURCE"
+      ],
+      "writes": [
+        "ENT-DEBRIEF",
+        "ENT-OBSERVATION"
+      ],
+      "proposes": [
+        "ENT-ASSERTION"
+      ]
+    },
+    {
+      "id": "ACT-OPEN-QUESTION-ADD",
+      "name": "AddOpenQuestion",
+      "capability": "CAP-SELECTION-PREPARATION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY"
+      ],
+      "writes": [
+        "ENT-OPEN-QUESTION"
+      ]
+    },
+    {
+      "id": "ACT-OPEN-QUESTION-RESOLVE",
+      "name": "ResolveOpenQuestion",
+      "capability": "CAP-SELECTION-PREPARATION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPEN-QUESTION",
+        "ENT-ASSERTION"
+      ],
+      "writes": [
+        "ENT-OPEN-QUESTION"
+      ],
+      "guards": [
+        "resolved_assertion_present"
+      ]
+    },
+    {
+      "id": "ACT-COMMITMENT-ADD",
+      "name": "AddCommitment",
+      "capability": "CAP-SELECTION-PREPARATION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-INTERACTION"
+      ],
+      "writes": [
+        "ENT-COMMITMENT"
+      ]
+    },
+    {
+      "id": "ACT-COMMITMENT-COMPLETE",
+      "name": "CompleteCommitment",
+      "capability": "CAP-SELECTION-PREPARATION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-COMMITMENT"
+      ],
+      "writes": [
+        "ENT-COMMITMENT"
+      ]
+    },
+    {
+      "id": "ACT-MARKET-WATCH-PAUSE",
+      "name": "PauseMarketWatch",
+      "capability": "CAP-MARKET-WATCH",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-MARKET-WATCH"
+      ],
+      "writes": [
+        "ENT-MARKET-WATCH"
+      ]
+    },
+    {
+      "id": "ACT-MARKET-WATCH-RESUME",
+      "name": "ResumeMarketWatch",
+      "capability": "CAP-MARKET-WATCH",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-MARKET-WATCH"
+      ],
+      "writes": [
+        "ENT-MARKET-WATCH"
+      ]
+    },
+    {
+      "id": "ACT-MARKET-WATCH-ARCHIVE",
+      "name": "ArchiveMarketWatch",
+      "capability": "CAP-MARKET-WATCH",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-MARKET-WATCH"
+      ],
+      "writes": [
+        "ENT-MARKET-WATCH"
+      ]
+    },
+    {
+      "id": "ACT-OFFER-CAPTURE",
+      "name": "CaptureOffer",
+      "capability": "CAP-OFFER-DECISION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-SOURCE",
+        "ENT-ASSERTION"
+      ],
+      "writes": [
+        "ENT-OFFER",
+        "ENT-OFFER-COMPONENT"
+      ]
+    },
+    {
+      "id": "ACT-OFFER-REVIEW",
+      "name": "ReviewOffer",
+      "capability": "CAP-OFFER-DECISION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OFFER",
+        "ENT-OFFER-COMPONENT"
+      ],
+      "writes": [
+        "ENT-OFFER"
+      ]
+    },
+    {
+      "id": "ACT-OFFER-DECISION-PREPARE",
+      "name": "PrepareOfferDecision",
+      "capability": "CAP-OFFER-DECISION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OFFER",
+        "ENT-OFFER-COMPONENT",
+        "ENT-DECISION-CRITERION",
+        "ENT-PURSUIT-ASSESSMENT",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-DECISION-BRIEF",
+        "ENT-OFFER"
+      ]
+    },
+    {
+      "id": "ACT-OFFER-INTENT-ACCEPT",
+      "name": "SetOfferIntentAccept",
+      "capability": "CAP-OFFER-DECISION",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-OFFER",
+        "ENT-DECISION-BRIEF"
+      ],
+      "writes": [
+        "ENT-OFFER"
+      ]
+    },
+    {
+      "id": "ACT-OFFER-INTENT-DECLINE",
+      "name": "SetOfferIntentDecline",
+      "capability": "CAP-OFFER-DECISION",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-OFFER",
+        "ENT-DECISION-BRIEF"
+      ],
+      "writes": [
+        "ENT-OFFER"
+      ]
+    },
+    {
+      "id": "ACT-OFFER-CLOSE",
+      "name": "CloseOfferDecision",
+      "capability": "CAP-OFFER-DECISION",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OFFER"
+      ],
+      "writes": [
+        "ENT-OFFER"
+      ]
+    },
+    {
+      "id": "ACT-OUTCOME-RECORD",
+      "name": "RecordOutcome",
+      "capability": "CAP-OUTCOME-STRATEGY",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-SOURCE"
+      ],
+      "writes": [
+        "ENT-OUTCOME"
+      ]
+    },
+    {
+      "id": "ACT-STRATEGY-SIGNAL-CREATE",
+      "name": "CreateStrategySignal",
+      "capability": "CAP-OUTCOME-STRATEGY",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OUTCOME",
+        "ENT-INTERACTION",
+        "ENT-OPPORTUNITY"
+      ],
+      "writes": [
+        "ENT-STRATEGY-SIGNAL"
+      ],
+      "guards": [
+        "sample_size_and_context_present"
+      ]
+    },
+    {
+      "id": "ACT-STRATEGY-HYPOTHESIS-CREATE",
+      "name": "CreateStrategyHypothesis",
+      "capability": "CAP-OUTCOME-STRATEGY",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-STRATEGY-SIGNAL"
+      ],
+      "writes": [
+        "ENT-STRATEGY-HYPOTHESIS"
+      ]
+    },
+    {
+      "id": "ACT-STRATEGY-EXPERIMENT-CREATE",
+      "name": "CreateStrategyExperiment",
+      "capability": "CAP-OUTCOME-STRATEGY",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-STRATEGY-HYPOTHESIS"
+      ],
+      "writes": [
+        "ENT-STRATEGY-EXPERIMENT"
+      ]
+    },
+    {
+      "id": "ACT-STRATEGY-EXPERIMENT-ACTIVATE",
+      "name": "ActivateStrategyExperiment",
+      "capability": "CAP-OUTCOME-STRATEGY",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-STRATEGY-EXPERIMENT"
+      ],
+      "writes": [
+        "ENT-STRATEGY-EXPERIMENT"
+      ]
+    },
+    {
+      "id": "ACT-STRATEGY-EXPERIMENT-PAUSE",
+      "name": "PauseStrategyExperiment",
+      "capability": "CAP-OUTCOME-STRATEGY",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-STRATEGY-EXPERIMENT"
+      ],
+      "writes": [
+        "ENT-STRATEGY-EXPERIMENT"
+      ]
+    },
+    {
+      "id": "ACT-STRATEGY-EXPERIMENT-COMPLETE",
+      "name": "CompleteStrategyExperiment",
+      "capability": "CAP-OUTCOME-STRATEGY",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-STRATEGY-EXPERIMENT",
+        "ENT-EXPERIMENT-OBSERVATION"
+      ],
+      "writes": [
+        "ENT-STRATEGY-EXPERIMENT"
+      ]
+    },
+    {
+      "id": "ACT-STRATEGY-EXPERIMENT-CANCEL",
+      "name": "CancelStrategyExperiment",
+      "capability": "CAP-OUTCOME-STRATEGY",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-STRATEGY-EXPERIMENT"
+      ],
+      "writes": [
+        "ENT-STRATEGY-EXPERIMENT"
+      ]
+    },
+    {
+      "id": "ACT-DELEGATION-CREATE",
+      "name": "CreateDelegationGrant",
+      "capability": "CAP-DELEGATION-CONSENT",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-PRINCIPAL"
+      ],
+      "writes": [
+        "ENT-DELEGATION-GRANT"
+      ]
+    },
+    {
+      "id": "ACT-DELEGATION-ACTIVATE",
+      "name": "ActivateDelegationGrant",
+      "capability": "CAP-DELEGATION-CONSENT",
+      "effect_class": "internal_mutation",
+      "approval_class": "step_up",
+      "reads": [
+        "ENT-DELEGATION-GRANT"
+      ],
+      "writes": [
+        "ENT-DELEGATION-GRANT"
+      ]
+    },
+    {
+      "id": "ACT-DELEGATION-REVOKE",
+      "name": "RevokeDelegationGrant",
+      "capability": "CAP-DELEGATION-CONSENT",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [
+        "ENT-DELEGATION-GRANT"
+      ],
+      "writes": [
+        "ENT-DELEGATION-GRANT"
+      ]
+    },
+    {
+      "id": "ACT-DELEGATION-EXPIRE",
+      "name": "ExpireDelegationGrant",
+      "capability": "CAP-DELEGATION-CONSENT",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-DELEGATION-GRANT"
+      ],
+      "writes": [
+        "ENT-DELEGATION-GRANT"
+      ]
+    },
+    {
+      "id": "ACT-CONSENT-RECORD",
+      "name": "RecordConsent",
+      "capability": "CAP-DELEGATION-CONSENT",
+      "effect_class": "internal_mutation",
+      "approval_class": "explicit_user_confirmation",
+      "reads": [],
+      "writes": [
+        "ENT-CONSENT-RECORD"
+      ]
+    },
+    {
+      "id": "ACT-POLICY-DECISION-RECORD",
+      "name": "RecordPolicyDecision",
+      "capability": "CAP-AUDIT-GOVERNANCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-PRINCIPAL"
+      ],
+      "writes": [
+        "ENT-POLICY-DECISION"
+      ]
+    },
+    {
+      "id": "ACT-AI-INTERACTION-RECORD",
+      "name": "RecordAIInteraction",
+      "capability": "CAP-AUDIT-GOVERNANCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-PRINCIPAL",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-AI-INTERACTION-RECORD"
+      ]
+    },
+    {
+      "id": "ACT-FIT-ASSESS",
+      "name": "AssessFit",
+      "capability": "CAP-PURSUIT",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-ROLE-MANDATE",
+        "ENT-CAREER-INTENT",
+        "ENT-CAREER-CLAIM",
+        "ENT-MANDATE-EVIDENCE-BINDING",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-FIT-ASSESSMENT"
+      ],
+      "guards": [
+        "immutable_input_snapshot"
+      ]
+    },
+    {
+      "id": "ACT-QUALITY-ASSESS",
+      "name": "AssessOpportunityQuality",
+      "capability": "CAP-PURSUIT",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-ROLE-MANDATE",
+        "ENT-ASSERTION",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-QUALITY-ASSESSMENT"
+      ],
+      "guards": [
+        "immutable_input_snapshot"
+      ]
+    },
+    {
+      "id": "ACT-TRANSITION-ASSESS",
+      "name": "AssessTransition",
+      "capability": "CAP-PURSUIT",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-CAREER-INTENT",
+        "ENT-CAREER-PROFILE",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-TRANSITION-ASSESSMENT"
+      ],
+      "guards": [
+        "immutable_input_snapshot"
+      ]
+    },
+    {
+      "id": "ACT-RELATIONSHIP-ASSESS",
+      "name": "AssessRelationship",
+      "capability": "CAP-ACCESS-INTELLIGENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-RELATIONSHIP",
+        "ENT-RELATIONSHIP-EVIDENCE",
+        "ENT-INTERACTION",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-RELATIONSHIP-ASSESSMENT"
+      ],
+      "guards": [
+        "immutable_input_snapshot"
+      ]
+    },
+    {
+      "id": "ACT-ACCESS-ROUTE-ASSESS",
+      "name": "AssessAccessRoute",
+      "capability": "CAP-ACCESS-INTELLIGENCE",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-RELATIONSHIP-ASSESSMENT",
+        "ENT-ASSERTION",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-ACCESS-ROUTE-ASSESSMENT"
+      ],
+      "guards": [
+        "immutable_input_snapshot"
+      ]
+    },
+    {
+      "id": "ACT-OPPORTUNITY-TRUST-ASSESS",
+      "name": "AssessOpportunityTrust",
+      "capability": "CAP-OPPORTUNITY-TRUST",
+      "effect_class": "internal_mutation",
+      "approval_class": "normal_authorization",
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-SOURCE",
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION",
+        "ENT-PERSON",
+        "ENT-SEARCH-FIRM",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "writes": [
+        "ENT-OPPORTUNITY-TRUST-ASSESSMENT"
+      ],
+      "guards": [
+        "immutable_input_snapshot"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,659 @@
+{
+  "registry_id": "REG-CAPABILITY-V1",
+  "version": "1.0.0-draft",
+  "capabilities": [
+    {
+      "id": "CAP-SOURCE-INGESTION",
+      "name": "Source Ingestion",
+      "domain": "trust",
+      "purpose": "Capture source snapshots/observations without granting source content authority.",
+      "owns": [
+        "ENT-SOURCE",
+        "ENT-OBSERVATION"
+      ],
+      "reads": [],
+      "projects": [],
+      "actions": [
+        "ACT-SOURCE-CAPTURE"
+      ],
+      "ai_role": "extract/normalize only; source content is untrusted data",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-RESEARCH-ASSERTIONS",
+      "name": "Research Assertions",
+      "domain": "trust",
+      "purpose": "Convert observations into governed unknown/inferred/known assertions.",
+      "owns": [
+        "ENT-ASSERTION"
+      ],
+      "reads": [
+        "ENT-SOURCE",
+        "ENT-OBSERVATION"
+      ],
+      "projects": [],
+      "actions": [
+        "ACT-ASSERTION-PROPOSE",
+        "ACT-ASSERTION-MARK-RESEARCH",
+        "ACT-ASSERTION-COMMIT-INFERRED",
+        "ACT-ASSERTION-COMMIT-KNOWN"
+      ],
+      "state_machines": [
+        "SM-ASSERTION-EPISTEMIC"
+      ],
+      "ai_role": "may propose assertion and confidence; server validates transition",
+      "forbidden": [
+        "inferred_to_known_without_new_accepted_evidence"
+      ]
+    },
+    {
+      "id": "CAP-ASSESSMENT",
+      "name": "Assessment and Recommendation",
+      "domain": "trust",
+      "purpose": "Create versioned assessments from immutable evidence snapshots, then derive separate recommendations.",
+      "owns": [
+        "ENT-EVIDENCE-SNAPSHOT",
+        "ENT-ASSESSMENT",
+        "ENT-RECOMMENDATION"
+      ],
+      "reads": [
+        "ENT-ASSERTION",
+        "ENT-OBSERVATION"
+      ],
+      "actions": [
+        "ACT-ASSESSMENT-CREATE",
+        "ACT-RECOMMENDATION-CREATE"
+      ],
+      "ai_role": "may compute/propose assessment and recommendation under versioned function contract",
+      "invariants": [
+        "observation_to_assertion_to_assessment_to_recommendation"
+      ]
+    },
+    {
+      "id": "CAP-OPPORTUNITY-CAPTURE",
+      "name": "Opportunity Capture",
+      "domain": "opportunity",
+      "purpose": "Create public/confidential opportunity identity from trusted or untrusted source capture.",
+      "owns": [
+        "ENT-OPPORTUNITY"
+      ],
+      "reads": [
+        "ENT-SOURCE",
+        "ENT-OBSERVATION",
+        "ENT-COMPANY"
+      ],
+      "actions": [
+        "ACT-OPPORTUNITY-CAPTURE"
+      ],
+      "ai_role": "normalize and propose fields; no webpage instruction can authorize actions",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-OPPORTUNITY-RESEARCH",
+      "name": "Opportunity Research",
+      "domain": "opportunity",
+      "purpose": "Research opportunity/company/search context through observations and assertions.",
+      "owns": [],
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-COMPANY",
+        "ENT-SOURCE",
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION"
+      ],
+      "projects": [
+        "ENT-ASSERTION"
+      ],
+      "actions": [
+        "ACT-OPPORTUNITY-RESEARCH",
+        "ACT-SEARCH-STATE-UPDATE"
+      ],
+      "ai_role": "propose observations/assertions; canonical commit occurs through assertion actions",
+      "external_effects": [],
+      "invariants": [
+        "research never writes inferred data directly into canonical identity fields"
+      ]
+    },
+    {
+      "id": "CAP-OPPORTUNITY-DISPOSITION",
+      "name": "Candidate Opportunity Disposition",
+      "domain": "opportunity",
+      "purpose": "Candidate-private attention/intent state independent from search and selection states.",
+      "owns": [],
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-PURSUIT-RECOMMENDATION"
+      ],
+      "actions": [
+        "ACT-OPPORTUNITY-PASS",
+        "ACT-OPPORTUNITY-WATCH",
+        "ACT-OPPORTUNITY-EXPLORE",
+        "ACT-OPPORTUNITY-PURSUE",
+        "ACT-OPPORTUNITY-CLOSE"
+      ],
+      "state_machines": [
+        "SM-CANDIDATE-DISPOSITION"
+      ],
+      "external_effects": []
+    },
+    {
+      "id": "CAP-PRIORITY-ALLOCATION",
+      "name": "Priority Allocation",
+      "domain": "pursuit",
+      "purpose": "Allocate scarce candidate research/attention budget to pursuing opportunities.",
+      "owns": [
+        "ENT-PRIORITY-POLICY"
+      ],
+      "reads": [
+        "ENT-OPPORTUNITY"
+      ],
+      "actions": [
+        "ACT-PRIORITY-ACTIVATE",
+        "ACT-PRIORITY-DEACTIVATE"
+      ],
+      "state_machines": [
+        "SM-PRIORITY-ALLOCATION"
+      ],
+      "external_effects": [],
+      "invariants": [
+        "priority is not an opportunity stage",
+        "priority creates no employer signal"
+      ]
+    },
+    {
+      "id": "CAP-PURSUIT",
+      "name": "Pursuit Intelligence",
+      "domain": "pursuit",
+      "purpose": "Assess whether an opportunity deserves candidate time/network capital.",
+      "owns": [
+        "ENT-FIT-ASSESSMENT",
+        "ENT-QUALITY-ASSESSMENT",
+        "ENT-TRANSITION-ASSESSMENT",
+        "ENT-PURSUIT-ASSESSMENT",
+        "ENT-PURSUIT-RECOMMENDATION"
+      ],
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-CAREER-INTENT",
+        "ENT-ASSERTION",
+        "ENT-EVIDENCE-SNAPSHOT",
+        "ENT-ACCESS-PLAN"
+      ],
+      "actions": [
+        "ACT-FIT-ASSESS",
+        "ACT-QUALITY-ASSESS",
+        "ACT-TRANSITION-ASSESS",
+        "ACT-PURSUIT-ASSESS"
+      ],
+      "ai_role": "versioned assessment/recommendation; no disposition mutation",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-ACCESS-INTELLIGENCE",
+      "name": "Access Intelligence",
+      "domain": "access",
+      "purpose": "Separate relationship evidence from contextual relationship/access assessment and produce an opportunity-specific access plan.",
+      "owns": [
+        "ENT-RELATIONSHIP",
+        "ENT-RELATIONSHIP-EVIDENCE",
+        "ENT-RELATIONSHIP-ASSESSMENT",
+        "ENT-ACCESS-ROUTE-ASSESSMENT",
+        "ENT-ACCESS-PLAN"
+      ],
+      "reads": [
+        "ENT-PERSON",
+        "ENT-SEARCH-FIRM",
+        "ENT-INTERACTION",
+        "ENT-OPPORTUNITY",
+        "ENT-ASSERTION"
+      ],
+      "actions": [
+        "ACT-RELATIONSHIP-ASSESS",
+        "ACT-ACCESS-ROUTE-ASSESS",
+        "ACT-ACCESS-PLAN-CREATE"
+      ],
+      "ai_role": "assess route viability; never treat relationship strength as permanent fact",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-SELECTION",
+      "name": "Selection Process",
+      "domain": "selection",
+      "purpose": "Track candidate selection progress independently of disposition/search state.",
+      "owns": [
+        "ENT-SELECTION-PROCESS",
+        "ENT-SELECTION-STAGE",
+        "ENT-SELECTION-PARTICIPANT"
+      ],
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-INTERACTION",
+        "ENT-ASSERTION"
+      ],
+      "actions": [
+        "ACT-SELECTION-STATE-UPDATE",
+        "ACT-SELECTION-PROCESS-DEFINE",
+        "ACT-SELECTION-STAGE-SCHEDULE",
+        "ACT-SELECTION-STAGE-COMPLETE",
+        "ACT-SELECTION-STAGE-CANCEL"
+      ],
+      "state_machines": [
+        "SM-CANDIDATE-SELECTION",
+        "SM-SELECTION-STAGE"
+      ],
+      "external_effects": []
+    },
+    {
+      "id": "CAP-MARKET-WATCH",
+      "name": "Market Watch",
+      "domain": "market",
+      "purpose": "Create durable monitoring definitions owned by ScopeCareer, not MCP task lifetime.",
+      "owns": [
+        "ENT-MARKET-WATCH"
+      ],
+      "reads": [
+        "ENT-CAREER-INTENT",
+        "ENT-COMPANY",
+        "ENT-ASSERTION"
+      ],
+      "actions": [
+        "ACT-MARKET-WATCH-CREATE",
+        "ACT-MARKET-WATCH-PAUSE",
+        "ACT-MARKET-WATCH-RESUME",
+        "ACT-MARKET-WATCH-ARCHIVE"
+      ],
+      "external_effects": [],
+      "state_machines": [
+        "SM-MARKET-WATCH"
+      ]
+    },
+    {
+      "id": "CAP-SHARING",
+      "name": "Share Packet",
+      "domain": "trust",
+      "purpose": "Bound candidate-authorized cross-plane disclosure.",
+      "owns": [
+        "ENT-SHARE-PACKET"
+      ],
+      "reads": [
+        "ENT-CAREER-CLAIM"
+      ],
+      "actions": [
+        "ACT-SHARE-PACKET-APPROVE",
+        "ACT-SHARE-PACKET-SEND",
+        "ACT-SHARE-PACKET-REVOKE",
+        "ACT-SHARE-PACKET-EXPIRE"
+      ],
+      "state_machines": [
+        "SM-SHARE-PACKET"
+      ],
+      "external_effects": [
+        "ACT-SHARE-PACKET-SEND"
+      ]
+    },
+    {
+      "id": "CAP-EXTERNAL-EFFECTS",
+      "name": "External Effect Broker",
+      "domain": "trust",
+      "purpose": "Represent approval, execution and receipt/reconciliation for external effects.",
+      "owns": [
+        "ENT-EXTERNAL-EFFECT-REQUEST",
+        "ENT-EXTERNAL-EFFECT-RECEIPT"
+      ],
+      "reads": [],
+      "actions": [
+        "ACT-EXTERNAL-EFFECT-REQUEST",
+        "ACT-EXTERNAL-EFFECT-CONFIRM",
+        "ACT-EXTERNAL-EFFECT-EXECUTE",
+        "ACT-EXTERNAL-EFFECT-RECONCILE",
+        "ACT-EXTERNAL-EFFECT-CANCEL"
+      ],
+      "state_machines": [
+        "SM-EXTERNAL-EFFECT"
+      ],
+      "external_effects": [
+        "ACT-EXTERNAL-EFFECT-EXECUTE"
+      ]
+    },
+    {
+      "id": "CAP-CAREER-EVIDENCE",
+      "name": "Career Evidence Graph",
+      "domain": "career",
+      "purpose": "Build and maintain candidate career evidence without conflating attestation, evidence status and external verification.",
+      "owns": [
+        "ENT-CAREER-PROFILE",
+        "ENT-CAREER-CLAIM",
+        "ENT-EMPLOYMENT-EPISODE",
+        "ENT-LEADERSHIP-MANDATE",
+        "ENT-TRANSFORMATION-PROGRAM",
+        "ENT-ACHIEVEMENT",
+        "ENT-DECISION-EXAMPLE",
+        "ENT-SCOPE-FACT",
+        "ENT-STAKEHOLDER-EXPOSURE",
+        "ENT-CREDENTIAL",
+        "ENT-CAREER-TRANSITION"
+      ],
+      "reads": [
+        "ENT-SOURCE",
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION",
+        "ENT-SKILL"
+      ],
+      "actions": [
+        "ACT-CAREER-CLAIM-PROPOSE",
+        "ACT-CAREER-CLAIM-REVIEW",
+        "ACT-CAREER-CLAIM-ATTEST",
+        "ACT-CAREER-CLAIM-REJECT",
+        "ACT-CAREER-CLAIM-SUPERSEDE",
+        "ACT-CAREER-HISTORY-RECORD"
+      ],
+      "state_machines": [
+        "SM-CAREER-CLAIM-REVIEW"
+      ],
+      "ai_role": "extract/propose; candidate attests; evidence status remains policy-governed",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-CAREER-INTENT",
+      "name": "Career Intent",
+      "domain": "career",
+      "purpose": "Maintain candidate-owned desired trajectory and constraints as a versioned decision input.",
+      "owns": [
+        "ENT-CAREER-INTENT"
+      ],
+      "reads": [],
+      "actions": [
+        "ACT-CAREER-INTENT-UPDATE"
+      ],
+      "external_effects": []
+    },
+    {
+      "id": "CAP-EVIDENCE-BINDING",
+      "name": "Mandate Evidence Binding",
+      "domain": "career",
+      "purpose": "Bind role-mandate fragments to candidate-selected career evidence for downstream reuse.",
+      "owns": [
+        "ENT-MANDATE-EVIDENCE-BINDING"
+      ],
+      "reads": [
+        "ENT-ROLE-MANDATE",
+        "ENT-CAREER-CLAIM",
+        "ENT-EMPLOYMENT-EPISODE",
+        "ENT-LEADERSHIP-MANDATE",
+        "ENT-ACHIEVEMENT"
+      ],
+      "actions": [
+        "ACT-MANDATE-EVIDENCE-BIND"
+      ],
+      "external_effects": [],
+      "invariants": [
+        "binding does not change evidence truth status"
+      ]
+    },
+    {
+      "id": "CAP-MARKET-INTELLIGENCE",
+      "name": "Market and Target Intelligence",
+      "domain": "market",
+      "purpose": "Represent target companies, market signals and executive-search context without inventing opportunities.",
+      "owns": [
+        "ENT-TARGET-COMPANY",
+        "ENT-MARKET-SIGNAL",
+        "ENT-SEARCH-CONSULTANT"
+      ],
+      "reads": [
+        "ENT-COMPANY",
+        "ENT-PERSON",
+        "ENT-SEARCH-FIRM",
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION",
+        "ENT-CAREER-INTENT"
+      ],
+      "actions": [
+        "ACT-TARGET-COMPANY-ADD",
+        "ACT-TARGET-COMPANY-ARCHIVE",
+        "ACT-MARKET-SIGNAL-RECORD"
+      ],
+      "external_effects": [],
+      "invariants": [
+        "market signal does not automatically create opportunity"
+      ]
+    },
+    {
+      "id": "CAP-ROLE-MANDATE",
+      "name": "Role Mandate Intelligence",
+      "domain": "opportunity",
+      "purpose": "Build versioned evidence-grounded role mandate and success-profile syntheses.",
+      "owns": [
+        "ENT-ROLE-MANDATE",
+        "ENT-SUCCESS-PROFILE"
+      ],
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-ASSERTION",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "actions": [
+        "ACT-ROLE-MANDATE-SYNTHESIZE"
+      ],
+      "ai_role": "synthesize from snapshot; do not promote inference to fact",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-POSITIONING",
+      "name": "Executive Positioning",
+      "domain": "positioning",
+      "purpose": "Prepare opportunity-specific positioning, executive bio and leadership stories from permitted evidence.",
+      "owns": [
+        "ENT-POSITIONING-BRIEF",
+        "ENT-EXECUTIVE-BIO",
+        "ENT-LEADERSHIP-STORY"
+      ],
+      "reads": [
+        "ENT-ROLE-MANDATE",
+        "ENT-MANDATE-EVIDENCE-BINDING",
+        "ENT-CAREER-CLAIM",
+        "ENT-LEADERSHIP-MANDATE",
+        "ENT-ACHIEVEMENT",
+        "ENT-DECISION-EXAMPLE"
+      ],
+      "actions": [
+        "ACT-POSITIONING-PREPARE",
+        "ACT-POSITIONING-COMMIT",
+        "ACT-EXECUTIVE-BIO-PREPARE",
+        "ACT-LEADERSHIP-STORY-CREATE"
+      ],
+      "ai_role": "draft/restructure; factual wording remains evidence/usage constrained",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-RESUME",
+      "name": "Evidence-Grounded Resume",
+      "domain": "positioning",
+      "purpose": "Prepare and review opportunity-specific resume variants without fabricated claims.",
+      "owns": [
+        "ENT-RESUME-MASTER",
+        "ENT-RESUME-VARIANT",
+        "ENT-RESUME-CHANGE"
+      ],
+      "reads": [
+        "ENT-POSITIONING-BRIEF",
+        "ENT-MANDATE-EVIDENCE-BINDING",
+        "ENT-CAREER-CLAIM"
+      ],
+      "actions": [
+        "ACT-RESUME-VARIANT-PREPARE",
+        "ACT-RESUME-VARIANT-REVIEW",
+        "ACT-RESUME-VARIANT-APPROVE",
+        "ACT-RESUME-VARIANT-REJECT",
+        "ACT-RESUME-VARIANT-SUPERSEDE"
+      ],
+      "state_machines": [
+        "SM-RESUME-VARIANT"
+      ],
+      "ai_role": "propose wording/change; candidate approves",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-SELECTION-PREPARATION",
+      "name": "Selection Preparation and Debrief",
+      "domain": "selection",
+      "purpose": "Prepare for specific stages/stakeholders and convert debriefs into reviewable intelligence.",
+      "owns": [
+        "ENT-STAKEHOLDER-HYPOTHESIS",
+        "ENT-PREPARATION-BRIEF",
+        "ENT-DEBRIEF",
+        "ENT-OPEN-QUESTION",
+        "ENT-COMMITMENT"
+      ],
+      "reads": [
+        "ENT-SELECTION-STAGE",
+        "ENT-SELECTION-PARTICIPANT",
+        "ENT-OPPORTUNITY",
+        "ENT-POSITIONING-BRIEF",
+        "ENT-CAREER-CLAIM",
+        "ENT-EVIDENCE-SNAPSHOT",
+        "ENT-INTERACTION"
+      ],
+      "actions": [
+        "ACT-SELECTION-PREPARE",
+        "ACT-DEBRIEF-CAPTURE",
+        "ACT-OPEN-QUESTION-ADD",
+        "ACT-OPEN-QUESTION-RESOLVE",
+        "ACT-COMMITMENT-ADD",
+        "ACT-COMMITMENT-COMPLETE"
+      ],
+      "ai_role": "prepare/extract proposals; candidate reviews material debrief updates",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-OFFER-DECISION",
+      "name": "Offer and Decision Intelligence",
+      "domain": "outcome",
+      "purpose": "Capture offer terms and prepare decision support without autonomously accepting/declining.",
+      "owns": [
+        "ENT-OFFER",
+        "ENT-OFFER-COMPONENT",
+        "ENT-DECISION-CRITERION",
+        "ENT-DECISION-BRIEF"
+      ],
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-PURSUIT-ASSESSMENT",
+        "ENT-EVIDENCE-SNAPSHOT",
+        "ENT-SOURCE",
+        "ENT-ASSERTION"
+      ],
+      "actions": [
+        "ACT-OFFER-CAPTURE",
+        "ACT-OFFER-REVIEW",
+        "ACT-OFFER-DECISION-PREPARE",
+        "ACT-OFFER-INTENT-ACCEPT",
+        "ACT-OFFER-INTENT-DECLINE",
+        "ACT-OFFER-CLOSE"
+      ],
+      "state_machines": [
+        "SM-OFFER-DECISION"
+      ],
+      "ai_role": "decision support only; candidate intent actions are explicit",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-OUTCOME-STRATEGY",
+      "name": "Outcome and Career Strategy Learning",
+      "domain": "strategy",
+      "purpose": "Capture outcomes, produce uncertainty-aware strategy signals and run bounded strategy experiments.",
+      "owns": [
+        "ENT-OUTCOME",
+        "ENT-STRATEGY-SIGNAL",
+        "ENT-STRATEGY-HYPOTHESIS",
+        "ENT-STRATEGY-EXPERIMENT",
+        "ENT-EXPERIMENT-OBSERVATION"
+      ],
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-INTERACTION"
+      ],
+      "actions": [
+        "ACT-OUTCOME-RECORD",
+        "ACT-STRATEGY-SIGNAL-CREATE",
+        "ACT-STRATEGY-HYPOTHESIS-CREATE",
+        "ACT-STRATEGY-EXPERIMENT-CREATE",
+        "ACT-STRATEGY-EXPERIMENT-ACTIVATE",
+        "ACT-STRATEGY-EXPERIMENT-PAUSE",
+        "ACT-STRATEGY-EXPERIMENT-COMPLETE",
+        "ACT-STRATEGY-EXPERIMENT-CANCEL"
+      ],
+      "state_machines": [
+        "SM-STRATEGY-EXPERIMENT"
+      ],
+      "ai_role": "identify provisional patterns with sample/context/confidence",
+      "external_effects": []
+    },
+    {
+      "id": "CAP-DELEGATION-CONSENT",
+      "name": "Delegation and Consent",
+      "domain": "trust",
+      "purpose": "Manage candidate-controlled delegated access and auditable consent.",
+      "owns": [
+        "ENT-DELEGATION-GRANT",
+        "ENT-CONSENT-RECORD"
+      ],
+      "reads": [
+        "ENT-PRINCIPAL"
+      ],
+      "actions": [
+        "ACT-DELEGATION-CREATE",
+        "ACT-DELEGATION-ACTIVATE",
+        "ACT-DELEGATION-REVOKE",
+        "ACT-DELEGATION-EXPIRE",
+        "ACT-CONSENT-RECORD"
+      ],
+      "state_machines": [
+        "SM-DELEGATION-GRANT"
+      ],
+      "external_effects": []
+    },
+    {
+      "id": "CAP-AUDIT-GOVERNANCE",
+      "name": "Policy and AI Audit",
+      "domain": "trust",
+      "purpose": "Persist auditable authorization and AI-use records without making audit logs authority sources.",
+      "owns": [
+        "ENT-POLICY-DECISION",
+        "ENT-AI-INTERACTION-RECORD"
+      ],
+      "reads": [
+        "ENT-PRINCIPAL",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "actions": [
+        "ACT-POLICY-DECISION-RECORD",
+        "ACT-AI-INTERACTION-RECORD"
+      ],
+      "external_effects": []
+    },
+    {
+      "id": "CAP-OPPORTUNITY-TRUST",
+      "name": "Opportunity Trust Intelligence",
+      "domain": "trust",
+      "purpose": "Produce versioned evidence-based trust assessment for opportunity/source/recruiter context without false certainty.",
+      "owns": [
+        "ENT-OPPORTUNITY-TRUST-ASSESSMENT"
+      ],
+      "reads": [
+        "ENT-OPPORTUNITY",
+        "ENT-SOURCE",
+        "ENT-OBSERVATION",
+        "ENT-ASSERTION",
+        "ENT-PERSON",
+        "ENT-SEARCH-FIRM",
+        "ENT-EVIDENCE-SNAPSHOT"
+      ],
+      "actions": [
+        "ACT-OPPORTUNITY-TRUST-ASSESS"
+      ],
+      "ai_role": "identify/correlate trust and risk evidence; preserve unresolved state",
+      "external_effects": []
+    }
+  ]
+}

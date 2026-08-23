@@ -1,0 +1,29 @@
+{
+  "campaign_id": "SC-UX-V3-PROGRESSIVE-PURSUIT",
+  "version": "3.0.0",
+  "status": "prototype_gate_passed_human_validation_pending",
+  "active_prototype": "prototype-v3/index.html",
+  "ordered_passes": [
+    {"order": 1, "name": "Briefing", "status": "implemented_and_smoke_passed", "evidence": ["temporal event/action ledger", "Now / Due today / Tomorrow grouping", "opportunity + relationship + preparation events"]},
+    {"order": 2, "name": "Opportunity Detail", "status": "implemented_and_smoke_passed", "evidence": ["decision dossier", "supported assertions", "source + observed_at", "Confirmed / Estimate / Open", "impact-ranked unknowns", "relationship fact separated from route assessment"]},
+    {"order": 3, "name": "Explore to Pursue contract", "status": "implemented_and_conformance_locked", "evidence": ["ACT-OPPORTUNITY-EXPLORE internal mutation", "ACT-OPPORTUNITY-PURSUE explicit user confirmation", "CONF-PURSUIT-002", "CONF-PURSUIT-003", "no external effect"]},
+    {"order": 4, "name": "Pursuit Workspace skeleton", "status": "implemented_and_smoke_passed", "evidence": ["stable Brief / People / Positioning / Process / Record IA", "working-file model", "stage/context rail"]},
+    {"order": 5, "name": "Pre-contact workspace", "status": "implemented_and_smoke_passed", "evidence": ["next move", "current picture", "open questions", "route", "ready-to-use artifacts", "recent activity"]},
+    {"order": 6, "name": "Recruiter conversation", "status": "implemented_and_smoke_passed", "evidence": ["search consultant context", "debrief", "proposed assertion", "commitment", "P&L/compensation estimates"]},
+    {"order": 7, "name": "Selection", "status": "implemented_and_smoke_passed", "evidence": ["CEO stakeholder", "known concern", "evidence to demonstrate", "selection progression", "strategy-authority evidence revision"]},
+    {"order": 8, "name": "Offer / final", "status": "implemented_and_smoke_passed", "evidence": ["final case + references", "offer terms", "decision context", "confirmed authority/compensation evidence snapshot"]},
+    {"order": 9, "name": "Cross-surface consistency", "status": "implemented_and_smoke_passed", "evidence": ["reports_to=CEO projects across Briefing, Opportunity Detail and Workspace", "later evidence revisions project back into Opportunity Detail"]},
+    {"order": 10, "name": "Compare / Shortlist refinement", "status": "implemented_and_smoke_passed", "evidence": ["Shortlist is collection membership independent of disposition", "side-by-side named trade-offs", "no aggregate winner score"]},
+    {"order": 11, "name": "Mobile", "status": "implemented_and_smoke_passed", "evidence": ["dedicated list to detail navigation at <=760px", "mobile back affordance", "horizontal sticky workspace navigation"]},
+    {"order": 12, "name": "Validation", "status": "automated_gate_passed_human_icp_pending", "evidence": ["20/20 V3 browser semantic checks passed", "0 runtime errors", "contract validator passed", "session schema ready", "PV-H01 through PV-H08 registered", "0 actual ICP sessions"]}
+  ],
+  "automated_gate": {
+    "browser_checks": 20,
+    "browser_passed": 20,
+    "browser_failed": 0,
+    "runtime_errors": 0,
+    "contract_conformance_cases": 33,
+    "actual_icp_sessions": 0
+  },
+  "next_gate": "Run 6-8 moderated ICP sessions using validation/test_protocol.md before V1 scope recut or production technical architecture selection."
+}
