@@ -23,7 +23,7 @@ def validate_pipeline():
     session_files = {p.name for p in SESSIONS.glob("*.json")}
     for entry in participants:
         pid = entry.get("participant_id", "")
-        if not __import__("re").fullmatch(r"PV-P\d{2,3}", pid):
+        if not __import__("re").fullmatch(r"PV1-P\d{2,3}", pid):
             raise AssertionError(f"pipeline: bad participant_id '{pid}'")
         if pid in seen_ids:
             raise AssertionError(f"pipeline: duplicate participant_id '{pid}'")

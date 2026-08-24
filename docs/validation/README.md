@@ -1,7 +1,7 @@
 # ScopeCareer — Product Validation-1 Workspace
 
 Status: V3 execution kit ready; recruitment / real ICP sessions not yet executed  
-Last updated: 2026-08-22
+Last updated: 2026-08-24
 
 ## Purpose
 
@@ -28,20 +28,22 @@ The candidate-facing navigation inside the workspace remains stable:
 
 These are projections over canonical domains, not new domain objects.
 
-## Artifacts
+## Kit artifacts
 
-- `prototype_registry.json` — active hypotheses and non-goals.
-- `test_protocol.md` — moderated ICP test protocol.
-- `browser_harness_v3.py` — isolated Chrome/CDP V3 runner.
-- `prototype_smoke_v3_cdp.mjs` — V3 deterministic behavior/semantic smoke.
-- `prototype_smoke_v3_report.json` — latest V3 smoke evidence.
-- `participant_screener.md` — participant criteria.
-- `recruitment_outreach.md` — neutral recruitment copy.
-- `execution_checklist.md` — operational gate.
-- `session_record.schema.json` — machine-readable participant evidence format.
-- `sessions/_template.json` — anonymous session template.
-- `validate_sessions.py` — session evidence validator.
-- `synthesis_template.md` — cross-session synthesis; conclusions must cite participant evidence.
+| Artifact | Purpose | Status |
+|---|---|---|
+| `participant_screener.md` | Screening criteria + questions | Ready |
+| `recruitment_outreach.md` | Neutral DM/email copy | Copy-ready |
+| `scheduling_templates.md` | Screener-pass → session → follow-up messages | Ready |
+| `moderator_run_sheet.md` | Condensed live-session script | Ready |
+| `test_protocol.md` | Full moderated test protocol (authoritative) | Ready |
+| `session_data_entry.md` | Post-session notes → validated JSON workflow | Ready |
+| `session_record.schema.json` | Machine-readable evidence format | Frozen |
+| `sessions/_template.json` | Anonymous session template | Ready |
+| `validate_sessions.py` | Evidence validator (schema + pipeline) | Active |
+| `synthesis_template.md` | Cross-session synthesis (use only after real sessions) | Ready |
+| `execution_checklist.md` | Operational gate checklist | Active |
+| `participant_pipeline.json` | Funnel tracker (additive ops gate) | Active |
 
 ## Current P0 loops
 
@@ -59,27 +61,15 @@ These are projections over canonical domains, not new domain objects.
 
 ## Run manually
 
-From `Documents/KnowledgeHub/ScopeCareer`:
-
 ```bash
 python3 -m http.server 8765 --directory docs/validation/prototype-v3
+# open http://127.0.0.1:8765/
 ```
 
-Open:
-
-```text
-http://127.0.0.1:8765/
-```
-
-Researcher controls and event log:
-
-```text
-http://127.0.0.1:8765/?research=1
-```
+Researcher controls: `http://127.0.0.1:8765/?research=1`
 
 Direct QA scenarios:
-
-```text
+```
 ?view=pursuit&stage=precontact
 ?view=pursuit&stage=recruiter
 ?view=pursuit&stage=selection
@@ -87,65 +77,38 @@ Direct QA scenarios:
 ?view=pursuit&stage=offer
 ```
 
-The browser-only interaction log remains available as:
-
-```js
-window.__scopeCareerValidationLog
-```
-
-The current assertion snapshot is exposed for validation as:
-
-```js
-window.__scopeCareerAssertions
-```
-
-These are research instrumentation only, not production telemetry/API contracts.
+Interaction log: `window.__scopeCareerValidationLog`  
+Assertion snapshot: `window.__scopeCareerAssertions`
 
 ## Run automated gate
 
 ```bash
-python3 docs/validation/browser_harness_v3.py
 python3 contracts/v1/validate_contracts.py
+python3 docs/validation/browser_harness_v3.py
 python3 docs/validation/validate_sessions.py
 ```
 
-V3 smoke currently verifies **20** behavior/semantic checks, including:
+V3 smoke verifies 20 behavior/semantic checks including temporal briefing, provenance projection, explore-vs-pursue distinction, stable workspace IA across stages, and zero runtime errors.
 
-- temporal Briefing event ledger;
-- canonical assertion projection from Briefing;
-- opportunity decision-dossier structure;
-- visible provenance and epistemic state;
-- contextual research CTA;
-- Explore as bounded internal research;
-- evidence binding preserving truth status;
-- Pursue activating a private workspace without external effect;
-- stable five-area workspace IA;
-- pre-contact next-move clarity;
-- recruiter conversation context and debrief;
-- selection stakeholder context;
-- final/reference context;
-- offer decision context;
-- stage-specific evidence revisions projecting back into Opportunity Detail;
-- same reporting-line fact projecting across Briefing, Detail and Workspace;
-- comparison as named trade-offs without winner score;
-- Shortlist independence from disposition;
-- mobile list → detail behavior;
-- zero browser runtime errors.
+## Session execution workflow
+
+1. Recruit using screener + outreach copy; track in `participant_pipeline.json`.
+2. Schedule using templates from `scheduling_templates.md`.
+3. Conduct session using `moderator_run_sheet.md`.
+4. Record evidence per `session_data_entry.md`; validate immediately after each session.
+5. Synthesize only after 6–8 sessions using `synthesis_template.md`.
 
 ## Validation truth
 
-A green smoke gate proves **prototype interaction/semantic integrity**, not product validation.
+A green smoke gate proves prototype interaction/semantic integrity, not product validation.
 
-`ready_for_moderated_test` means the flows are representable and stable enough to test with humans. It does **not** mean:
-
+`ready_for_moderated_test` does NOT mean:
 - executives value Access Intelligence;
-- the opportunity dossier beats their existing research workflow;
-- `Open pursuit workspace` communicates the right commitment level;
-- stage-aware workspace composition is useful;
+- opportunity dossiers beat existing research workflows;
+- commitment-level distinctions communicate correctly;
+- stage-aware composition is useful;
 - source data is production-feasible;
-- model outputs are production-quality;
-- technical architecture is selected;
-- V1 scope is final.
+- technical architecture is selected.
 
 Those claims require real ICP evidence.
 
@@ -153,7 +116,8 @@ Those claims require real ICP evidence.
 
 - target first round: **6–8 moderated ICP sessions**;
 - actual session records: **0**;
-- use `participant_screener.md` and `recruitment_outreach.md` for recruitment;
+- checkpoint after P01–P03: redesign gate;
+- use `participant_screener.md` + `recruitment_outreach.md` for sourcing;
 - store one anonymous record per completed session as `sessions/PV1-Pxx.json`;
 - run `python3 docs/validation/validate_sessions.py` before synthesis;
-- do not report hypothesis support from screenshots, smoke tests, moderator intuition, or synthetic participants.
+- never report hypothesis support from screenshots, smoke tests, moderator intuition, or synthetic participants.

@@ -165,14 +165,18 @@ Trust assessment must report evidence/risk, not claim certainty that cannot be e
 
 ## 6. Open legal/compliance questions
 
-- GDPR roles/lawful basis/data-subject request mechanics.
-- India privacy requirements.
-- Cross-border processing and subprocessors.
-- Retention periods.
-- Source licensing/terms for job/company/people data.
-- Future employer-side AI high-risk obligations.
-- Consent requirements for imported relationship/contact data.
-- Recording/transcription consent across jurisdictions.
+Draft control requirements for each item below are mapped in
+`31-LEGAL-COMPLIANCE-FRAMEWORK.md` (desk research; not ratified). All items remain open until
+resolved by explicit decisions and qualified counsel sign-off.
+
+- GDPR roles/lawful basis/data-subject request mechanics. *(doc 31 §1, §2a, §12)*
+- India privacy requirements. *(doc 31 §2b, §4, §5b, §11, §11b, §13)*
+- Cross-border processing and subprocessors. *(doc 31 §5, §6)*
+- Retention periods. *(doc 31 §4; concrete matrix at P5)*
+- Source licensing/terms for job/company/people data. *(doc 31 §7)*
+- Future employer-side AI high-risk obligations. *(doc 31 §10 EU AI Act)*
+- Consent requirements for imported relationship/contact data. *(doc 31 §8a)*
+- Recording/transcription consent across jurisdictions. *(doc 31 §8b, §9)*
 
 ## 7. Decision change policy
 

@@ -1,7 +1,7 @@
 # ScopeCareer — Executive Career Intelligence Platform
 
 Status: Prototype gate passed — Product Validation-1 human sessions pending
-Last updated: 2026-08-23
+Last updated: 2026-08-24
 
 ## Purpose
 
@@ -57,6 +57,8 @@ The product is intentionally broader than an AI job-search assistant. Its core c
 | `27-PERFORMANCE-RELIABILITY-AND-SLO.md` | Budget categories, ratchet policy, SLO skeleton (baselines at GATE-P3) | Working standard |
 | `28-DELIVERY-DAG-AND-WORK-PACKAGES.md` | Multi-agent execution protocol, briefs, receipts, integration checklist | Binding from P4 |
 | `29-RELEASE-OPERATIONS-AND-GA-GATES.md` | Environment ladder, mandatory release artifacts, beta/GA gates | Binding from P5 |
+| `30-V1-RECUT-FRAMEWORK.md` | Pre-registered scope recut process: activation gates, classification taxonomy, hypothesis-driven rules, GATE-P2 exit criteria | Pre-registered (activates after PV-1) |
+| `31-LEGAL-COMPLIANCE-FRAMEWORK.md` | Legal/compliance control requirements across GDPR, DPDP, PDPA, AI Act; counsel-review backlog | Desk research + draft (not ratified) |
 
 ## Authority hierarchy
 

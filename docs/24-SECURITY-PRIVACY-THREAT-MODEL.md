@@ -87,8 +87,9 @@ effect without recorded human approval (INV-04, INV-06, D-016).
 GDPR roles/lawful basis and data-subject request mechanics; India privacy requirements;
 cross-border processing and subprocessors; retention periods per class; source licensing
 and ToS for job/company/people data; consent for imported relationship/contact data;
-recording/transcription consent across jurisdictions. These remain open in
-`11 §6` until resolved by explicit decisions.
+recording/transcription consent across jurisdictions. Draft control requirements for each item are mapped in
+`31-LEGAL-COMPLIANCE-FRAMEWORK.md` (desk research, not ratified). These remain open in
+`11 §6` until resolved by explicit decisions and counsel sign-off.
 
 ## Retention & deletion
 
